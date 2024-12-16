@@ -1,0 +1,40 @@
+@import '../../../global.variables.scss';
+
+.button-roll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13.2px;
+  line-height: $line-height;
+  background: $light-blue;
+  color: $base-black;
+  border: 3px solid $light-black;
+  font-weight: bold;
+  &:hover, &:active {
+    background: $background-secondary;
+  }
+}
+
+.button-roll.disabled {
+  background: $lighter-blue;
+  color: $gray-text-light;
+  border: 3px solid $border-disabled;
+  cursor: not-allowed;
+}
+
+@mixin button-size($font-size, $padding) {
+  font-size: $font-size;
+  padding: $padding;
+}
+
+
+.lg {
+  @include button-size(32px, 20px 34px)
+}
+.md {
+  @include button-size(24px, 18px 28px)
+}
+.sm {
+  @include button-size(16px, 12px 18px)
+}
+
