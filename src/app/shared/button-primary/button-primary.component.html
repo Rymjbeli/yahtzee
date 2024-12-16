@@ -1,0 +1,9 @@
+<button class="button-primary" [ngClass]="[type, size]">
+  <div *ngIf="showLeftIcon" class="icon">
+    <ng-content select="[left]"></ng-content>
+  </div>
+  {{ text }}
+  <div *ngIf="showRightIcon" class="icon">
+    <ng-content select="[right]"></ng-content>
+  </div>
+</button>

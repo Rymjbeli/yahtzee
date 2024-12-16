@@ -1,0 +1,47 @@
+@import '../../../global.variables.scss';
+
+.button-primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 45.5px;
+  line-height: $line-height;
+  background: $background-main-sub;
+  color: $base-black;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.16),
+              inset 0 1px 4px rgba(0, 0, 0, 0.25);
+  font-weight: bold;
+  &:hover {
+    background: $background-main-base;
+  }
+  &:active {
+    background: $background-main;
+  }
+}
+
+.button-primary.disabled {
+  background: $base-gray;
+  color: $gray-text-light;
+  cursor: not-allowed;
+}
+
+@mixin button-size($font-size, $padding, $gap, $width) {
+  font-size: $font-size;
+  padding: $padding;
+  gap: $gap;
+  .icon {
+    width: $width;
+    height: $width;
+  }
+}
+
+.lg {
+  @include button-size(32px, 14px 24px, 8px, 34px)
+}
+.md {
+  @include button-size(24px,  12px 20px, 6px, 28px)
+}
+.sm {
+  @include button-size(16px, 10px 18px, 4px, 20px)
+}
+
