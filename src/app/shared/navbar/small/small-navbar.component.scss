@@ -1,0 +1,53 @@
+@import "../../../../global.variables.scss";
+
+.settings-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  border-radius: 33px;
+  padding: 2px;
+  line-height: $line-height;
+  background: $base-gray;
+  color: $base-black;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 1),
+    inset 0 1px 4px rgba(0, 0, 0, 0.25);
+  font-weight: bold;
+}
+
+.button-secondary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  border-radius: 33px;
+  border: none;
+  line-height: $line-height;
+  background: $base-gray;
+  color: $base-black;
+  font-weight: bold;
+
+  &:hover,
+  &:active {
+    background: $background-secondary;
+  }
+}
+
+@mixin button-size($padding) {
+  .button-secondary {
+    padding: $padding;
+  }
+}
+
+.lg {
+  @include button-size(10px 25px);
+}
+.md {
+  @include button-size(8px 20px);
+}
+.sm {
+  @include button-size(4px 15px);
+}
