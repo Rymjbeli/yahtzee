@@ -1,0 +1,12 @@
+@import "../global.variables";
+
+.cdk-overlay-dark-backdrop {
+  opacity: 0.4 !important;
+  background: $overlay-background;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: $dialog-border-radius !important;
+  border: 2px solid $base-black;
+  padding: 16px;
+}

@@ -1,0 +1,46 @@
+<div class="end-game-popup relative">
+  <img
+    ngSrc="assets/images/big-yellow-stars.svg"
+    alt="yellow-stars"
+    class="main-stars -mt-28 fixed left-full"
+    height="150"
+    width="270"
+  >
+  <div class="flex flex-col gap-6 items-center">
+    <div class="flex justify-between w-full">
+      <img ngSrc="assets/images/starts-left.svg" alt="left-stars" height="80" width="80">
+      <img ngSrc="assets/images/stars-right.svg" alt="right-stars" height="80" width="80">
+    </div>
+
+    <div class="font-extrabold text-4xl">
+      {{winnerName}} wins the game!
+    </div>
+
+    <div class="flex justify-between items-center w-full">
+      <hr class="w-44 border-black">
+      <div class="text-3xl font-bold">
+        Your scores
+      </div>
+      <hr class="w-44 border-black">
+    </div>
+
+    <div class="flex border-black rounded-xl border-3 bg-main-base w-96">
+      <div class="flex flex-col flex-1 items-center">
+        <div class="text-2xl font-semibold p-2">
+          {{player1Name}}
+        </div>
+        <div class="text-2xl font-semibold p-2">
+          {{player1Score}}
+        </div>
+      </div>
+      <div class="flex flex-col flex-1 items-center">
+        <div class="text-2xl font-semibold p-2">
+          {{player2Name}}
+        </div>
+        <div class="text-2xl font-semibold p-2">
+          {{player2Score}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
