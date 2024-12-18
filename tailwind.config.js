@@ -19,12 +19,27 @@ module.exports = {
         'main-base': '#D4C9FF',
         'main-sub': '#E2DCFD',
         'light-blue': '#A4D3FF',
+        'light-red': '#FF8577',
+        'success-green': '#0FA958',
       },
       fontSize: {
         'base': '16px',
       },
       lineHeight: {
         'base': '1.5',
+      },
+      width: {
+        '100': '27rem',
+        '38': '8.5rem',
+      },
+      inset: {
+        '18': '4.5rem',
+      },
+      screens: {
+        'xs': '560px',
+      },
+      boxShadow: {
+        'custom-light': '0 4px 6px rgba(4, 16, 21, 0.09)',
       },
     },
   },

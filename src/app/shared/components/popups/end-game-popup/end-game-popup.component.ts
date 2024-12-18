@@ -1,11 +1,13 @@
 import {Component, Input} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
+import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
 
 @Component({
   selector: 'app-end-game-popup',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgOptimizedImage,
+    ButtonPrimaryComponent
   ],
   templateUrl: './end-game-popup.component.html',
   styleUrl: './end-game-popup.component.scss'
