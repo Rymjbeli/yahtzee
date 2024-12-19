@@ -1,0 +1,62 @@
+<div class="relative">
+  <img
+    ngSrc="../../../../../assets/images/big-yellow-stars.svg"
+    alt="yellow-stars"
+    class="absolute left-1/2 -top-28 -translate-x-1/2"
+    height="150"
+    width="270"
+  >
+  <div class="flex flex-col gap-7 items-center -mt-3">
+    <div class="hidden xs:flex justify-between w-full">
+      <img ngSrc="../../../../../assets/images/starts-left.svg" alt="left-stars" height="80" width="80">
+      <img ngSrc="../../../../../assets/images/stars-right.svg" alt="right-stars" height="80" width="80">
+    </div>
+
+    <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
+      {{winnerName}} wins the game!
+    </div>
+
+    <div class="flex justify-between items-center w-full">
+      <hr class="w-20 xs:w-40 border-black">
+      <div class="text-2xl xs:text-3xl font-bold text-center">
+        Your scores
+      </div>
+      <hr class="w-20 xs:w-40 border-black">
+    </div>
+
+    <div class="flex border-black rounded-xl border-3 bg-main-base w-full sm:w-100 xs:p-1">
+      <div class="flex flex-col flex-1 items-center">
+        <div class="text-xl xs:text-2xl font-semibold p-2">
+          {{player1Name}}
+        </div>
+        <div class="text-xl xs:text-2xl font-semibold p-2">
+          {{player1Score}}
+        </div>
+      </div>
+      <div class="flex flex-col flex-1 items-center">
+        <div class="text-xl xs:text-2xl font-semibold p-2">
+          {{player2Name}}
+        </div>
+        <div class="text-xl xs:text-2xl font-semibold p-2">
+          {{player2Score}}
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-6 flex-wrap justify-center">
+      <app-button-primary class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
+        <img left src="../../../../../assets/icons/replay.svg" alt="replay">
+      </app-button-primary>
+      <app-button-primary class="hidden xs:flex" text="Home" size="md" [showLeftIcon]="true">
+        <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
+      </app-button-primary>
+
+      <app-button-primary class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
+        <img left src="../../../../../assets/icons/replay.svg" alt="replay">
+      </app-button-primary>
+      <app-button-primary class="xs:hidden" text="Home" size="sm" [showLeftIcon]="true">
+        <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
+      </app-button-primary>
+    </div>
+  </div>
+</div>
