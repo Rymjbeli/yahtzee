@@ -1,0 +1,116 @@
+@import "../../../global.variables.scss";
+
+.scorecard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: $background-main-base;
+    border: 1px solid $base-black;
+    border-radius: 33px;
+    padding: 25px 22px;
+    box-shadow: 2px 0px 0px rgba(0, 0, 0, 0.65);
+    position: relative;
+    width: 20vw;
+    max-width: 300px;
+    min-width: 250px;
+    margin-top: 20px;
+  .player-title {
+    position: absolute;
+    top: -20px;
+    left: 20%;
+    width: 45%;
+    background: $base-white;
+    border-radius: 33px;
+    padding: 4px 12px;
+    border: 2px solid $base-black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 4px 0px;
+    .row {
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+      align-items: center;
+      .label {
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        .icon {
+          height: 21px;
+          width: 20px;
+        }
+      }
+    }
+  }
+  .section-divider {
+    border: 0;
+    height: 1.5px;
+    background: #333;
+  }
+  .bonus, .total {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 35px;
+    gap: 40px;
+  }
+}
+
+.bonus-title, .total-title {
+  font-weight: bold;
+}
+
+.score-box {
+  width: 45px;
+  height: 30px;
+  border-radius: 35px;
+  background: $base-white;
+  padding: 7px;
+  padding-top: 5px;
+  text-align: center;
+  outline: none;
+  font-size: small;
+}
+.total-box {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  outline: none;
+  font-size: small;
+  background: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.active-player {
+  background: $background-main;
+  .active-player-title {
+    background: $light-blue;
+  }
+}
+
+.disabled-input {
+  background: $base-gray;
+  color: $gray-text-light;
+  cursor: not-allowed;
+}

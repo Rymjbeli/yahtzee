@@ -1,0 +1,35 @@
+<div [ngClass]="{'active-player': isActivePlayer}" class="scorecard-container">
+  <span [ngClass]="{'active-player-title': isActivePlayer}" class="player-title">{{playerName}}</span>
+  <div class="section">
+    @for (item of upperSection; track item.name) {
+    <div class="row">
+      <div class="label">
+        <img class="icon" [src]="item.icon"> {{ item.name }}
+      </div>
+      <input class="score-box" type="number" [(ngModel)]="item.score" [ngClass]="{'disabled-input': item.disabled}"
+        disabled (ngModelChange)="onScoreChange($event, item)" />
+    </div>
+    }
+  </div>
+  <hr class="section-divider">
+  <div class="bonus">
+    <div class="row bonus-title">Bonus</div>
+    <input class="total-box" type="number" [(ngModel)]="bonusScore" (ngModelChange)="onScoreChange($event)" disabled />
+  </div>
+  <hr class="section-divider">
+  <div class="section">
+    @for (item of lowerSection; track item.name) {
+    <div class="row">
+      <div class="label">{{ item.name }}</div>
+      <input class="score-box" type="number" [(ngModel)]="item.score" [ngClass]="{'disabled-input': item.disabled}"
+        disabled (ngModelChange)="onScoreChange($event, item)" />
+    </div>
+    }
+  </div>
+  <hr class="section-divider">
+  <div class="total">
+    <div class="row total-title">Total</div>
+    <input class="total-box" type="number" [(ngModel)]="totalScore" (ngModelChange)="onScoreChange($event)" disabled />
+  </div>
+  <hr class="section-divider">
+</div>
