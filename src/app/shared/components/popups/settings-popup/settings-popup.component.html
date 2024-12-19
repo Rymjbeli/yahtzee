@@ -1,0 +1,80 @@
+<div class="relative">
+  <div (click)="closeDialog()" class="absolute -right-8 -top-10 rounded-3xl bg-base-gray border-black border-3 p-1">
+    <img
+      ngSrc="../../../../../assets/icons/cross.svg"
+      alt="cross"
+      width="25"
+      height="25"
+    >
+  </div>
+  <div class="flex flex-col gap-10 items-center">
+    <div class="font-extrabold text-3xl xs:text-4xl">
+      Settings
+    </div>
+    <div class="flex flex-col gap-5">
+      <div class="flex justify-center xs:justify-between items-center gap-10 flex-wrap">
+        <div class="flex gap-4 items-center">
+          <img class="w-9 h-8 xs:w-10 xs:h-9" src="../../../../../assets/icons/sound.svg" alt="sound">
+          <div class="font-bold text-xl xs:text-2xl ">
+            Sound
+          </div>
+        </div>
+
+        <label class="switch relative inline-block text-sm">
+          <input type="checkbox" class="opacity-0 w-0 h-0" (change)="toggleMusic()" [(ngModel)]="isMusicPlaying"/>
+          <span class="slider absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-3xl bg-light-red"></span>
+        </label>
+
+      </div>
+      <div class="flex justify-center xs:justify-between items-center gap-10 flex-wrap">
+        <div class="flex gap-3 items-center">
+          <img class="w-10 h-9 xs:w-11 xs:h-10" src="../../../../../assets/icons/timer.svg" alt="timer">
+          <div class="font-bold text-xl xs:text-2xl">
+            Timer
+          </div>
+        </div>
+
+        <label class="switch relative inline-block text-sm">
+          <input type="checkbox" class="opacity-0 w-0 h-0"/>
+          <span class="slider absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-3xl bg-light-red"></span>
+        </label>
+
+      </div>
+      <div class="flex justify-center xs:justify-between items-center flex-wrap gap-3">
+          <img class="w-11 h-10 xs:w-12 xs:h-11" ngSrc="../../../../../assets/icons/language.svg" alt="timer" width="45" height="45">
+          <div class="relative flex-1">
+            <div class="flex gap-3 justify-between items-center bg-base-gray border-black border-2 py-2 px-4 rounded-xl cursor-pointer shadow-custom-light" (click)="toggleDropdown()">
+              <span>{{ selectedLanguage.name }}</span>
+              @if (dropdownOpen) {
+                <img ngSrc="../../../../../assets/icons/arrow-up.svg" alt="arrow-up" width="20" height="20">
+              } @else  {
+                <img ngSrc="../../../../../assets/icons/arrow-down.svg" alt="arrow-down" width="20" height="20">
+              }
+            </div>
+
+            @if (dropdownOpen) {
+              <ul class="dropdown-list absolute w-full bg-base-gray border-black border-2 rounded-xl shadow-custom-light p-0 mt-1.5 list-none">
+                @for (language of languages; track language) {
+                  <li
+                    class="cursor-pointer p-2.5 hover:bg-main-sub rounded-[10px]"
+                    [ngClass]="{ 'bg-main-sub': language.name === selectedLanguage.name }"
+                    (click)="selectLanguage(language)"
+                  >
+                    <span>{{ language.name }}</span>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+      </div>
+    </div>
+    <app-button-primary class="hidden xs:flex" text="YAHTZEE Rules" size="md" [showLeftIcon]="true">
+      <img left src="../../../../../assets/icons/rules.svg" alt="rules">
+    </app-button-primary>
+
+    <app-button-primary class="xs:hidden" text="YAHTZEE Rules" size="sm" [showLeftIcon]="true">
+      <img left src="../../../../../assets/icons/rules.svg" alt="rules">
+    </app-button-primary>
+</div>
+</div>
+
