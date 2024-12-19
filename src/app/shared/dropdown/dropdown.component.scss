@@ -1,0 +1,83 @@
+@import "../../../global.variables.scss";
+
+.dropdown-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+  font-size: $base-font-size;
+
+  color: $gray-text;
+  cursor: pointer;
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .dropdown-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 20%;
+    padding: 12px;
+    border-radius: 33px;
+    background: $background-main-sub;
+    color: $gray-text;
+    border: 1px solid $border-disabled;
+
+    &:hover {
+      background: $background-main-base;
+    }
+
+    .dropdown-icon {
+      font-size: 14px;
+    }
+  }
+
+  .dropdown-options {
+    position: absolute;
+    top: 120%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: $background-main-sub;
+    border: 1px solid $border-disabled;
+    border-radius: 33px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li {
+      position: relative; /* Ensure the pseudo-element is positioned relative to the <li> */
+      padding: 12px;
+      color: $gray-text;
+      text-align: center;
+
+      &:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%; /* Aligns the line to the center */
+        transform: translateX(-50%);
+        width: 90%; /* Makes the line 90% of the option's width */
+        height: 1px;
+        background-color: $border-color; /* Adjust to match your theme */
+      }
+
+      &:hover {
+        background: $background-main-base;
+        color: $base-black;
+      }
+
+      &.selected {
+        background: $background-main;
+        color: $base-white;
+      }
+    }
+  }
+}

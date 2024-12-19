@@ -1,0 +1,18 @@
+<div class="dropdown-container" [class.disabled]="disabled">
+  <div class="dropdown-header" (click)="toggleDropdown()">
+    <span>{{ selectedOption || placeholder }}</span>
+    @if (withIcon) {
+    <span class="dropdown-icon">&#x25BC;</span>
+    }
+  </div>
+
+  <ul class="dropdown-options" *ngIf="isOpen">
+    <li
+      *ngFor="let option of options"
+      (click)="selectOption(option)"
+      [class.selected]="option === selectedOption"
+    >
+      {{ option }}
+    </li>
+  </ul>
+</div>
