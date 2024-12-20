@@ -1,0 +1,58 @@
+@import '../../../../../global.variables';
+
+.switch {
+  width: 4.1em;
+  height: 2.1em;
+}
+
+/* The slider */
+.slider {
+  transition: 0.4s;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.6em;
+  width: 1.6em;
+  border-radius: 20px;
+  left: 0.2em;
+  bottom: 0.2em;
+  background-color: white;
+  transition: 0.4s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.switch input:checked + .slider {
+  background-color: $success-green;
+}
+
+.switch input:focus + .slider {
+  box-shadow: 0 0 1px $base-black;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(2em);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Add some cool effects */
+.slider:after {
+  content: "OFF";
+  color: white;
+  position: absolute;
+  right: 0.3em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+  transition: opacity 0.4s;
+  opacity: 1;
+}
+
+.switch input:checked + .slider:after {
+  content: "ON";
+  left: 0.5em;
+  opacity: 1;
+  right: auto;
+}

@@ -1,4 +1,4 @@
-@import '../../../global.variables.scss';
+@import '../../../../../global.variables';
 
 .button-primary {
   display: flex;
@@ -44,4 +44,3 @@
 .sm {
   @include button-size(16px, 10px 18px, 4px, 20px)
 }
-
