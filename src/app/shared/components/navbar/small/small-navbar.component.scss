@@ -1,4 +1,4 @@
-@import "../../../../global.variables.scss";
+@import "../../../../../global.variables.scss";
 
 .settings-button {
   display: flex;
@@ -43,11 +43,11 @@
 }
 
 .lg {
-  @include button-size(10px 25px);
+  @include button-size(10px 15px);
 }
 .md {
-  @include button-size(8px 20px);
+  @include button-size(8px 12px);
 }
 .sm {
-  @include button-size(4px 15px);
+  @include button-size(4px 10px);
 }

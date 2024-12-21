@@ -1,4 +1,4 @@
-@import "../../../global.variables.scss";
+@import "../../../../global.variables.scss";
 
 .scorecard-container {
     display: flex;
@@ -8,13 +8,15 @@
     background: $background-main-base;
     border: 1px solid $base-black;
     border-radius: 33px;
-    padding: 25px 22px;
+    padding: 22px;
+    padding-bottom: 5px;
     box-shadow: 2px 0px 0px rgba(0, 0, 0, 0.65);
     position: relative;
     width: 20vw;
-    max-width: 300px;
+    max-width: 350px;
     min-width: 250px;
     margin-top: 20px;
+    // height: 75vh;
   .player-title {
     position: absolute;
     top: -20px;
@@ -104,6 +106,7 @@ input[type="number"] {
 
 .active-player {
   background: $background-main;
+  box-shadow: 2px 3px 5px 2px rgba(0, 0, 0, 0.65);
   .active-player-title {
     background: $light-blue;
   }

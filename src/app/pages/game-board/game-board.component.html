@@ -1,0 +1,11 @@
+<div class="game-board">
+  <app-scorecard [playerName]="playersNames[0]"  [isActivePlayer]="currentPlayer==0" ></app-scorecard>
+  <div class="rolling-board">
+    <div class="dices">dices </div>
+    <div class="actions">
+      <div class="keep-dice"></div>
+      <app-button-roll size="md" [type]="state" [text]="buttonText"></app-button-roll>
+    </div>
+  </div>
+  <app-scorecard [playerName]="playersNames[1]" [isActivePlayer]="currentPlayer===1"></app-scorecard>
+</div>

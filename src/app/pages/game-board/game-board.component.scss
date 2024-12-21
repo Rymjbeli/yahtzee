@@ -1,0 +1,42 @@
+@import "../../../global.variables.scss";
+
+.game-board {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 30px;
+  background-color: $base-white;
+  gap: 40px;
+  height: 80vh;
+  .rolling-board {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+    width: 100%;
+
+    .dices {
+      padding: 10px 0;
+      height: 70%;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      .keep-dice {
+        background-color: $base-white;
+        border-radius: 25px;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.25),
+                    inset -2px 1px 2px rgba(0, 0, 0, 0.25);
+        height: 65px;
+        width: 70%;
+      }
+    }
+  }
+}
+
