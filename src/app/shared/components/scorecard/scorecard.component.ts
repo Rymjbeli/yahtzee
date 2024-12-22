@@ -1,6 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Player } from '../../models/player';
+
+
+interface Section {
+  variable: string,
+  name: string,
+  icon?: string,
+  score: number | null,
+  disabled: boolean,
+}
 
 @Component({
   selector: 'app-scorecard',
@@ -10,77 +20,67 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './scorecard.component.scss'
 })
 export class ScorecardComponent {
-  @Input() playerName: string = 'Player 1';
+  @Input() player: Player | undefined;
   @Input() isActivePlayer: boolean = false;
-  @Output() bonusScoreChange = new EventEmitter<number>();
-  @Output() totalScoreChange = new EventEmitter<number>();
-  @Output() upperSectionScoreChange = new EventEmitter<{ name: string, score: number, disabled: boolean }>();
-  @Output() lowerSectionScoreChange = new EventEmitter<{ name: string, score: number, disabled: boolean }>();
 
-  totalScore: number = 0;
-  bonusScore: number = 0;
-  totalUpperSectionScore: number = 0;
-
-  upperSection = [
-    { name: 'Aces', icon: 'assets/icons/dices/die-1.svg', score: 0, disabled: false },
-    { name: 'Twos', icon: 'assets/icons/dices/die-2.svg', score: 0, disabled: false },
-    { name: 'Threes', icon: 'assets/icons/dices/die-3.svg', score: 0, disabled: false },
-    { name: 'Fours', icon: 'assets/icons/dices/die-4.svg', score: 0, disabled: false },
-    { name: 'Fives', icon: 'assets/icons/dices/die-5.svg', score: 0, disabled: false },
-    { name: 'Sixes', icon: 'assets/icons/dices/die-6.svg', score: 0, disabled: false }
+  upperSection: Section[] = [
+    { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', score: null, disabled: true },
+    { variable: 'twos', name: 'Twos', icon: 'assets/icons/dices/die-2.svg', score: null, disabled: true },
+    { variable: 'threes', name: 'Threes', icon: 'assets/icons/dices/die-3.svg', score: null, disabled: true },
+    { variable: 'fours', name: 'Fours', icon: 'assets/icons/dices/die-4.svg', score: null, disabled: true },
+    { variable: 'fives', name: 'Fives', icon: 'assets/icons/dices/die-5.svg', score: null, disabled: true },
+    { variable: 'sixes', name: 'Sixes', icon: 'assets/icons/dices/die-6.svg', score: null, disabled: true }
   ];
-  lowerSection = [
-    { name: 'Three of a kind', score: 0, disabled: false },
-    { name: 'Four of a kind', score: 0, disabled: false },
-    { name: 'Full house', score: 0, disabled: false },
-    { name: 'Small straight', score: 0, disabled: false },
-    { name: 'Large straight', score: 0, disabled: false },
-    { name: 'Chance', score: 0, disabled: false },
-    { name: 'YAHTZEE', score: 0, disabled: false }
+  lowerSection: Section[] = [
+    { variable: 'threeOfAKind', name: 'Three of a kind', score: null, disabled: true },
+    { variable: 'fourOfAKind', name: 'Four of a kind', score: null, disabled: true },
+    { variable: 'fullHouse', name: 'Full house', score: null, disabled: true },
+    { variable: 'smallStraight', name: 'Small straight', score: null, disabled: true },
+    { variable: 'largeStraight', name: 'Large straight', score: null, disabled: true },
+    { variable: 'chance', name: 'Chance', score: null, disabled: true },
+    { variable: 'yahtzee', name: 'YAHTZEE', score: null, disabled: true }
   ];
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['isActivePlayer'] && !changes['isActivePlayer'].currentValue) {
-      this.resetDisabledProperties();
+  ngOnInit() {
+    this.initializeScores();
+  }
+
+  initializeScores() {
+    if (this.player) {
+      this.upperSection.forEach(item => {
+        item.score = this.player?.scoreCard[item.variable]?.value ?? null;
+      });
+      this.lowerSection.forEach(item => {
+        item.score = this.player?.scoreCard[item.variable]?.value ?? null;
+      });
     }
   }
 
-  resetDisabledProperties() {
-    this.upperSection.forEach(item => item.disabled = false);
-    this.lowerSection.forEach(item => item.disabled = false);
-  }
-
-  calculateUpperSectionScore() {
-    this.totalUpperSectionScore = this.upperSection.reduce((acc, item) => acc + item.score, 0);
-    this.checkAndApplyBonus();
-  }
-
-  checkAndApplyBonus() {
-    if (this.totalUpperSectionScore >= 63) {
-      this.bonusScore = 35;
-    } else {
-      this.bonusScore = 0;
+  checkScore(item: Section): boolean {
+    if (!this.isActivePlayer) {
+      item.disabled = true;
+      return item.disabled;
     }
-    this.bonusScoreChange.emit(this.bonusScore);
-  }
 
-  calculateTotalScore() {
-    let totalLowerSectionScore = this.lowerSection.reduce((acc, item) => acc + item.score, 0);
-    this.totalScore = this.totalUpperSectionScore + totalLowerSectionScore + this.bonusScore;
-    this.totalScoreChange.emit(this.totalScore);
-  }
+    const scoreCard = this.player?.scoreCard[item.variable];
+    const isPicked = scoreCard?.picked;
+    const value = scoreCard?.value;
 
-  onScoreChange(newScore: number, item?: { name: string, score: number, disabled: boolean } | { name: string, icon: string, score: number, disabled: boolean }) {
-    if (item) {
-      item.score = newScore;
-      if (this.upperSection.includes(item as { name: string, icon: string, score: number, disabled: boolean })) {
-        this.upperSectionScoreChange.emit({ name: item.name, score: newScore, disabled: item.disabled });
-      } else if (this.lowerSection.includes(item as { name: string, score: number, disabled: boolean })) {
-        this.lowerSectionScoreChange.emit({ name: item.name, score: newScore, disabled: item.disabled });
-      }
+    if (this.areAllScoresZero()) {
+      console.log('hi');
+      item.disabled = !!isPicked;
+      return item.disabled;
     }
-    this.calculateUpperSectionScore();
-    this.calculateTotalScore();
+
+    item.disabled = isPicked || (value === 0 || value === null);
+    return item.disabled;
   }
 
+  areAllScoresZero(): boolean {
+    const allSection = [...this.upperSection, ...this.lowerSection];
+    return allSection.every(section =>
+      this.player?.scoreCard[section.variable]?.picked ||
+      this.player?.scoreCard[section.variable]?.value === 0
+    );
+  }
 }
