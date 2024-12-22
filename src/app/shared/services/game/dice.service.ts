@@ -19,4 +19,11 @@ export class DiceService {
       return dice;
     });
   }
+
+  getDiceCounts(dice: Dice[]): { [key: number]: number } {
+    return dice.reduce((counts, die) => {
+      counts[die.value] = (counts[die.value] || 0) + 1;
+      return counts;
+    }, {} as { [key: number]: number });
+  }
 }
