@@ -3,22 +3,35 @@ import { ScorecardComponent } from "../../shared/components/scorecard/scorecard.
 import { ButtonRollComponent } from "../../shared/components/buttons/button-roll/button-roll.component";
 import {Observable} from "rxjs";
 import {GameState} from "../../shared/interfaces/game-state";
-import {GameService} from "../../shared/services/game.service";
-import {AsyncPipe} from "@angular/common";
+import {GameService} from "../../shared/services/game/game.service";
+import {AsyncPipe, NgClass, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
+import {Position} from "../../shared/interfaces/position";
 
 @Component({
   selector: 'app-game-board',
   standalone: true,
-  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe],
+  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgIf, NgClass, NgStyle],
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss'
 })
 export class GameBoardComponent {
-  // @Input() playersNames: string[] = ['Player 1', 'Player 2'];
-  state: 'normal' | 'disabled' = 'normal';
-  buttonText: 'Roll Dice' | 'Reroll Dice' = 'Roll Dice';
-  // currentPlayer: number = 0;
+  gameService = inject(GameService);
 
   gameState$: Observable<GameState> = this.gameService.gameState$;
-  constructor(private gameService: GameService) {}
+
+  toggleHold(index: number): void {
+    this.gameService.toggleHoldDice(index);
+  }
+
+  getDicePosition(index: number): Position {
+    const positions = this.gameService.getDicePositions();
+    if (positions && positions[index]) {
+      return positions[index];
+    }
+    return { top: '50%', left: '50%', transform: 'rotate(0deg)' };
+  }
+
+  rollDice(): void {
+    this.gameService.rollDice();
+  }
 }

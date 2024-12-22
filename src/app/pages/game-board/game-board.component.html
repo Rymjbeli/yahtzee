@@ -1,21 +1,74 @@
-<div class="game-board">
-  @if((gameState$ | async)?.players?.[0]; as player) {
+@if((gameState$ | async); as gameState) {
+  <div class="game-board">
     <app-scorecard
-      [playerName]="player?.name || ''"
+      [playerName]="gameState?.players?.[0]?.name || ''"
       [isActivePlayer]="(gameState$ | async)?.currentPlayerIndex === 0"
     ></app-scorecard>
-  }
-  <div class="rolling-board">
-    <div class="dices">dices </div>
-    <div class="actions">
-      <div class="keep-dice"></div>
-      <app-button-roll size="md" [type]="state" [text]="buttonText"></app-button-roll>
+    <div class="rolling-board ">
+      <div class="player-turn flex w-full" [ngClass]="{'justify-end': gameState?.currentPlayerIndex === 1, 'justify-start': gameState?.currentPlayerIndex === 0}">
+        @if(gameState?.currentPlayerIndex === 0) {
+          <div class="flex gap-10 flex-wrap">
+            <img class="-rotate-37" ngSrc="assets/images/turn-arrow-left.svg" alt="arrow-left" width="135" height="130">
+            <div class="turn-text text-main text-4.5xl text-center">
+              {{gameState?.players?.[0]?.name}}'s turn
+            </div>
+          </div>
+        }
+
+        @if(gameState?.currentPlayerIndex === 1) {
+          <div class="flex gap-10">
+            <div class="turn-text text-main text-4.5xl text-center">
+              {{gameState?.players?.[1]?.name}}'s turn
+            </div>
+            <img class="rotate-37" ngSrc="assets/images/turn-arrow-right.svg" alt="arrow-right" width="135" height="130">
+          </div>
+        }
+      </div>
+      <div class="dices flex justify-center items-center w-full h-full relative">
+        @for (dice of gameState?.dice; let i = $index; track dice.value){
+          @if (!dice?.isHeld) {
+            <div
+              (click)="toggleHold(i)"
+              class="dice absolute transition-all duration-200 ease-in-out"
+              [ngStyle]="getDicePosition(i)"
+            >
+              <img
+                class="cursor-pointer transform transition duration-200 ease-in-out hover:scale-110"
+                [ngSrc]="'assets/images/dices/' + dice.getImage()"
+                alt="Die {{ i + 1 }}"
+                width="81"
+                height="81"
+              >
+            </div>
+          }
+        }
+      </div>
+      <div class="actions">
+        <div class="keep-dice flex gap-1.5 items-center justify-center py-1.5 flex-nowrap overflow-x-auto">
+          @for (dice of gameState?.dice; let i = $index; track dice.value){
+            @if (dice?.isHeld) {
+              <img
+                class="cursor-pointer transform transition duration-200 ease-in-out hover:scale-110"
+                (click)="toggleHold(i)"
+                [ngSrc]="'assets/images/dices/' + dice.getImage()"
+                alt="Die {{ i + 1 }}"
+                width="70"
+                height="70">
+            }
+          }
+        </div>
+        <app-button-roll
+          (click)="rollDice()"
+          size="md"
+          [type]="gameState!.rollsLeft > 0 ? 'normal' : 'disabled'"
+          [text]="gameState!.rollsLeft === 3 ? 'Roll Dice' : 'Reroll Dice'"
+        >
+        </app-button-roll>
+      </div>
     </div>
-  </div>
-  @if((gameState$ | async)?.players?.[1]; as player) {
     <app-scorecard
-      [playerName]="player?.name || ''"
+      [playerName]="gameState?.players?.[1]?.name || ''"
       [isActivePlayer]="(gameState$ | async)?.currentPlayerIndex === 1"
     ></app-scorecard>
-  }
-</div>
+  </div>
+}

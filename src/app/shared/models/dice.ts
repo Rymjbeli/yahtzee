@@ -13,7 +13,7 @@ export class Dice {
       "die-6.svg",
     ];
     this.value = this.roll();
-    this.isHeld = false;
+    this.isHeld = true;
   }
 
   roll(): number {
