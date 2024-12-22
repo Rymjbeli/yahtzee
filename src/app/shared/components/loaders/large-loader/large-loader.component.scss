@@ -1,0 +1,89 @@
+@import "../../../../../global.variables.scss";
+
+.large-loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.loading-text-points {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.progress-bar-loader {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  width: 690px;
+  height: 64px;
+  border: 0.5px solid white;
+  border-radius: 12px;
+}
+
+.progress-bar-loader::after,
+.progress-bar-loader::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  height: 50px;
+  border-radius: 5px;
+  background: $background-main-base;
+  top: 6px
+}
+
+.progress-bar-loader::after {
+  width: 1px;
+  left: 6px;
+  box-shadow: 0 4px 6px rgba(4, 16, 21, 0.09);
+  animation: full 5s ease-in-out forwards;
+}
+
+.loading-text {
+  font-size: 16px;
+  color: white;
+}
+
+.loading-points {
+  font-size: 21px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.loading-points span {
+  animation: dots 2.5s infinite;
+}
+
+.loading-points span:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.loading-points span:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes full {
+  to {
+    width: 676px;
+    background-color: $background-main-base;
+  }
+}
+
+
+@keyframes dots {
+  0%, 100% {
+    color: black;
+  }
+  50% {
+    color: white;
+  }
+}
