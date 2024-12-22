@@ -1,21 +1,24 @@
+@if((gameState$ | async); as gameState) {
 <div class="game-board">
-  @if((gameState$ | async)?.players?.[0]; as player) {
-    <app-scorecard
-      [playerName]="player?.name || ''"
-      [isActivePlayer]="(gameState$ | async)?.currentPlayerIndex === 0"
-    ></app-scorecard>
-  }
-  <div class="rolling-board">
-    <div class="dices">dices </div>
+  <app-scorecard [player]="gameState?.players?.[0]"
+    [isActivePlayer]="gameState?.currentPlayerIndex === 0"></app-scorecard>
+  <div class="rolling-board ">
+    <div class="player-turn flex justify-between w-full">
+      <img [style.visibility]="gameState?.currentPlayerIndex == 0 ? 'hidden' : 'visible'" class="-rotate-37"
+        ngSrc="assets/images/turn-arrow-left.svg" alt="arrow-left" width="135" height="130">
+      <div class="turn-text text-main text-4.5xl text-center">
+        Player 1's turn
+      </div>
+      <img [style.visibility]="gameState?.currentPlayerIndex == 0 ? 'hidden' : 'visible'" class="rotate-37"
+        ngSrc="assets/images/turn-arrow-right.svg" alt="arrow-right" width="135" height="130">
+    </div>
+    <div class="dices w-full">dices </div>
     <div class="actions">
       <div class="keep-dice"></div>
       <app-button-roll size="md" [type]="state" [text]="buttonText"></app-button-roll>
     </div>
   </div>
-  @if((gameState$ | async)?.players?.[1]; as player) {
-    <app-scorecard
-      [playerName]="player?.name || ''"
-      [isActivePlayer]="(gameState$ | async)?.currentPlayerIndex === 1"
-    ></app-scorecard>
-  }
+  <app-scorecard [player]="gameState?.players?.[1]"
+    [isActivePlayer]="gameState?.currentPlayerIndex === 1"></app-scorecard>
 </div>
+}
