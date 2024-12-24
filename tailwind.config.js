@@ -15,6 +15,7 @@ module.exports = {
         'gray-text-light': '#a3a3a3',
         'secondary': '#FDFCFC',
         'base-gray': '#F5F4F4',
+        'home': '#6050B7',
         'main': '#AE9AFF',
         'main-base': '#D4C9FF',
         'main-sub': '#E2DCFD',
