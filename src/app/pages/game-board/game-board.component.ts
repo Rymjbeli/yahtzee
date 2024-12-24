@@ -4,13 +4,13 @@ import { ButtonRollComponent } from "../../shared/components/buttons/button-roll
 import {Observable} from "rxjs";
 import {GameState} from "../../shared/interfaces/game-state";
 import {GameService} from "../../shared/services/game/game.service";
-import {AsyncPipe, NgClass, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
+import {AsyncPipe, DatePipe, NgClass, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
 import {Position} from "../../shared/interfaces/position";
 
 @Component({
   selector: 'app-game-board',
   standalone: true,
-  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgIf, NgClass, NgStyle],
+  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgIf, NgClass, NgStyle, DatePipe],
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss'
 })
@@ -39,5 +39,13 @@ export class GameBoardComponent {
 
   scoreChosen(score: string): void {
     this.gameService.scoreChosen(score);
+  }
+
+  getFormattedTimeLeft(): string {
+    const currentPlayer = this.gameService.getGameStateValue().currentPlayerIndex;
+    const timeLeft = this.gameService.getGameStateValue().players[currentPlayer].timeLeft;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
 }

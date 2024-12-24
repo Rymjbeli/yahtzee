@@ -17,6 +17,7 @@
 
     .turn-text {
       font-family: "Caveat Brush", serif;
+      font-size: xx-large;
     }
 
     .actions {
@@ -38,3 +39,41 @@
   }
 }
 
+.scorecard-container {
+  position: relative;
+}
+
+.timer {
+  height: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 10px;
+  border-radius: 10px;
+  color: $background-main;
+  font-size: x-large;
+  font-family: "Caveat Brush", serif;
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  .alarm {
+    // background: $base-white;
+    height: 25px;
+    animation: rotateAlarm 0.4s infinite alternate;
+  }
+}
+
+.right {
+  right: 70% !important;
+}
+
+@keyframes rotateAlarm {
+  0% {
+    transform: rotate(-20deg);
+  }
+
+  100% {
+    transform: rotate(20deg);
+  }
+}

@@ -1,14 +1,22 @@
 @if((gameState$ | async); as gameState) {
 <div class="game-board">
-  <app-scorecard [player]="gameState?.players?.[0]" [isActivePlayer]="gameState?.currentPlayerIndex === 0"
-    (inputClicked)="scoreChosen($event)">
-  </app-scorecard>
+  <div class="scorecard-container">
+    @if(gameState?.currentPlayerIndex === 0 && gameService.getTimerState()) {
+    <div class="timer">
+      <span>{{getFormattedTimeLeft()}}</span>
+      <img class="alarm" src="assets/icons/alarm.svg">
+    </div>
+    }
+    <app-scorecard [player]="gameState?.players?.[0]" [isActivePlayer]="gameState?.currentPlayerIndex === 0"
+      [playerIndex]="0" (inputClicked)="scoreChosen($event)">
+    </app-scorecard>
+  </div>
   <div class="rolling-board ">
     <div class="player-turn flex w-full"
       [ngClass]="{'justify-end': gameState?.currentPlayerIndex === 1, 'justify-start': gameState?.currentPlayerIndex === 0}">
       @if(gameState?.currentPlayerIndex === 0) {
       <div class="flex gap-10 flex-wrap">
-        <img class="-rotate-37" ngSrc="assets/images/turn-arrow-left.svg" width="149" height="86"
+        <img class="-rotate-37" ngSrc="assets/images/turn-arrow-left.svg" width="120" height="80"
           alt="Turn Arrow Left" />
         <div class="turn-text text-main text-4.5xl text-center">
           {{gameState?.players?.[0]?.name}}'s turn
@@ -21,7 +29,7 @@
         <div class="turn-text text-main text-4.5xl text-center">
           {{gameState?.players?.[1]?.name}}'s turn
         </div>
-        <img class="rotate-37" ngSrc="assets/images/turn-arrow-right.svg" width="149" height="86"
+        <img class="rotate-37" ngSrc="assets/images/turn-arrow-right.svg" width="120" height="80"
           alt="Turn Arrow right" />
       </div>
       }
@@ -52,8 +60,16 @@
       </app-button-roll>
     </div>
   </div>
-  <app-scorecard [player]="gameState?.players?.[1]" [isActivePlayer]="gameState?.currentPlayerIndex === 1"
-    (inputClicked)="scoreChosen($event)">
-  </app-scorecard>
+  <div class="scorecard-container">
+    @if(gameState?.currentPlayerIndex === 1 && gameService.getTimerState()) {
+    <div class="timer right">
+      <img class="alarm" src="assets/icons/alarm.svg">
+      <span>{{getFormattedTimeLeft()}}</span>
+    </div>
+    }
+    <app-scorecard [player]="gameState?.players?.[1]" [isActivePlayer]="gameState?.currentPlayerIndex === 1"
+      [playerIndex]="1" (inputClicked)="scoreChosen($event)">
+    </app-scorecard>
+  </div>
 </div>
 }
