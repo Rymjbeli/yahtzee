@@ -20,14 +20,16 @@ export class EndGamePopupComponent {
   player2Name: string = "Player 2";
   player1Score: number = 0;
   player2Score: number = 0;
+  isTie = false;
+
   private dialogRef = inject(MatDialogRef<EndGamePopupComponent>);
   gameService = inject(GameService);
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    this.winnerName = data.winnerName;
     this.player1Name = data.player1Name;
     this.player2Name = data.player2Name;
     this.player1Score = data.player1Score;
     this.player2Score = data.player2Score;
+    this.checkWinner();
   }
 
   closeDialog(): void {
@@ -36,5 +38,15 @@ export class EndGamePopupComponent {
   }
   playAgain(): void {
     this.closeDialog();
+  }
+
+  checkWinner(): void {
+    if (this.player1Score > this.player2Score) {
+      this.winnerName = this.player1Name;
+    } else if (this.player1Score < this.player2Score) {
+      this.winnerName = this.player2Name;
+    } else {
+      this.isTie = true;
+    }
   }
 }

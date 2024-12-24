@@ -269,19 +269,4 @@ export class GameService {
     const gameState = this.getGameStateValue();
     return gameState.totalTurn >= 26;
   }
-
-  /**
-   * Get the name of the winner
-   */
-  getWinnerName(): string {
-    const gameState = this.getGameStateValue();
-    const player1 = gameState.players[0];
-    const player2 = gameState.players[1];
-
-    if (player1.scoreCard.total > player2.scoreCard.total) {
-      return player1.name;
-    } else {
-      return player2.name;
-    }
-  }
 }

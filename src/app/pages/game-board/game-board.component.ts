@@ -55,7 +55,6 @@ export class GameBoardComponent {
       width: '600px',
       disableClose: true,
       data: {
-        winnerName: this.gameService.getWinnerName(),
         player1Name: this.gameService.getGameStateValue().players[0].name,
         player2Name: this.gameService.getGameStateValue().players[1].name,
         player1Score: this.gameService.getGameStateValue().players[0]?.scoreCard?.total,
@@ -80,8 +79,8 @@ export class GameBoardComponent {
   }
 
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // unloadNotification($event: any): void {
-  //   $event.preventDefault();
-  // }
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void {
+    $event.preventDefault();
+  }
 }
