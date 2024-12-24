@@ -21,6 +21,7 @@ export class Player {
       largeStraight: { picked: false, value: null },
       chance: { picked: false, value: null },
       yahtzee: { picked: false, value: null },
+      nbrOfYahtzee: 0 as number,
       bonus: 0 as number,
       total: 0 as number,
     };

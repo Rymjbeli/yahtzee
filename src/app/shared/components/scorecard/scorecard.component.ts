@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Player } from '../../models/player';
@@ -14,7 +14,7 @@ interface Section {
 @Component({
   selector: 'app-scorecard',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, NgOptimizedImage],
   templateUrl: './scorecard.component.html',
   styleUrl: './scorecard.component.scss'
 })
@@ -22,6 +22,7 @@ export class ScorecardComponent {
   @Input() player: Player | undefined;
   @Input() isActivePlayer: boolean = false;
   @Output() inputClicked = new EventEmitter<string>();
+  nbrOfYahtzee = 'nbrOfYahtzee';
 
   upperSection: Section[] = [
     { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', disabled: true },
