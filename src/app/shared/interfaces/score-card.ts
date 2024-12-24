@@ -19,5 +19,6 @@ export interface ScoreCard {
   yahtzee: ScoreCardItem;
   bonus: number;
   total: number;
+  nbrOfYahtzee: number;
   [key: string]: any;
 }

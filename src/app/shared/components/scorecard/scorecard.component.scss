@@ -65,7 +65,7 @@
     justify-content: flex-start;
     align-items: center;
     padding-left: 35px;
-    gap: 40px;
+    gap: 25px;
   }
 }
 
@@ -108,13 +108,18 @@
 
 
 .total-box {
-  width: 30px;
+  width: 50px;
   height: 30px;
   text-align: center;
   outline: none;
   font-size: small;
   background: none;
+
+  &.larger {
+    font-size: large;
+  }
 }
+
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {

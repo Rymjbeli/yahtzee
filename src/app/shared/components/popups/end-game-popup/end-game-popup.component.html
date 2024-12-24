@@ -44,15 +44,15 @@
     </div>
 
     <div class="flex gap-6 flex-wrap justify-center">
-      <app-button-primary class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
-        <img left src="../../../../../assets/icons/replay.svg" alt="replay">
+      <app-button-primary (click)="playAgain()" class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
+        <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
       </app-button-primary>
       <app-button-primary class="hidden xs:flex" text="Home" size="md" [showLeftIcon]="true">
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
       </app-button-primary>
 
-      <app-button-primary class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
-        <img left src="../../../../../assets/icons/replay.svg" alt="replay">
+      <app-button-primary (click)="playAgain()" class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
+        <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
       </app-button-primary>
       <app-button-primary class="xs:hidden" text="Home" size="sm" [showLeftIcon]="true">
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
