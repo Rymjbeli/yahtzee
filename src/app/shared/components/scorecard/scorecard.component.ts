@@ -20,6 +20,7 @@ interface Section {
 })
 export class ScorecardComponent {
   @Input() player: Player | undefined;
+  @Input() playerIndex: number | undefined;
   @Input() isActivePlayer: boolean = false;
   @Output() inputClicked = new EventEmitter<string>();
   nbrOfYahtzee = 'nbrOfYahtzee';

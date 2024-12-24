@@ -1,5 +1,6 @@
 <div [ngClass]="{'active-player': isActivePlayer}" class="scorecard-container">
-  <span [ngClass]="{'active-player-title': isActivePlayer}" class="player-title">{{ player?.name }}</span>
+  <span class="player-title" [ngClass]="{'indexPlayer': playerIndex !== 0,'active-player-title': isActivePlayer}">{{
+    player?.name }}</span>
   <div class="section">
     @for (item of upperSection; track item.name) {
     <div class="row">

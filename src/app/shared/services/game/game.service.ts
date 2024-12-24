@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { GameState } from "../../interfaces/game-state";
 import { Player } from "../../models/player";
 import { Dice } from "../../models/dice";
@@ -8,6 +8,8 @@ import { generateRandomDicePositions } from "../../helpers/generate-random-dice-
 import { DiceService } from "./dice.service";
 import { RulesService } from "./rules.service";
 import { ScoreCard } from "../../interfaces/score-card";
+import { isPlatformBrowser } from '@angular/common';
+import { CONSTANTS } from '../../../../config/const.config';
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +24,26 @@ export class GameService {
     totalTurn: 0,
   }
 
+  private timerId: any;
+  public isTimerEnabled: boolean = false;
+
   private gameStateSubject = new BehaviorSubject<GameState>(this.initialGameState);
   gameState$ = this.gameStateSubject.asObservable();
 
   constructor(
     private diceService: DiceService,
-    private rulesService: RulesService
+    private rulesService: RulesService,
+    @Inject(PLATFORM_ID) private platformId: any
   ) {
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
     });
+    if (isPlatformBrowser(this.platformId)) {
+      const storedState = localStorage.getItem(CONSTANTS.IS_TIMER_ENABLED);
+      if (storedState) {
+        this.isTimerEnabled = storedState === 'true';
+      }
+    }
   }
 
   /**
@@ -133,7 +145,9 @@ export class GameService {
    */
   rollDice(): void {
     const rollsLeft = this.getGameStateValue().rollsLeft;
-
+    if (this.isTimerEnabled && rollsLeft === 3) {
+      this.startTimer();
+    }
     this.updateGameState({
       dice: this.diceService.rollAllDice(this.getGameStateValue().dice, rollsLeft),
       dicePositions: generateRandomDicePositions(),
@@ -171,8 +185,6 @@ export class GameService {
     this.gameStateSubject.next(freshGameState);
   }
 
-
-
   /**
    * Updates the game state with the chosen score.
    * @param score
@@ -204,6 +216,13 @@ export class GameService {
       if (score === 'yahtzee' && scoreCard.nbrOfYahtzee < 5) {
         scoreCard.nbrOfYahtzee++;
       }
+
+      // stop and reset the timer
+      if (this.isTimerEnabled && this.timerId) {
+        clearInterval(this.timerId);
+        this.timerId = null;
+      }
+      currentPlayer.timeLeft = 30;
 
       this.updateGameState({
         players: gameState.players,
@@ -248,7 +267,7 @@ export class GameService {
     const bonus = this.isBonusEligible(playerIndex) ? 35 : 0;
     let total = upperSectionScore + lowerSectionScore + bonus;
 
-    if(scoreCard?.nbrOfYahtzee > 1) {
+    if (scoreCard?.nbrOfYahtzee > 1) {
       total += 100 * (scoreCard?.nbrOfYahtzee - 1);
     }
     this.updateGameState({
@@ -283,5 +302,87 @@ export class GameService {
     } else {
       return player2.name;
     }
+  }
+
+  /**
+   * Start the timer
+   */
+  startTimer(): void {
+    const gameState = this.getGameStateValue();
+    const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+    currentPlayer.timeLeft = 30;
+
+    this.timerId = setInterval(() => {
+      currentPlayer.timeLeft -= 1;
+      if (currentPlayer.timeLeft <= 0) {
+        clearInterval(this.timerId);
+        // if the player runs out of time, choose the minimum score to keep
+        this.scoreChosen(this.minimumScoreToKeep());
+      }
+      this.updateGameState({
+        players: gameState.players.map((p, i) => {
+          if (i === gameState.currentPlayerIndex) {
+            return { ...p, timeLeft: currentPlayer.timeLeft };
+          }
+          return p;
+        })
+      });
+    }, 1000);
+  }
+
+  /**
+   * Get the minimum score to keep
+   */
+  minimumScoreToKeep(): string {
+    const gameState = this.getGameStateValue();
+    const player = gameState.players[gameState.currentPlayerIndex];
+    const scoreCard = player.scoreCard;
+
+    let allZero = true;
+    let minScore = Infinity;
+    let minScoreKey = '';
+    const unpickedKeys = [];
+
+    for (const key in scoreCard) {
+      if (scoreCard.hasOwnProperty(key)) {
+        const item = scoreCard[key];
+        if (item && typeof item === 'object' && !item.picked) {
+          unpickedKeys.push(key);
+          if (item.value !== 0) {
+            allZero = false;
+          }
+          if (item.value < minScore && item.value !== 0) {
+            minScore = item.value;
+            minScoreKey = key;
+          }
+        }
+      }
+    }
+
+    if (allZero) {
+      const randomIndex = Math.floor(Math.random() * unpickedKeys.length);
+      return unpickedKeys[randomIndex];
+    }
+
+    return minScoreKey;
+  }
+
+  /**
+   * Toggles the timer on and off
+   */
+  toggleTimer(): boolean {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isTimerEnabled = !this.isTimerEnabled;
+      localStorage.setItem(CONSTANTS.IS_TIMER_ENABLED, this.isTimerEnabled.toString());
+      return this.isTimerEnabled;
+    }
+    return false;
+  }
+
+  /**
+   * Get the timer state
+   */
+  getTimerState(): boolean {
+    return this.isTimerEnabled;
   }
 }
