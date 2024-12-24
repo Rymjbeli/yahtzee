@@ -21,8 +21,8 @@ export class Player {
       largeStraight: { picked: false, value: null },
       chance: { picked: false, value: null },
       yahtzee: { picked: false, value: null },
-      bonus: null,
-      total: null,
+      bonus: 0 as number,
+      total: 0 as number,
     };
     this.timeLeft = 30;
   }

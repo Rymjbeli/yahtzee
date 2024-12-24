@@ -8,4 +8,5 @@ export interface GameState {
   dice: Dice[];
   dicePositions: Position[]; // Dice Positions declared in the game state to check easily that they hold different values
   rollsLeft: number;
+  totalTurn: number;
 }

@@ -6,29 +6,31 @@
       <div class="label">
         <img class="icon" [src]="item.icon"> {{ item.name }}
       </div>
-      <input class="disabled-input" [value]="item.score === null ? ' ' : item.score"
-        [ngClass]="{'score-box': !checkScore(item)}" disabled />
+      <input class="disabled-input" [value]="player?.scoreCard?.[item.variable]?.value ?? ' '"
+        [ngClass]="{'score-box': !checkScore(item)}" readonly [disabled]="item.disabled"
+        (click)="onInputClick(item.variable)" />
     </div>
     }
   </div>
   <hr class="section-divider">
   <div class="bonus">
     <div class="row bonus-title">Bonus</div>
-    <input class="total-box" [value]="player?.scoreCard?.bonus === null ? ' ' : player?.scoreCard?.bonus" disabled />
+    <input class="total-box" [value]="player?.scoreCard?.bonus === null ? ' ' : player?.scoreCard?.bonus" readonly />
   </div>
   <hr class="section-divider">
   <div class="section">
     @for (item of lowerSection; track item.name) {
     <div class="row">
       <div class="label">{{ item.name }}</div>
-      <input class="disabled-input" [value]="item.score === null ? ' ' : item.score"
-        [ngClass]="{'score-box': !checkScore(item)}" disabled />
+      <input class="disabled-input" [value]="player?.scoreCard?.[item.variable]?.value ?? ' '"
+        [ngClass]="{'score-box': !checkScore(item)}" readonly [disabled]="item.disabled"
+        (click)="onInputClick(item.variable)" />
     </div>
     }
   </div>
   <hr class="section-divider">
   <div class="total">
     <div class="row total-title">Total</div>
-    <input class="total-box" [value]="player?.scoreCard?.total === null ? 0 : player?.scoreCard?.total" disabled />
+    <input class="total-box" [value]="player?.scoreCard?.total === null ? 0 : player?.scoreCard?.total" readonly />
   </div>
 </div>

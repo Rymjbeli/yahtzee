@@ -33,5 +33,11 @@ export class GameBoardComponent {
 
   rollDice(): void {
     this.gameService.rollDice();
+    const currentPlayer = this.gameService.getGameStateValue().currentPlayerIndex;
+    this.gameService.calculateScoreCard(currentPlayer);
+  }
+
+  scoreChosen(score: string): void {
+    this.gameService.scoreChosen(score);
   }
 }
