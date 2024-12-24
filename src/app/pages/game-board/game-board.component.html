@@ -55,8 +55,11 @@
         }
         }
       </div>
-      <app-button-roll (click)="rollDice()" size="md" [type]="gameState!.rollsLeft > 0 ? 'normal' : 'disabled'"
-        [text]="gameState!.rollsLeft === 3 ? 'Roll Dice' : 'Reroll Dice'">
+      <app-button-roll
+        (click)="rollDice()"
+        size="md"
+        [type]="isRollButtonDisabled ? 'disabled' : 'normal'"
+        [text]="rollButtonText">
       </app-button-roll>
     </div>
   </div>

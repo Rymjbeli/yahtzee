@@ -123,6 +123,15 @@ export class GameService {
       }
     });
 
+    if (
+      this.rulesService.calculateYahtzee(dice) > 0 &&
+      newScoreCard.yahtzee?.picked &&
+      newScoreCard.nbrOfYahtzee < 4
+    ) {
+      newScoreCard.nbrOfYahtzee++;
+      newScoreCard.total += 100;
+    }
+
     // Update the player's scorecard
     currentPlayer.scoreCard = newScoreCard;
 
@@ -148,7 +157,7 @@ export class GameService {
 
 
   /**
-   * Resets the game state to the initial state.
+   * Get the positions of the dice.
    */
   getDicePositions(): Position[] {
     return this.getGameStateValue().dicePositions;
@@ -158,7 +167,22 @@ export class GameService {
    * Resets the game state to the initial state.
    */
   resetGame(): void {
-    this.updateGameState(this.initialGameState);
+    const currentGameState = this.getGameStateValue();
+    const playerNames = currentGameState.players.map(player => player.name);
+
+    // Create a fresh game state while keeping the player names intact
+    const freshGameState: GameState = {
+      players: playerNames.map(name => new Player(name)), // Re-create players with their names
+      currentPlayerIndex: 0,
+      dice: currentGameState.dice,
+      dicePositions: [],
+      rollsLeft: 3,
+      totalTurn: 0,
+    };
+
+    console.log(freshGameState);
+    // Update the game state
+    this.gameStateSubject.next(freshGameState);
   }
 
   /**
@@ -188,6 +212,10 @@ export class GameService {
         die.isHeld = true;
         return die;
       });
+
+      if (score === 'yahtzee' && scoreCard.nbrOfYahtzee < 5) {
+        scoreCard.nbrOfYahtzee++;
+      }
 
       // stop and reset the timer
       if (this.isTimerEnabled && this.timerId) {
@@ -237,8 +265,11 @@ export class GameService {
       .reduce((sum, key) => sum + (scoreCard[key]?.value || 0), 0);
 
     const bonus = this.isBonusEligible(playerIndex) ? 35 : 0;
-    const total = upperSectionScore + lowerSectionScore + bonus;
+    let total = upperSectionScore + lowerSectionScore + bonus;
 
+    if (scoreCard?.nbrOfYahtzee > 1) {
+      total += 100 * (scoreCard?.nbrOfYahtzee - 1);
+    }
     this.updateGameState({
       players: gameState.players.map((p, i) => {
         if (i === playerIndex) {
@@ -256,6 +287,21 @@ export class GameService {
   gameIsOver(): boolean {
     const gameState = this.getGameStateValue();
     return gameState.totalTurn >= 26;
+  }
+
+  /**
+   * Get the name of the winner
+   */
+  getWinnerName(): string {
+    const gameState = this.getGameStateValue();
+    const player1 = gameState.players[0];
+    const player2 = gameState.players[1];
+
+    if (player1.scoreCard.total > player2.scoreCard.total) {
+      return player1.name;
+    } else {
+      return player2.name;
+    }
   }
 
   /**
