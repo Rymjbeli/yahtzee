@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SmallNavbarComponent } from '../small/small-navbar.component';
 import { SettingsNavBarComponent } from '../settings/settings-navbar.component';
-import { ButtonSecondaryComponent } from '../../button-secondary/button-secondary.component';
+import { ButtonSecondaryComponent } from '../../buttons/button-secondary/button-secondary.component';
 
 @Component({
   selector: 'app-main-navbar',

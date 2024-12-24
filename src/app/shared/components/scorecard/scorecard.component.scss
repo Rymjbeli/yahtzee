@@ -1,20 +1,22 @@
-@import "../../../global.variables.scss";
+@import "../../../../global.variables.scss";
 
 .scorecard-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 5px;
+    gap: 2px;
     background: $background-main-base;
     border: 1px solid $base-black;
     border-radius: 33px;
-    padding: 25px 22px;
+    padding: 22px;
+    padding-bottom: 10px;
     box-shadow: 2px 0px 0px rgba(0, 0, 0, 0.65);
     position: relative;
     width: 20vw;
-    max-width: 300px;
+    max-width: 350px;
     min-width: 250px;
     margin-top: 20px;
+    // height: 75vh;
   .player-title {
     position: absolute;
     top: -20px;
@@ -67,21 +69,44 @@
   }
 }
 
-.bonus-title, .total-title {
-  font-weight: bold;
+.bonus-title {
+  font-weight: 600;
+}
+.total-title {
+  padding-top: 5px;
+  font-weight: 900;
+  font-size: large;
 }
 
-.score-box {
+.disabled-input {
   width: 45px;
   height: 30px;
   border-radius: 35px;
-  background: $base-white;
   padding: 7px;
   padding-top: 5px;
   text-align: center;
   outline: none;
   font-size: small;
+  background: #ececec;
+  color: $gray-text-light;
+  cursor: default;
 }
+
+.score-box {
+  background: $base-white;
+  color: $base-black;
+  cursor: pointer;
+  box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.65);
+  border: 1px solid $gray-text-light;
+  &:hover {
+    background: $background-main-sub;
+  }
+  &:active {
+    border: 2px solid $gray-text-light;
+  }
+}
+
+
 .total-box {
   width: 30px;
   height: 30px;
@@ -104,13 +129,9 @@ input[type="number"] {
 
 .active-player {
   background: $background-main;
+  box-shadow: 2px 3px 5px 2px rgba(0, 0, 0, 0.65);
   .active-player-title {
     background: $light-blue;
   }
 }
 
-.disabled-input {
-  background: $base-gray;
-  color: $gray-text-light;
-  cursor: not-allowed;
-}

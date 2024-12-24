@@ -2,12 +2,12 @@ import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {isPlatformBrowser, NgClass, NgOptimizedImage} from "@angular/common";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
-import {SoundService} from "../../../services/sound.service";
+import {SoundService} from "../../../services/settings/sound.service";
 import {FormsModule} from "@angular/forms";
 import {CONSTANTS} from "../../../../../config/const.config";
 import {MatFormField} from "@angular/material/form-field";
 import {MatOption, MatSelect} from "@angular/material/select";
-import {LanguageService} from "../../../services/language.service";
+import {LanguageService} from "../../../services/settings/language.service";
 import {LanguageInterface} from "../../../interfaces/language.interface";
 
 @Component({

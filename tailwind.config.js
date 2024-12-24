@@ -25,6 +25,7 @@ module.exports = {
       },
       fontSize: {
         'base': '16px',
+        '4.5xl': '2.5rem',
       },
       lineHeight: {
         'base': '1.5',
@@ -42,6 +43,9 @@ module.exports = {
       boxShadow: {
         'custom-light': '0 4px 6px rgba(4, 16, 21, 0.09)',
       },
+      rotate: {
+        '37': '37deg',
+      }
     },
   },
   plugins: [],
