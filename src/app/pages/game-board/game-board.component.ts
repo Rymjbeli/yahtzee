@@ -4,7 +4,7 @@ import { ButtonRollComponent } from "../../shared/components/buttons/button-roll
 import { Observable } from "rxjs";
 import { GameState } from "../../shared/interfaces/game-state";
 import { GameService } from "../../shared/services/game/game.service";
-import { AsyncPipe, NgClass, NgIf, NgOptimizedImage, NgStyle } from "@angular/common";
+import { AsyncPipe, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
 import { Position } from "../../shared/interfaces/position";
 import {MatDialog} from "@angular/material/dialog";
 import {EndGamePopupComponent} from "../../shared/components/popups/end-game-popup/end-game-popup.component";
@@ -14,7 +14,7 @@ import { RulesService } from '../../shared/services/game/rules.service';
 @Component({
   selector: 'app-game-board',
   standalone: true,
-  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgIf, NgClass, NgStyle],
+  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgClass, NgStyle],
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss'
 })
@@ -82,7 +82,7 @@ export class GameBoardComponent {
     const currentPlayer = this.gameService.getGameStateValue()?.players?.[
       this.gameService.getGameStateValue()?.currentPlayerIndex
       ];
-    const yahtzeeScore = currentPlayer?.scoreCard?.[this.yahtzee]?.value ?? 0;
+    const yahtzeeScore = this.rulesService.calculateYahtzee(this.gameService.getGameStateValue().dice);
     const nbrOfYahtzee = currentPlayer?.scoreCard?.[this.nbrOfYahtzee] ?? 0;
 
     return rollsLeft === 0 || (yahtzeeScore > 0 && rollsLeft < 3 && nbrOfYahtzee < 4);

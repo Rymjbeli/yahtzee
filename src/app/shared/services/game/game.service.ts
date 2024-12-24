@@ -372,7 +372,13 @@ export class GameService {
    */
   toggleTimer(): boolean {
     if (isPlatformBrowser(this.platformId)) {
-      this.isTimerEnabled = !this.isTimerEnabled;
+      if (this.isTimerEnabled) {
+        clearInterval(this.timerId);
+        this.timerId = null;
+        this.isTimerEnabled = false;
+      } else {
+        this.isTimerEnabled = true;
+      }
       localStorage.setItem(CONSTANTS.IS_TIMER_ENABLED, this.isTimerEnabled.toString());
       return this.isTimerEnabled;
     }
