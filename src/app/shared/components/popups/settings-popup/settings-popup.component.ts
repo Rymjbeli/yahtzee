@@ -5,8 +5,6 @@ import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primar
 import {SoundService} from "../../../services/settings/sound.service";
 import {FormsModule} from "@angular/forms";
 import {CONSTANTS} from "../../../../../config/const.config";
-import {MatFormField} from "@angular/material/form-field";
-import {MatOption, MatSelect} from "@angular/material/select";
 import {LanguageService} from "../../../services/settings/language.service";
 import {LanguageInterface} from "../../../interfaces/language.interface";
 import { GameService } from '../../../services/game/game.service';
