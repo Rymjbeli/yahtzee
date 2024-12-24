@@ -1,24 +1,26 @@
-import {Component, HostListener, inject, Input} from '@angular/core';
+import { Component, HostListener, inject, Input } from '@angular/core';
 import { ScorecardComponent } from "../../shared/components/scorecard/scorecard.component";
 import { ButtonRollComponent } from "../../shared/components/buttons/button-roll/button-roll.component";
-import {Observable} from "rxjs";
-import {GameState} from "../../shared/interfaces/game-state";
-import {GameService} from "../../shared/services/game/game.service";
-import {AsyncPipe, NgClass, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
-import {Position} from "../../shared/interfaces/position";
+import { Observable } from "rxjs";
+import { GameState } from "../../shared/interfaces/game-state";
+import { GameService } from "../../shared/services/game/game.service";
+import { AsyncPipe, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
+import { Position } from "../../shared/interfaces/position";
 import {MatDialog} from "@angular/material/dialog";
 import {EndGamePopupComponent} from "../../shared/components/popups/end-game-popup/end-game-popup.component";
+import confetti from "canvas-confetti";
+import { RulesService } from '../../shared/services/game/rules.service';
 
 @Component({
   selector: 'app-game-board',
   standalone: true,
-  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgIf, NgClass, NgStyle],
+  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgClass, NgStyle],
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss'
 })
 export class GameBoardComponent {
   gameService = inject(GameService);
-  dialog = inject(MatDialog);
+  rulesService = inject(RulesService);  dialog = inject(MatDialog);
   gameState$: Observable<GameState> = this.gameService.gameState$;
 
   yahtzee = 'yahtzee';
@@ -38,8 +40,19 @@ export class GameBoardComponent {
 
   rollDice(): void {
     this.gameService.rollDice();
-    const currentPlayer = this.gameService.getGameStateValue().currentPlayerIndex;
+
+    const game = this.gameService.getGameStateValue();
+    const currentPlayer = game.currentPlayerIndex;
+
     this.gameService.calculateScoreCard(currentPlayer);
+
+    const yahtzee = this.rulesService.calculateYahtzee(game.dice) > 0;
+    const picked = game.players[currentPlayer].scoreCard.yahtzee.picked;
+
+    if (yahtzee && !picked)
+      this.displayYahtzee(false);
+    if (yahtzee && picked)
+      this.displayYahtzee(true);
   }
 
   scoreChosen(score: string): void {
@@ -68,7 +81,7 @@ export class GameBoardComponent {
     const currentPlayer = this.gameService.getGameStateValue()?.players?.[
       this.gameService.getGameStateValue()?.currentPlayerIndex
       ];
-    const yahtzeeScore = currentPlayer?.scoreCard?.[this.yahtzee]?.value ?? 0;
+    const yahtzeeScore = this.rulesService.calculateYahtzee(this.gameService.getGameStateValue().dice);
     const nbrOfYahtzee = currentPlayer?.scoreCard?.[this.nbrOfYahtzee] ?? 0;
 
     return rollsLeft === 0 || (yahtzeeScore > 0 && rollsLeft < 3 && nbrOfYahtzee < 4);
@@ -82,5 +95,40 @@ export class GameBoardComponent {
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any): void {
     $event.preventDefault();
+  }
+
+  getFormattedTimeLeft(): string {
+    const currentPlayer = this.gameService.getGameStateValue().currentPlayerIndex;
+    const timeLeft = this.gameService.getGameStateValue().players[currentPlayer].timeLeft;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  displayYahtzee(picked: boolean): void {
+    const messageElement = document.getElementById('yahtzee-message');
+    if (messageElement) {
+      messageElement.style.display = 'flex';
+    }
+
+    if (picked) {
+      const message = document.getElementById('second-time');
+      if (message) {
+        message.style.display = 'flex';
+      }
+    }
+
+    confetti({
+      particleCount: 400,
+      spread: 100,
+      origin: { y: 0.7 },
+      zIndex: 1001,
+    });
+
+    setTimeout(() => {
+      if (messageElement) {
+        messageElement.style.display = 'none';
+      }
+    }, 3000);
   }
 }
