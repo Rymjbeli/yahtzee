@@ -18,9 +18,6 @@ import { GameService } from '../../../services/game/game.service';
     NgOptimizedImage,
     ButtonPrimaryComponent,
     FormsModule,
-    MatFormField,
-    MatSelect,
-    MatOption,
     NgClass
   ],
   templateUrl: './settings-popup.component.html',
