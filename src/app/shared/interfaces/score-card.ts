@@ -17,7 +17,7 @@ export interface ScoreCard {
   largeStraight: ScoreCardItem;
   chance: ScoreCardItem;
   yahtzee: ScoreCardItem;
-  bonus: null;
-  total: null;
-  [key: string]: ScoreCardItem | null;
+  bonus: number;
+  total: number;
+  [key: string]: any;
 }
