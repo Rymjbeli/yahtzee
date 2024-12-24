@@ -8,7 +8,8 @@
       [ngClass]="{'justify-end': gameState?.currentPlayerIndex === 1, 'justify-start': gameState?.currentPlayerIndex === 0}">
       @if(gameState?.currentPlayerIndex === 0) {
       <div class="flex gap-10 flex-wrap">
-        <img class="-rotate-37" ngSrc="assets/images/turn-arrow-left.svg" alt="arrow-left" width="135" height="130">
+        <img class="-rotate-37" ngSrc="assets/images/turn-arrow-left.svg" width="149" height="86"
+          alt="Turn Arrow Left" />
         <div class="turn-text text-main text-4.5xl text-center">
           {{gameState?.players?.[0]?.name}}'s turn
         </div>
@@ -20,7 +21,8 @@
         <div class="turn-text text-main text-4.5xl text-center">
           {{gameState?.players?.[1]?.name}}'s turn
         </div>
-        <img class="rotate-37" ngSrc="assets/images/turn-arrow-right.svg" alt="arrow-right" width="135" height="130">
+        <img class="rotate-37" ngSrc="assets/images/turn-arrow-right.svg" width="149" height="86"
+          alt="Turn Arrow right" />
       </div>
       }
     </div>
