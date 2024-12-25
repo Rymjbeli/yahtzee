@@ -360,6 +360,7 @@ export class GameService {
       currentPlayer.timeLeft -= 1;
       if (currentPlayer.timeLeft <= 0) {
         clearInterval(this.timerId);
+        currentPlayer.timeLeft = 30;
         // if the player runs out of time, choose the minimum score to keep
         this.scoreChosen(this.minimumScoreToKeep());
       }
