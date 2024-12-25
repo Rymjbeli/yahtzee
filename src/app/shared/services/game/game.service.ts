@@ -30,20 +30,42 @@ export class GameService {
   private gameStateSubject = new BehaviorSubject<GameState>(this.initialGameState);
   gameState$ = this.gameStateSubject.asObservable();
 
+  rollCounter = 0;
+
   constructor(
     private diceService: DiceService,
     private rulesService: RulesService,
     @Inject(PLATFORM_ID) private platformId: any
   ) {
+
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
     });
+
     if (isPlatformBrowser(this.platformId)) {
       const storedState = localStorage.getItem(CONSTANTS.IS_TIMER_ENABLED);
       if (storedState) {
         this.isTimerEnabled = storedState === 'true';
       }
     }
+
+    this.rollCounter = 0;
+  }
+
+  /**
+   * know who will start the game
+   */
+  rollStart(playerIndex: number): number  {
+    const gameState = this.getGameStateValue();
+    const dice = this.diceService.rollAllDice(gameState.dice, 3);
+    const total = this.diceService.calculateTotal(dice);
+    this.updateGameState({
+      currentPlayerIndex: playerIndex === 0 ? 1 : 0,
+      dice: dice,
+      dicePositions: generateRandomDicePositions(),
+    });
+
+    return total ;
   }
 
   /**
@@ -138,7 +160,6 @@ export class GameService {
     // Update the game state
     this.updateGameState({ players: gameState.players });
   }
-
 
   /**
    * Main roll function: Rolls the dice and updates the game state with the new values.
