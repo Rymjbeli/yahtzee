@@ -57,7 +57,7 @@ export class ScorecardComponent {
     const gameState = this.gameService.getGameStateValue();
     const scoreCard = this.player?.scoreCard!;
 
-    const nbrOfYahtzee = scoreCard[this.nbrOfYahtzee].value;
+    const nbrOfYahtzee = scoreCard[this.nbrOfYahtzee].value || 0;
     const newYahtzee = this.gameService.checkNewYahtzee(scoreCard, gameState.dice);
     const yahtzeeBonus = newYahtzee && nbrOfYahtzee < 4;
 
