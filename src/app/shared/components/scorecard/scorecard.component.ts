@@ -1,7 +1,9 @@
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Player } from '../../models/player';
+import {RulesService} from "../../services/game/rules.service";
+import {GameService} from "../../services/game/game.service";
 
 
 interface Section {
@@ -24,6 +26,9 @@ export class ScorecardComponent {
   @Input() isActivePlayer: boolean = false;
   @Output() inputClicked = new EventEmitter<string>();
   nbrOfYahtzee = 'nbrOfYahtzee';
+
+  rulesService = inject(RulesService);
+  gameService = inject(GameService);
 
   upperSection: Section[] = [
     { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', disabled: true },
@@ -49,9 +54,26 @@ export class ScorecardComponent {
       return item.disabled;
     }
 
-    const scoreCard = this.player?.scoreCard[item.variable];
-    const isPicked = scoreCard?.picked;
-    const value = scoreCard?.value;
+    const gameState = this.gameService.getGameStateValue();
+    const scoreCard = this.player?.scoreCard!;
+
+    const nbrOfYahtzee = scoreCard[this.nbrOfYahtzee].value;
+    const newYahtzee = this.gameService.checkNewYahtzee(scoreCard, gameState.dice);
+    const yahtzeeBonus = newYahtzee && nbrOfYahtzee < 4;
+
+    if(yahtzeeBonus) {
+      const upperSectionKey = this.rulesService.getAppropriateUpperSectionKeyForYahtzee(gameState.dice);
+      const scoreCardUpperSection = scoreCard[upperSectionKey];
+
+      if(!scoreCardUpperSection.picked && item.variable !== upperSectionKey) {
+        item.disabled = true;
+        return item.disabled;
+      }
+    }
+
+    const scoreCardItem = scoreCard[item.variable];
+    const isPicked = scoreCardItem?.picked;
+    const value = scoreCardItem?.value;
     if (this.areAllScoresZero()) {
       item.disabled = !!isPicked;
       return item.disabled;

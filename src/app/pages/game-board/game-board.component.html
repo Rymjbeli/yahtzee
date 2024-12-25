@@ -4,7 +4,7 @@
     @if(gameState?.currentPlayerIndex === 0 && gameService.getTimerState()) {
     <div class="timer">
       <span>{{getFormattedTimeLeft()}}</span>
-      <img class="alarm" src="assets/icons/alarm.svg">
+      <img class="alarm" src="assets/icons/alarm.svg" alt="alarm">
     </div>
     }
     <app-scorecard [player]="gameState?.players?.[0]" [isActivePlayer]="gameState?.currentPlayerIndex === 0"
@@ -20,8 +20,8 @@
         <span id="roll-to-start-message">Roll the dice once to determine who will begin</span>
         <span class="text-xl">{{ gameState?.players?.[0]?.name }} will roll first</span>
         <div class="flex justify-evenly self-stretch">
-          <span class="text-xl">1-{{total1}}</span>
-          <span class="text-xl">2-{{total2}}</span>
+          <span class="text-xl">1-&nbsp;&nbsp;{{total1()}}</span>
+          <span class="text-xl">2-&nbsp;&nbsp;{{total2()}}</span>
         </div>
       </div>
       }
@@ -67,7 +67,7 @@
         }
         }
       </div>
-      <app-button-roll (click)="rollDice()" size="md" [type]="isRollButtonDisabled ? 'disabled' : 'normal'"
+      <app-button-roll (click)="rollDice()" size="md" [type]="isRollButtonDisabled || beforeGame ? 'disabled' : 'normal'"
         [text]="rollButtonText">
       </app-button-roll>
     </div>

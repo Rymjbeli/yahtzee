@@ -12,9 +12,13 @@
       <img ngSrc="../../../../../assets/images/stars-right.svg" alt="right-stars" height="80" width="80">
     </div>
 
-    <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
-      {{winnerName}} wins the game!
-    </div>
+      <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
+        @if (!isTie) {
+        {{winnerName}} wins the game!
+        } @else {
+          It’s a tie!
+        }
+      </div>
 
     <div class="flex justify-between items-center w-full">
       <hr class="w-20 xs:w-40 border-black">
