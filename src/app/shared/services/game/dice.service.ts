@@ -35,4 +35,8 @@ export class DiceService {
       return counts;
     }, {} as { [key: number]: number });
   }
+
+  calculateTotal(dice: Dice[]): number {
+    return dice.reduce((total, die) => total + die.value, 0);
+  }
 }
