@@ -12,4 +12,5 @@ export const CONSTANTS = {
     ARABIC: 'Arabic',
   },
   IS_MUSIC_PLAYING: 'isMusicPlaying',
+  IS_TIMER_ENABLED: 'isTimerEnabled',
 }

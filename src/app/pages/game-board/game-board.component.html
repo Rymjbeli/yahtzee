@@ -1,0 +1,91 @@
+@if((gameState$ | async); as gameState) {
+<div class="game-board">
+  <div class="scorecard-container">
+    @if(gameState?.currentPlayerIndex === 0 && gameService.getTimerState()) {
+    <div class="timer">
+      <span>{{getFormattedTimeLeft()}}</span>
+      <img class="alarm" src="assets/icons/alarm.svg" alt="alarm">
+    </div>
+    }
+    <app-scorecard [player]="gameState?.players?.[0]" [isActivePlayer]="gameState?.currentPlayerIndex === 0"
+      [playerIndex]="0" (inputClicked)="scoreChosen($event)">
+    </app-scorecard>
+  </div>
+  <div class="rolling-board ">
+    <div class="player-turn flex w-full"
+      [ngClass]="{'justify-end': gameState?.currentPlayerIndex === 1 && gameService.rollCounter > 1, 'justify-start': gameState?.currentPlayerIndex === 0 && gameService.rollCounter > 1, 'justify-center': gameService.rollCounter <= 1}">
+
+      @if(gameService.rollCounter <= 1) {
+      <div class="flex flex-col items-center justify-center">
+        <span id="roll-to-start-message">Roll the dice once to determine who will begin</span>
+        <span class="text-xl">{{ gameState?.players?.[0]?.name }} will roll first</span>
+        <div class="flex justify-evenly self-stretch">
+          <span class="text-xl">1-&nbsp;&nbsp;{{total1()}}</span>
+          <span class="text-xl">2-&nbsp;&nbsp;{{total2()}}</span>
+        </div>
+      </div>
+      }
+
+      @if(gameState?.currentPlayerIndex === 0 && gameService.rollCounter > 1) {
+      <div class="flex gap-10 flex-wrap">
+        <img class="-rotate-37" ngSrc="assets/images/turn-arrow-left.svg" width="120" height="80"
+          alt="Turn Arrow Left" />
+        <div class="turn-text text-main text-4.5xl text-center">
+          {{gameState?.players?.[0]?.name}}'s turn
+        </div>
+      </div>
+      }
+
+      @if(gameState?.currentPlayerIndex === 1 && gameService.rollCounter > 1) {
+      <div class="flex gap-10">
+        <div class="turn-text text-main text-4.5xl text-center">
+          {{gameState?.players?.[1]?.name}}'s turn
+        </div>
+        <img class="rotate-37" ngSrc="assets/images/turn-arrow-right.svg" width="120" height="80"
+          alt="Turn Arrow right" />
+      </div>
+      }
+    </div>
+    <div class="dices flex justify-center items-center w-full h-full relative">
+      @for (dice of gameState?.dice; let i = $index; track dice.value){
+      @if (!dice?.isHeld) {
+      <div (click)="toggleHold(i)" class="dice absolute transition-all duration-200 ease-in-out"
+        [ngStyle]="getDicePosition(i)">
+        <img class="cursor-pointer transform transition duration-200 ease-in-out hover:scale-110"
+          [ngSrc]="'assets/images/dices/' + dice.getImage()" alt="Die {{ i + 1 }}" width="81" height="81">
+      </div>
+      }
+      }
+    </div>
+    <div class="actions">
+      <div class="keep-dice flex gap-1.5 items-center justify-center py-1.5 flex-nowrap overflow-x-auto">
+        @for (dice of gameState?.dice; let i = $index; track dice.value){
+        @if (dice?.isHeld) {
+        <img class="cursor-pointer transform transition duration-200 ease-in-out hover:scale-110"
+          (click)="toggleHold(i)" [ngSrc]="'assets/images/dices/' + dice.getImage()" alt="Die {{ i + 1 }}" width="70"
+          height="70">
+        }
+        }
+      </div>
+      <app-button-roll (click)="rollDice()" size="md" [type]="isRollButtonDisabled || beforeGame ? 'disabled' : 'normal'"
+        [text]="rollButtonText">
+      </app-button-roll>
+    </div>
+  </div>
+  <div class="scorecard-container">
+    @if(gameState?.currentPlayerIndex === 1 && gameService.getTimerState()) {
+    <div class="timer right">
+      <img class="alarm" src="assets/icons/alarm.svg">
+      <span>{{getFormattedTimeLeft()}}</span>
+    </div>
+    }
+    <app-scorecard [player]="gameState?.players?.[1]" [isActivePlayer]="gameState?.currentPlayerIndex === 1"
+      [playerIndex]="1" (inputClicked)="scoreChosen($event)">
+    </app-scorecard>
+  </div>
+  <div id="yahtzee-message" class="overlay" style="display: none;">
+    <img src="assets/images/yahtzee!.svg" alt="YAHTZEE!!!">
+    <div id="second-time" style="display: none;">+100</div>
+  </div>
+</div>
+}

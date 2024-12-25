@@ -1,86 +1,97 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Player } from '../../models/player';
+import {RulesService} from "../../services/game/rules.service";
+import {GameService} from "../../services/game/game.service";
+
+
+interface Section {
+  variable: string,
+  name: string,
+  icon?: string,
+  disabled: boolean,
+}
 
 @Component({
   selector: 'app-scorecard',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, NgOptimizedImage],
   templateUrl: './scorecard.component.html',
   styleUrl: './scorecard.component.scss'
 })
 export class ScorecardComponent {
-  @Input() playerName: string = 'Player 1';
+  @Input() player: Player | undefined;
+  @Input() playerIndex: number | undefined;
   @Input() isActivePlayer: boolean = false;
-  @Output() bonusScoreChange = new EventEmitter<number>();
-  @Output() totalScoreChange = new EventEmitter<number>();
-  @Output() upperSectionScoreChange = new EventEmitter<{ name: string, score: number, disabled: boolean }>();
-  @Output() lowerSectionScoreChange = new EventEmitter<{ name: string, score: number, disabled: boolean }>();
+  @Output() inputClicked = new EventEmitter<string>();
+  nbrOfYahtzee = 'nbrOfYahtzee';
 
-  totalScore: number = 0;
-  bonusScore: number = 0;
-  totalUpperSectionScore: number = 0;
+  rulesService = inject(RulesService);
+  gameService = inject(GameService);
 
-  upperSection = [
-    { name: 'Aces', icon: 'assets/icons/dices/die-1.svg', score: 0, disabled: false },
-    { name: 'Twos', icon: 'assets/icons/dices/die-2.svg', score: 0, disabled: false },
-    { name: 'Threes', icon: 'assets/icons/dices/die-3.svg', score: 0, disabled: false },
-    { name: 'Fours', icon: 'assets/icons/dices/die-4.svg', score: 0, disabled: false },
-    { name: 'Fives', icon: 'assets/icons/dices/die-5.svg', score: 0, disabled: false },
-    { name: 'Sixes', icon: 'assets/icons/dices/die-6.svg', score: 0, disabled: false }
+  upperSection: Section[] = [
+    { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', disabled: true },
+    { variable: 'twos', name: 'Twos', icon: 'assets/icons/dices/die-2.svg', disabled: true },
+    { variable: 'threes', name: 'Threes', icon: 'assets/icons/dices/die-3.svg', disabled: true },
+    { variable: 'fours', name: 'Fours', icon: 'assets/icons/dices/die-4.svg', disabled: true },
+    { variable: 'fives', name: 'Fives', icon: 'assets/icons/dices/die-5.svg', disabled: true },
+    { variable: 'sixes', name: 'Sixes', icon: 'assets/icons/dices/die-6.svg', disabled: true }
   ];
-  lowerSection = [
-    { name: 'Three of a kind', score: 0, disabled: false },
-    { name: 'Four of a kind', score: 0, disabled: false },
-    { name: 'Full house', score: 0, disabled: false },
-    { name: 'Small straight', score: 0, disabled: false },
-    { name: 'Large straight', score: 0, disabled: false },
-    { name: 'Chance', score: 0, disabled: false },
-    { name: 'YAHTZEE', score: 0, disabled: false }
+  lowerSection: Section[] = [
+    { variable: 'threeOfAKind', name: 'Three of a kind', disabled: true },
+    { variable: 'fourOfAKind', name: 'Four of a kind', disabled: true },
+    { variable: 'fullHouse', name: 'Full house', disabled: true },
+    { variable: 'smallStraight', name: 'Small straight', disabled: true },
+    { variable: 'largeStraight', name: 'Large straight', disabled: true },
+    { variable: 'chance', name: 'Chance', disabled: true },
+    { variable: 'yahtzee', name: 'YAHTZEE', disabled: true }
   ];
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['isActivePlayer'] && !changes['isActivePlayer'].currentValue) {
-      this.resetDisabledProperties();
+  checkScore(item: Section): boolean {
+    if (!this.isActivePlayer) {
+      item.disabled = true;
+      return item.disabled;
     }
-  }
 
-  resetDisabledProperties() {
-    this.upperSection.forEach(item => item.disabled = false);
-    this.lowerSection.forEach(item => item.disabled = false);
-  }
+    const gameState = this.gameService.getGameStateValue();
+    const scoreCard = this.player?.scoreCard!;
 
-  calculateUpperSectionScore() {
-    this.totalUpperSectionScore = this.upperSection.reduce((acc, item) => acc + item.score, 0);
-    this.checkAndApplyBonus();
-  }
+    const nbrOfYahtzee = scoreCard[this.nbrOfYahtzee].value || 0;
+    const newYahtzee = this.gameService.checkNewYahtzee(scoreCard, gameState.dice);
+    const yahtzeeBonus = newYahtzee && nbrOfYahtzee < 4;
 
-  checkAndApplyBonus() {
-    if (this.totalUpperSectionScore >= 63) {
-      this.bonusScore = 35;
-    } else {
-      this.bonusScore = 0;
-    }
-    this.bonusScoreChange.emit(this.bonusScore);
-  }
+    if(yahtzeeBonus) {
+      const upperSectionKey = this.rulesService.getAppropriateUpperSectionKeyForYahtzee(gameState.dice);
+      const scoreCardUpperSection = scoreCard[upperSectionKey];
 
-  calculateTotalScore() {
-    let totalLowerSectionScore = this.lowerSection.reduce((acc, item) => acc + item.score, 0);
-    this.totalScore = this.totalUpperSectionScore + totalLowerSectionScore + this.bonusScore;
-    this.totalScoreChange.emit(this.totalScore);
-  }
-
-  onScoreChange(newScore: number, item?: { name: string, score: number, disabled: boolean } | { name: string, icon: string, score: number, disabled: boolean }) {
-    if (item) {
-      item.score = newScore;
-      if (this.upperSection.includes(item as { name: string, icon: string, score: number, disabled: boolean })) {
-        this.upperSectionScoreChange.emit({ name: item.name, score: newScore, disabled: item.disabled });
-      } else if (this.lowerSection.includes(item as { name: string, score: number, disabled: boolean })) {
-        this.lowerSectionScoreChange.emit({ name: item.name, score: newScore, disabled: item.disabled });
+      if(!scoreCardUpperSection.picked && item.variable !== upperSectionKey) {
+        item.disabled = true;
+        return item.disabled;
       }
     }
-    this.calculateUpperSectionScore();
-    this.calculateTotalScore();
+
+    const scoreCardItem = scoreCard[item.variable];
+    const isPicked = scoreCardItem?.picked;
+    const value = scoreCardItem?.value;
+    if (this.areAllScoresZero()) {
+      item.disabled = !!isPicked;
+      return item.disabled;
+    }
+
+    item.disabled = isPicked || (value === 0 || value === null);
+    return item.disabled;
   }
 
+  areAllScoresZero(): boolean {
+    const allSection = [...this.upperSection, ...this.lowerSection];
+    return allSection.every(section =>
+      this.player?.scoreCard[section.variable]?.picked ||
+      this.player?.scoreCard[section.variable]?.value === 0
+    );
+  }
+
+  onInputClick(section: string) {
+    this.inputClicked.emit(section);
+  }
 }
