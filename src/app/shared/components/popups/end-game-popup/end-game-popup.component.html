@@ -12,13 +12,9 @@
       <img ngSrc="../../../../../assets/images/stars-right.svg" alt="right-stars" height="80" width="80">
     </div>
 
-      <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
-        @if (!isTie) {
-        {{winnerName}} wins the game!
-        } @else {
-          It’s a tie!
-        }
-      </div>
+    <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
+      {{winnerName}} wins the game!
+    </div>
 
     <div class="flex justify-between items-center w-full">
       <hr class="w-20 xs:w-40 border-black">
@@ -48,15 +44,15 @@
     </div>
 
     <div class="flex gap-6 flex-wrap justify-center">
-      <app-button-primary (click)="playAgain()" class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
-        <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
+      <app-button-primary class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
+        <img left src="../../../../../assets/icons/replay.svg" alt="replay">
       </app-button-primary>
       <app-button-primary class="hidden xs:flex" text="Home" size="md" [showLeftIcon]="true">
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
       </app-button-primary>
 
-      <app-button-primary (click)="playAgain()" class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
-        <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
+      <app-button-primary class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
+        <img left src="../../../../../assets/icons/replay.svg" alt="replay">
       </app-button-primary>
       <app-button-primary class="xs:hidden" text="Home" size="sm" [showLeftIcon]="true">
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
