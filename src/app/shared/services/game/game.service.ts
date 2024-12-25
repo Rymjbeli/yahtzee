@@ -1,4 +1,4 @@
-import {Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { GameState } from "../../interfaces/game-state";
 import { Player } from "../../models/player";
 import { Dice } from "../../models/dice";
@@ -26,6 +26,7 @@ export class GameService {
 
   private timerId: any;
   public isTimerEnabled: boolean = false;
+  public startTimerNextTurn: boolean = false;
 
   private gameStateSubject = new BehaviorSubject<GameState>(this.initialGameState);
   gameState$ = this.gameStateSubject.asObservable();
@@ -57,7 +58,7 @@ export class GameService {
    * know who will start the game
    * @param playerIndex
    */
-  rollStart(playerIndex: number): number  {
+  rollStart(playerIndex: number): number {
     const gameState = this.getGameStateValue();
     const dice = this.diceService.rollAllDice(gameState.dice, 3);
     const total = this.diceService.calculateTotal(dice);
@@ -67,7 +68,7 @@ export class GameService {
       dicePositions: generateRandomDicePositions(),
     });
 
-    return total ;
+    return total;
   }
 
   /**
@@ -173,7 +174,7 @@ export class GameService {
       this.rulesService.applyYahtzeeBonus(scoreCard, dice);
     }
 
-    if(incrementYahtzee && yahtzeeNbr < 5) {
+    if (incrementYahtzee && yahtzeeNbr < 5) {
       scoreCard.nbrOfYahtzee++;
     }
   }
@@ -224,6 +225,7 @@ export class GameService {
     this.rollCounter = 0;
     this.total1.set(0);
     this.total2.set(0);
+    this.startTimerNextTurn = false;
 
     // Create a fresh game state while keeping the player names intact
     const freshGameState: GameState = {
@@ -285,6 +287,7 @@ export class GameService {
         dice: dice,
         totalTurn: gameState.totalTurn + 1,
       });
+      this.startTimerNextTurn = false;
       this.calculateTotalScore(index);
     }
   }
@@ -417,6 +420,12 @@ export class GameService {
         this.timerId = null;
         this.isTimerEnabled = false;
       } else {
+        if (this.getGameStateValue().rollsLeft !== 3) {
+          this.startTimerNextTurn = true;
+
+        } else {
+          this.startTimerNextTurn = false;
+        }
         this.isTimerEnabled = true;
       }
       localStorage.setItem(CONSTANTS.IS_TIMER_ENABLED, this.isTimerEnabled.toString());
