@@ -54,9 +54,26 @@ export class ScorecardComponent {
       return item.disabled;
     }
 
-    const scoreCard = this.player?.scoreCard[item.variable];
-    const isPicked = scoreCard?.picked;
-    const value = scoreCard?.value;
+    const gameState = this.gameService.getGameStateValue();
+    const scoreCard = this.player?.scoreCard!;
+
+    const nbrOfYahtzee = scoreCard[this.nbrOfYahtzee].value;
+    const newYahtzee = this.gameService.checkNewYahtzee(scoreCard, gameState.dice);
+    const yahtzeeBonus = newYahtzee && nbrOfYahtzee < 4;
+
+    if(yahtzeeBonus) {
+      const upperSectionKey = this.rulesService.getAppropriateUpperSectionKeyForYahtzee(gameState.dice);
+      const scoreCardUpperSection = scoreCard[upperSectionKey];
+
+      if(!scoreCardUpperSection.picked && item.variable !== upperSectionKey) {
+        item.disabled = true;
+        return item.disabled;
+      }
+    }
+
+    const scoreCardItem = scoreCard[item.variable];
+    const isPicked = scoreCardItem?.picked;
+    const value = scoreCardItem?.value;
     if (this.areAllScoresZero()) {
       item.disabled = !!isPicked;
       return item.disabled;

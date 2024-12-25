@@ -31,7 +31,11 @@ export class GameService {
   gameState$ = this.gameStateSubject.asObservable();
 
   rollCounter = 0;
+  private total1Subject = new BehaviorSubject<number>(0);
+  private total2Subject = new BehaviorSubject<number>(0);
 
+  total1$ = this.total1Subject.asObservable();
+  total2$ = this.total2Subject.asObservable();
   constructor(
     private diceService: DiceService,
     private rulesService: RulesService,
@@ -54,6 +58,7 @@ export class GameService {
 
   /**
    * know who will start the game
+   * @param playerIndex
    */
   rollStart(playerIndex: number): number  {
     const gameState = this.getGameStateValue();
@@ -117,7 +122,7 @@ export class GameService {
     const currentPlayer = gameState.players[playerIndex];
     const dice = gameState.dice;
 
-    const newScoreCard: ScoreCard = currentPlayer?.scoreCard || {};
+    let newScoreCard: ScoreCard = currentPlayer?.scoreCard || {};
 
     // Calculate scores for each rule
     const rules = [
@@ -145,21 +150,48 @@ export class GameService {
       }
     });
 
-    // yahtzee bonus if the player has already picked yahtzee and this is the second or more yahtzee but less than 4 times
-    if (
-      this.rulesService.calculateYahtzee(dice) > 0 &&
-      newScoreCard.yahtzee?.picked &&
-      newScoreCard.nbrOfYahtzee < 4
-    ) {
-      newScoreCard.nbrOfYahtzee++;
-      newScoreCard.total += 100;
-    }
+    this.checkYahtzeeAndYahtzeeBonus(newScoreCard, dice);
 
     // Update the player's scorecard
     currentPlayer.scoreCard = newScoreCard;
 
     // Update the game state
     this.updateGameState({ players: gameState.players });
+  }
+
+  /**
+   * Check the yahtzee and yahtzee bonus(only in the second third and fourth yahtzee)
+   * @param scoreCard
+   * @param dice
+   */
+  checkYahtzeeAndYahtzeeBonus(scoreCard: ScoreCard, dice: Dice[]) {
+    const yahtzeeNbr = scoreCard.nbrOfYahtzee;
+
+    const incrementYahtzee = this.checkNewYahtzee(scoreCard, dice);
+    const yahtzeeBonus = incrementYahtzee && yahtzeeNbr < 4;
+
+    // Yahtzee bonus if the player has already picked yahtzee and this is the second or
+    // more yahtzee but less than 4 times
+    if (yahtzeeBonus) {
+      this.rulesService.applyYahtzeeBonus(scoreCard, dice);
+    }
+
+    if(incrementYahtzee && yahtzeeNbr < 5) {
+      scoreCard.nbrOfYahtzee++;
+    }
+  }
+
+  /**
+   * Check if the player has a new yahtzee and has already picked yahtzee
+   * @param scoreCard
+   * @param dice
+   */
+  checkNewYahtzee(scoreCard: ScoreCard, dice: Dice[]) {
+    const gotYahtzee = this.rulesService.calculateYahtzee(dice) > 0;
+    const yahtzeePick = scoreCard.yahtzee?.picked;
+    const yahtzeeValue = scoreCard.yahtzee?.value;
+
+    return gotYahtzee && yahtzeePick && yahtzeeValue && yahtzeeValue > 0;
   }
 
   /**
@@ -191,13 +223,17 @@ export class GameService {
   resetGame(): void {
     const currentGameState = this.getGameStateValue();
     const playerNames = currentGameState.players.map(player => player.name);
+    const dicePositions = generateRandomDicePositions();
+    this.rollCounter = 0;
+    this.total1Subject.next(0);
+    this.total2Subject.next(0);
 
     // Create a fresh game state while keeping the player names intact
     const freshGameState: GameState = {
       players: playerNames.map(name => new Player(name)), // Re-create players with their names
       currentPlayerIndex: 0,
       dice: currentGameState.dice,
-      dicePositions: [],
+      dicePositions: dicePositions,
       rollsLeft: 3,
       totalTurn: 0,
     };
@@ -397,5 +433,39 @@ export class GameService {
    */
   getTimerState(): boolean {
     return this.isTimerEnabled;
+  }
+
+  /**
+   * Get the current player nbr of yahtzee of the current player
+   */
+  getNbrOfYahtzee(): number {
+    const gameState = this.getGameStateValue();
+    return gameState.players[gameState.currentPlayerIndex].scoreCard.nbrOfYahtzee;
+  }
+
+  /**
+   * Get yahtzee score
+   */
+  getYahtzeeScore(): number {
+    const gameState = this.getGameStateValue();
+    return this.rulesService.calculateYahtzee(gameState.dice);
+  }
+
+  updateTotal1(playerIndex: number): void {
+    const newTotal1 = this.rollStart(playerIndex);
+    this.total1Subject.next(newTotal1);
+  }
+
+  updateTotal2(playerIndex: number): void {
+    const newTotal2 = this.rollStart(playerIndex);
+    this.total2Subject.next(newTotal2);
+  }
+
+  getTotal1(): number {
+    return this.total1Subject.value;
+  }
+
+  getTotal2(): number {
+    return this.total2Subject.value;
   }
 }

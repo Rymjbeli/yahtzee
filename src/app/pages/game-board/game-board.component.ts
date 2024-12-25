@@ -23,12 +23,12 @@ export class GameBoardComponent {
   rulesService = inject(RulesService);
   dialog = inject(MatDialog);
   gameState$: Observable<GameState> = this.gameService.gameState$;
+  beforeGame: boolean = false;
 
-  total1 = 0;
-  total2 = 0;
+  total1 = this.gameService.total1$;
+  total2 = this.gameService.total2$;
 
   yahtzee = 'yahtzee';
-  nbrOfYahtzee = 'nbrOfYahtzee';
   toggleHold(index: number): void {
     if (this.gameService.getGameStateValue().rollsLeft === 3) return;
     this.gameService.toggleHoldDice(index);
@@ -48,16 +48,24 @@ export class GameBoardComponent {
 
     if (this.gameService.rollCounter === 0) {
 
-      this.total1 = this.gameService.rollStart(game.currentPlayerIndex);
+      this.gameService.updateTotal1(game.currentPlayerIndex)
       this.gameService.rollCounter++;
 
     } else if (this.gameService.rollCounter === 1) {
 
-      this.total2 = this.gameService.rollStart(game.currentPlayerIndex);
-      currentPlayer = this.total1 > this.total2 ? 0 : 1;
+      this.gameService.updateTotal2(game.currentPlayerIndex);
+      currentPlayer = this.gameService.getTotal1() > this.gameService.getTotal2() ? 0 : 1;
+      this.beforeGame = true;
 
       setTimeout(() => {
         this.gameService.rollCounter++;
+        this.beforeGame = false;
+
+        const gameState = this.gameService.getGameStateValue();
+        const dice = gameState.dice.map(die => {
+          die.isHeld = true;
+          return die;
+        });
       }, 3000);
 
       this.gameService.updateGameState({ currentPlayerIndex: currentPlayer });
@@ -101,11 +109,9 @@ export class GameBoardComponent {
 
   get isRollButtonDisabled(): boolean {
     const rollsLeft = this.gameService.getGameStateValue()?.rollsLeft ?? 0;
-    const currentPlayer = this.gameService.getGameStateValue()?.players?.[
-      this.gameService.getGameStateValue()?.currentPlayerIndex
-    ];
-    const yahtzeeScore = this.rulesService.calculateYahtzee(this.gameService.getGameStateValue().dice);
-    const nbrOfYahtzee = currentPlayer?.scoreCard?.[this.nbrOfYahtzee] ?? 0;
+
+    const yahtzeeScore = this.gameService.getYahtzeeScore()
+    const nbrOfYahtzee = this.gameService.getNbrOfYahtzee();
 
     return rollsLeft === 0 || (yahtzeeScore > 0 && rollsLeft < 3 && nbrOfYahtzee < 4);
   }
@@ -134,10 +140,21 @@ export class GameBoardComponent {
       messageElement.style.display = 'flex';
     }
 
-    if (picked) {
+    const nbrOfYahtzee = this.gameService.getNbrOfYahtzee();
+    const message = document.getElementById('second-time');
+    if (message) {
+      if (picked && nbrOfYahtzee < 5) {
+        message.style.display = 'flex';
+      } else {
+        message.style.display = 'none';
+      }
+    }
+
+
+    if(nbrOfYahtzee >= 5) {
       const message = document.getElementById('second-time');
       if (message) {
-        message.style.display = 'flex';
+        message.style.display = 'none';
       }
     }
 
