@@ -225,13 +225,14 @@ export class GameService {
     this.rollCounter = 0;
     this.total1.set(0);
     this.total2.set(0);
+    const newDice = Array.from({ length: 5 }, () => new Dice());
     this.startTimerNextTurn = false;
 
     // Create a fresh game state while keeping the player names intact
     const freshGameState: GameState = {
       players: playerNames.map(name => new Player(name)), // Re-create players with their names
       currentPlayerIndex: 0,
-      dice: currentGameState.dice,
+      dice: newDice,
       dicePositions: dicePositions,
       rollsLeft: 3,
       totalTurn: 0,
