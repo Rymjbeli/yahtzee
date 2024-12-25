@@ -1,7 +1,9 @@
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Player } from '../../models/player';
+import {RulesService} from "../../services/game/rules.service";
+import {GameService} from "../../services/game/game.service";
 
 
 interface Section {
@@ -24,6 +26,9 @@ export class ScorecardComponent {
   @Input() isActivePlayer: boolean = false;
   @Output() inputClicked = new EventEmitter<string>();
   nbrOfYahtzee = 'nbrOfYahtzee';
+
+  rulesService = inject(RulesService);
+  gameService = inject(GameService);
 
   upperSection: Section[] = [
     { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', disabled: true },

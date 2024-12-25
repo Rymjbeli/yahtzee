@@ -123,6 +123,7 @@ export class GameService {
       }
     });
 
+    // yahtzee bonus if the player has already picked yahtzee and this is the second or more yahtzee but less than 4 times
     if (
       this.rulesService.calculateYahtzee(dice) > 0 &&
       newScoreCard.yahtzee?.picked &&
@@ -180,7 +181,6 @@ export class GameService {
       totalTurn: 0,
     };
 
-    console.log(freshGameState);
     // Update the game state
     this.gameStateSubject.next(freshGameState);
   }
