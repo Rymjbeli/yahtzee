@@ -1,4 +1,4 @@
-@import '../../../../../global.variables.scss';
+@import '../../../../../global.variables';
 
 .button-secondary {
   display: flex;
@@ -30,11 +30,11 @@
 
 
 .lg {
-  @include button-size(24px, 14px 24px)
+  @include button-size(32px, 14px 24px)
 }
 .md {
-  @include button-size(18px,  12px 20px)
+  @include button-size(24px,  12px 20px)
 }
 .sm {
-  @include button-size(14px, 8px 14px)
+  @include button-size(16px, 10px 18px)
 }

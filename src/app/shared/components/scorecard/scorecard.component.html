@@ -1,44 +1,35 @@
 <div [ngClass]="{'active-player': isActivePlayer}" class="scorecard-container">
-  <span class="player-title" [ngClass]="{'indexPlayer': playerIndex !== 0,'active-player-title': isActivePlayer}">{{
-    player?.name }}</span>
+  <span [ngClass]="{'active-player-title': isActivePlayer}" class="player-title">{{playerName}}</span>
   <div class="section">
     @for (item of upperSection; track item.name) {
     <div class="row">
       <div class="label">
         <img class="icon" [src]="item.icon"> {{ item.name }}
       </div>
-      <input class="disabled-input" [value]="player?.scoreCard?.[item.variable]?.value ?? ' '"
-        [ngClass]="{'score-box': !checkScore(item)}" readonly [disabled]="item.disabled"
-        (click)="onInputClick(item.variable)" />
+      <input class="score-box" type="number" [(ngModel)]="item.score" [ngClass]="{'disabled-input': item.disabled}"
+        disabled (ngModelChange)="onScoreChange($event, item)" />
     </div>
     }
   </div>
   <hr class="section-divider">
   <div class="bonus">
     <div class="row bonus-title">Bonus</div>
-    <input class="total-box" [value]="player?.scoreCard?.bonus === null ? ' ' : player?.scoreCard?.bonus" readonly />
+    <input class="total-box" type="number" [(ngModel)]="bonusScore" (ngModelChange)="onScoreChange($event)" disabled />
   </div>
   <hr class="section-divider">
   <div class="section">
     @for (item of lowerSection; track item.name) {
     <div class="row">
-      <div class="flex gap-1">
-        <div class="label">{{ item.name }}</div>
-        @if (item.name == 'YAHTZEE' && this.player?.scoreCard?.[nbrOfYahtzee] > 1) {
-          @for (check of [].constructor(this.player?.scoreCard?.[nbrOfYahtzee] - 1); track $index) {
-            <img ngSrc="assets/icons/check-mark.png" class="mb-2" width="24" height="24"  alt="check"/>
-          }
-        }
-      </div>
-      <input class="disabled-input" [value]="player?.scoreCard?.[item.variable]?.value ?? ' '"
-        [ngClass]="{'score-box': !checkScore(item)}" readonly [disabled]="item.disabled"
-        (click)="onInputClick(item.variable)" />
+      <div class="label">{{ item.name }}</div>
+      <input class="score-box" type="number" [(ngModel)]="item.score" [ngClass]="{'disabled-input': item.disabled}"
+        disabled (ngModelChange)="onScoreChange($event, item)" />
     </div>
     }
   </div>
   <hr class="section-divider">
   <div class="total">
     <div class="row total-title">Total</div>
-    <input class="total-box larger" [value]="player?.scoreCard?.total === null ? 0 : player?.scoreCard?.total" readonly />
+    <input class="total-box" type="number" [(ngModel)]="totalScore" (ngModelChange)="onScoreChange($event)" disabled />
   </div>
+  <hr class="section-divider">
 </div>

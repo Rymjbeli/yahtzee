@@ -1,8 +1,8 @@
 import {inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {CONSTANTS} from "../../../../config/const.config";
+import {CONSTANTS} from "../../../config/const.config";
 import {TranslateService} from "@ngx-translate/core";
 import {isPlatformBrowser} from "@angular/common";
-import {LanguageInterface} from "../../interfaces/language.interface";
+import {LanguageInterface} from "../interfaces/language.interface";
 
 @Injectable({
   providedIn: 'root'

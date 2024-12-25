@@ -1,5 +1,5 @@
 <div class="relative">
-  <div (click)="closeDialog()" class="absolute -right-8 -top-10 rounded-3xl bg-base-gray border-black border-3 p-1 cursor-pointer">
+  <div (click)="closeDialog()" class="absolute -right-8 -top-10 rounded-3xl bg-base-gray border-black border-3 p-1">
     <img
       ngSrc="../../../../../assets/icons/cross.svg"
       alt="cross"
@@ -35,7 +35,7 @@
         </div>
 
         <label class="switch relative inline-block text-sm">
-          <input type="checkbox" class="opacity-0 w-0 h-0" [(ngModel)]="isTimerEnabled" (change)="toggleTimer()" />
+          <input type="checkbox" class="opacity-0 w-0 h-0"/>
           <span class="slider absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-3xl bg-light-red"></span>
         </label>
 
