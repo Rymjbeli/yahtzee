@@ -1,4 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
 import { GameState } from "../../interfaces/game-state";
 import { Player } from "../../models/player";
 import { Dice } from "../../models/dice";
@@ -31,11 +31,8 @@ export class GameService {
   gameState$ = this.gameStateSubject.asObservable();
 
   rollCounter = 0;
-  private total1Subject = new BehaviorSubject<number>(0);
-  private total2Subject = new BehaviorSubject<number>(0);
-
-  total1$ = this.total1Subject.asObservable();
-  total2$ = this.total2Subject.asObservable();
+  total1 = signal(0);
+  total2 = signal(0);
   constructor(
     private diceService: DiceService,
     private rulesService: RulesService,
@@ -225,8 +222,8 @@ export class GameService {
     const playerNames = currentGameState.players.map(player => player.name);
     const dicePositions = generateRandomDicePositions();
     this.rollCounter = 0;
-    this.total1Subject.next(0);
-    this.total2Subject.next(0);
+    this.total1.set(0);
+    this.total2.set(0);
 
     // Create a fresh game state while keeping the player names intact
     const freshGameState: GameState = {
@@ -453,19 +450,11 @@ export class GameService {
 
   updateTotal1(playerIndex: number): void {
     const newTotal1 = this.rollStart(playerIndex);
-    this.total1Subject.next(newTotal1);
+    this.total1.set(newTotal1);
   }
 
   updateTotal2(playerIndex: number): void {
     const newTotal2 = this.rollStart(playerIndex);
-    this.total2Subject.next(newTotal2);
-  }
-
-  getTotal1(): number {
-    return this.total1Subject.value;
-  }
-
-  getTotal2(): number {
-    return this.total2Subject.value;
+    this.total2.set(newTotal2);
   }
 }

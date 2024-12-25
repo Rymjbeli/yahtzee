@@ -25,8 +25,8 @@ export class GameBoardComponent {
   gameState$: Observable<GameState> = this.gameService.gameState$;
   beforeGame: boolean = false;
 
-  total1 = this.gameService.total1$;
-  total2 = this.gameService.total2$;
+  total1 = this.gameService.total1;
+  total2 = this.gameService.total2;
 
   yahtzee = 'yahtzee';
   toggleHold(index: number): void {
@@ -54,7 +54,7 @@ export class GameBoardComponent {
     } else if (this.gameService.rollCounter === 1) {
 
       this.gameService.updateTotal2(game.currentPlayerIndex);
-      currentPlayer = this.gameService.getTotal1() > this.gameService.getTotal2() ? 0 : 1;
+      currentPlayer = this.total1() > this.total2() ? 0 : 1;
       this.beforeGame = true;
 
       setTimeout(() => {
