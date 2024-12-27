@@ -10,6 +10,8 @@ import { RulesService } from "./rules.service";
 import { ScoreCard } from "../../interfaces/score-card";
 import { isPlatformBrowser } from '@angular/common';
 import { CONSTANTS } from '../../../../config/const.config';
+import confetti from "canvas-confetti";
+import {AnimationsService} from "../animation/animations.service";
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +34,13 @@ export class GameService {
   gameState$ = this.gameStateSubject.asObservable();
 
   rollCounter = 0;
+  beforeGame = signal(false);
   total1 = signal(0);
   total2 = signal(0);
   constructor(
     private diceService: DiceService,
     private rulesService: RulesService,
+    private animationService: AnimationsService,
     @Inject(PLATFORM_ID) private platformId: any
   ) {
 
@@ -95,6 +99,7 @@ export class GameService {
    * @param diceIndex
    */
   toggleHoldDice(diceIndex: number) {
+    if (this.getGameStateValue().rollsLeft === 3) return;
     const gameState = this.gameStateSubject.getValue();
     gameState.dice[diceIndex].isHeld = !gameState.dice[diceIndex].isHeld;
     this.gameStateSubject.next(gameState);
@@ -196,6 +201,49 @@ export class GameService {
    * Main roll function: Rolls the dice and updates the game state with the new values.
    */
   rollDice(): void {
+    const game = this.getGameStateValue();
+    let currentPlayer = game.currentPlayerIndex;
+
+    if (this.rollCounter === 0) {
+
+      this.updateTotal1(game.currentPlayerIndex)
+      this.rollCounter++;
+
+    } else if (this.rollCounter === 1) {
+
+      this.updateTotal2(game.currentPlayerIndex);
+      currentPlayer = this.total1() > this.total2() ? 0 : 1;
+      this.beforeGame.set(true)
+
+      setTimeout(() => {
+        this.rollCounter++;
+        this.beforeGame.set(false);
+
+        const gameState = this.getGameStateValue();
+        gameState.dice.map(die => {
+          die.isHeld = true;
+          return die;
+        });
+      }, 3000);
+
+      this.updateGameState({ currentPlayerIndex: currentPlayer });
+
+    } else {
+
+      this.rollDiceInsideGame();
+
+      const yahtzee = this.rulesService.calculateYahtzee(game.dice) > 0;
+      const picked = game.players[currentPlayer].scoreCard.yahtzee.picked;
+
+      const nbrOfYahtzee = this.getNbrOfYahtzee();
+      if (yahtzee && !picked)
+        this.animationService.displayYahtzee(false, nbrOfYahtzee);
+      if (yahtzee && picked)
+        this.animationService.displayYahtzee(true, nbrOfYahtzee);
+    }
+  }
+
+  private rollDiceInsideGame(): void {
     const rollsLeft = this.getGameStateValue().rollsLeft;
     if (this.isTimerEnabled && rollsLeft === 3) {
       this.startTimer();
@@ -205,14 +253,19 @@ export class GameService {
       dicePositions: generateRandomDicePositions(),
       rollsLeft: Math.max(0, rollsLeft - 1),
     });
+
+    const currentPlayer = this.getGameStateValue().currentPlayerIndex;
+    this.calculateScoreCard(currentPlayer);
   }
-
-
   /**
    * Get the positions of the dice.
    */
-  getDicePositions(): Position[] {
-    return this.getGameStateValue().dicePositions;
+  getDicePositions(index: number): Position {
+    const positions = this.getGameStateValue().dicePositions;
+    if (positions && positions[index]) {
+      return positions[index];
+    }
+    return { top: '50%', left: '50%', transform: 'rotate(0deg)' };
   }
 
   /**

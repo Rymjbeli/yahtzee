@@ -67,7 +67,7 @@
         }
         }
       </div>
-      <app-button-roll (click)="rollDice()" size="md" [type]="isRollButtonDisabled || beforeGame ? 'disabled' : 'normal'"
+      <app-button-roll (click)="rollDice()" size="md" [type]="isRollButtonDisabled || beforeGame() ? 'disabled' : 'normal'"
         [text]="rollButtonText">
       </app-button-roll>
     </div>

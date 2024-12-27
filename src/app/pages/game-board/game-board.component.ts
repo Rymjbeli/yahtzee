@@ -8,7 +8,6 @@ import { AsyncPipe, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
 import { Position } from "../../shared/interfaces/position";
 import { MatDialog } from "@angular/material/dialog";
 import { EndGamePopupComponent } from "../../shared/components/popups/end-game-popup/end-game-popup.component";
-import confetti from "canvas-confetti";
 import { RulesService } from '../../shared/services/game/rules.service';
 
 @Component({
@@ -20,70 +19,24 @@ import { RulesService } from '../../shared/services/game/rules.service';
 })
 export class GameBoardComponent {
   gameService = inject(GameService);
-  rulesService = inject(RulesService);
   dialog = inject(MatDialog);
   gameState$: Observable<GameState> = this.gameService.gameState$;
-  beforeGame: boolean = false;
+  beforeGame = this.gameService.beforeGame;
 
   total1 = this.gameService.total1;
   total2 = this.gameService.total2;
 
   yahtzee = 'yahtzee';
   toggleHold(index: number): void {
-    if (this.gameService.getGameStateValue().rollsLeft === 3) return;
     this.gameService.toggleHoldDice(index);
   }
 
   getDicePosition(index: number): Position {
-    const positions = this.gameService.getDicePositions();
-    if (positions && positions[index]) {
-      return positions[index];
-    }
-    return { top: '50%', left: '50%', transform: 'rotate(0deg)' };
+    return this.gameService.getDicePositions(index);
   }
 
   rollDice(): void {
-    const game = this.gameService.getGameStateValue();
-    let currentPlayer = game.currentPlayerIndex;
-
-    if (this.gameService.rollCounter === 0) {
-
-      this.gameService.updateTotal1(game.currentPlayerIndex)
-      this.gameService.rollCounter++;
-
-    } else if (this.gameService.rollCounter === 1) {
-
-      this.gameService.updateTotal2(game.currentPlayerIndex);
-      currentPlayer = this.total1() > this.total2() ? 0 : 1;
-      this.beforeGame = true;
-
-      setTimeout(() => {
-        this.gameService.rollCounter++;
-        this.beforeGame = false;
-
-        const gameState = this.gameService.getGameStateValue();
-        const dice = gameState.dice.map(die => {
-          die.isHeld = true;
-          return die;
-        });
-      }, 3000);
-
-      this.gameService.updateGameState({ currentPlayerIndex: currentPlayer });
-
-    } else {
-
-      this.gameService.rollDice();
-
-      this.gameService.calculateScoreCard(currentPlayer);
-
-      const yahtzee = this.rulesService.calculateYahtzee(game.dice) > 0;
-      const picked = game.players[currentPlayer].scoreCard.yahtzee.picked;
-
-      if (yahtzee && !picked)
-        this.displayYahtzee(false);
-      if (yahtzee && picked)
-        this.displayYahtzee(true);
-    }
+    this.gameService.rollDice();
   }
 
   scoreChosen(score: string): void {
@@ -134,41 +87,4 @@ export class GameBoardComponent {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
 
-  displayYahtzee(picked: boolean): void {
-    const messageElement = document.getElementById('yahtzee-message');
-    if (messageElement) {
-      messageElement.style.display = 'flex';
-    }
-
-    const nbrOfYahtzee = this.gameService.getNbrOfYahtzee();
-    const message = document.getElementById('second-time');
-    if (message) {
-      if (picked && nbrOfYahtzee < 5) {
-        message.style.display = 'flex';
-      } else {
-        message.style.display = 'none';
-      }
-    }
-
-
-    if(nbrOfYahtzee >= 5) {
-      const message = document.getElementById('second-time');
-      if (message) {
-        message.style.display = 'none';
-      }
-    }
-
-    confetti({
-      particleCount: 400,
-      spread: 100,
-      origin: { y: 0.7 },
-      zIndex: 1001,
-    });
-
-    setTimeout(() => {
-      if (messageElement) {
-        messageElement.style.display = 'none';
-      }
-    }, 3000);
-  }
 }
