@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SettingsPopupComponent } from '../../popups/settings-popup/settings-popup.component';
 
 @Component({
   selector: 'app-settings-nav-bar',
@@ -11,11 +13,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class SettingsNavBarComponent {
   @Input() size: 'md' | 'lg' | 'sm' = 'md';
   @Input() disabled: boolean = false;
-  @Output() clicked = new EventEmitter<void>();
 
-  onClick() {
+  dialog = inject(MatDialog);
+
+  openSettings() {
     if (!this.disabled) {
-      this.clicked.emit();
+      this.dialog.open(SettingsPopupComponent, {
+        width: '300px',
+        disableClose: true,
+      });
     }
   }
 }
