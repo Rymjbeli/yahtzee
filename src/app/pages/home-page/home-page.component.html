@@ -1,0 +1,146 @@
+<div class="page">
+  <app-settings-nav-bar class="settings"></app-settings-nav-bar>
+  <div class="image-container">
+    <img src="assets/images/yahtzee-big-logo.svg" alt="" />
+  </div>
+  @if (step==1) {
+  <app-button-primary
+    [text]="'Start Playing'"
+    [showRightIcon]="true"
+    class="content"
+    size="lg"
+    (click)="nextStep()"
+  >
+    <img right src="assets/icons/play-now.svg" alt="play now" />
+  </app-button-primary>
+  } @if (step==2) {
+  <div class="content">
+    <h2 class="title">Choose how you want to play!</h2>
+    <div class="flex justify-center items-center space-x-4 mt-8 w-full">
+      <app-button-primary
+        [text]="'Play Locally'"
+        [showLeftIcon]="true"
+        size="md"
+        (click)="playLocally()"
+      >
+        <img left src="assets/icons/desktop.svg" alt="locally" />
+      </app-button-primary>
+      <app-dropdown
+        [options]="options"
+        [placeholder]="'Play Online'"
+        [leftIcon]="true"
+        [changeSelected]="false"
+        (selectionChange)="playOnline($event)"
+        size="md"
+      >
+        <img left src="assets/icons/globe.svg" alt="" />
+      </app-dropdown>
+    </div>
+  </div>
+  } @if(step==3 && gameMode == 'local') {
+  <div class="content">
+    <h2 class="title">Type the first player's name</h2>
+    <div class="flex flex-col items-center space-y-4 mt-8 w-full">
+      <app-input
+        [placeholder]="'Player 1'"
+        [size]="'md'"
+        [(text)]="playerName"
+      ></app-input>
+      <div class="flex justify-center items-center mt-8 space-x-10 w-full">
+        <app-button-primary
+          [text]="'Skip'"
+          size="sm"
+          (click)="skipName(1)"
+        ></app-button-primary>
+        <app-button-primary
+          [text]="'Next'"
+          size="sm"
+          (click)="nextStep()"
+        ></app-button-primary>
+      </div>
+    </div>
+  </div>
+  } @if(step==4 && gameMode == 'local') {
+  <div class="content">
+    <h2 class="title">Type the second player's name</h2>
+    <div class="flex flex-col items-center space-y-4 mt-8 w-full">
+      <app-input
+        [placeholder]="'Player 2'"
+        [size]="'md'"
+        [(text)]="playerTwoName"
+      ></app-input>
+      <div class="flex justify-center items-center mt-8 space-x-10 w-full">
+        <app-button-primary
+          [text]="'Skip'"
+          size="sm"
+          (click)="skipName(2)"
+        ></app-button-primary>
+        <app-button-primary
+          [text]="'Next'"
+          size="sm"
+          (click)="nextStep()"
+        ></app-button-primary>
+      </div>
+    </div>
+  </div>
+  } 
+  <!-- @if(step==5 && gameMode == 'local') {
+  <p>player1 : {{ playerName }}</p>
+  <p>player2 : {{ playerTwoName }}</p>
+  }  -->
+  @if(step==3 && gameMode == 'online') {
+  <div class="content">
+    <h2 class="title">Type your name</h2>
+    <div class="flex flex-col items-center space-y-4 mt-8 w-full">
+      <app-input
+        [placeholder]="'Yahtzee Player'"
+        [size]="'md'"
+        [(text)]="playerName"
+      ></app-input>
+      <div class="flex justify-center items-center mt-8 space-x-10 w-full">
+        <app-button-primary
+          [text]="'Skip'"
+          size="sm"
+          (click)="skipName(1)"
+        ></app-button-primary>
+        <app-button-primary
+          [text]="'Next'"
+          size="sm"
+          (click)="nextStep()"
+        ></app-button-primary>
+      </div>
+    </div>
+  </div>
+  } @if (step==4 && onlineOption == 'create') {
+  <div class="content flex flex-col items-center space-y-4">
+    <h2 class="title">
+      Waiting for the other player to join you {{ playerName }}
+    </h2>
+    <h1>...</h1>
+    <div class="room-code">
+      <h2>Room code</h2>
+      <h2>
+        {{ roomCode }}
+      </h2>
+    </div>
+  </div>
+  } @if(step==4 && onlineOption == 'join') {
+  <div class="content">
+    <h2 class="title">Type the room code</h2>
+    <div class="flex flex-col items-center space-y-4 mt-8 w-full">
+      <app-input
+        [placeholder]="'Room Code'"
+        [size]="'md'"
+        [(text)]="roomCode"
+      ></app-input>
+      <div class="flex justify-center items-center mt-8 space-x-10 w-full">
+        <app-button-primary
+          [text]="'Join'"
+          size="sm"
+          (click)="nextStep()"
+        ></app-button-primary>
+      </div>
+    </div>
+  </div>
+  }
+</div>

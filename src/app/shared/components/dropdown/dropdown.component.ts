@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+export interface Option {
+  value: string;
+  label: string;
+}
 @Component({
   selector: 'app-dropdown',
   standalone: true,
@@ -9,14 +13,17 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./dropdown.component.scss'],
 })
 export class DropdownComponent {
-  @Input() options: string[] = []; // List of options
+  @Input() options: Option[] = []; // List of options
   @Input() placeholder: string = 'Select an option'; // Placeholder text
   @Input() disabled: boolean = false; // Disable dropdown
-  @Input() withIcon: boolean = true; // Show dropdown icon
-  @Output() selectionChange = new EventEmitter<string>(); // Emits the selected value
+  @Input() leftIcon: boolean = false;
+  @Input() rightIcon: boolean = false;
+  @Input() size: 'sm' | 'md' | 'lg' = 'md';
+  @Input() changeSelected: boolean = true;
+  @Output() selectionChange = new EventEmitter<Option>(); // Emits the selected value
 
   isOpen: boolean = false; // Tracks dropdown state
-  selectedOption: string | null = null; // Tracks the current selection
+  selectedOption: Option | null = null; // Tracks the current selection
 
   toggleDropdown(): void {
     if (!this.disabled) {
@@ -24,8 +31,8 @@ export class DropdownComponent {
     }
   }
 
-  selectOption(option: string): void {
-    this.selectedOption = option;
+  selectOption(option: Option): void {
+    if (this.changeSelected) this.selectedOption = option;
     this.isOpen = false;
     this.selectionChange.emit(option); // Emit the selected option
   }

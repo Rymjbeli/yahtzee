@@ -1,0 +1,71 @@
+@import "../../../global.variables.scss";
+
+.page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: $background-home;
+    background-image: url("../../../assets/images/dices-background.svg");
+    // background to not cover the whole screen
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    // background size to be smaller
+    background-size: 60%;
+    color: $base-white;
+    font-size: 2rem;
+    font-weight: 700;
+    // text-transform: uppercase;
+    letter-spacing: 0.2rem;
+
+    text-align: center;
+        .title{
+            font-size: 1.5rem;
+            text-shadow: 0 0 0.5rem $base-black;
+            margin-top: -2rem;
+        }
+        .subtitle{
+            font-size: 1rem;
+            
+        }
+}
+
+.image-container{
+    margin-top: -12rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+        width: 100%;
+        max-width: 550px;
+    }
+}
+
+.content{
+    margin-top: -4rem;
+}
+.settings{
+    // position fixed: top right
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+}
+.room-code{
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    color: $base-black;
+    width: fit-content;
+    background-color: $background-main-sub;
+    padding: 1.5rem 3rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 0.5rem $base-black;
+    text-shadow: 0 0 0.5rem $base-white;
+    transition: all 0.3s;
+    &:hover{
+        background-color: $background-main-base;
+    }
+}
