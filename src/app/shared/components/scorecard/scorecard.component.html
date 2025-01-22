@@ -1,4 +1,4 @@
-<div [ngClass]="{'active-player': isActivePlayer}" class="scorecard-container">
+<div [ngClass]="{'active-player': isActivePlayer}" class="scorecard-container flex flex-col justify-center">
   <span class="player-title" [ngClass]="{'indexPlayer': playerIndex !== 0,'active-player-title': isActivePlayer}">{{
     player?.name }}</span>
   <div class="section">
