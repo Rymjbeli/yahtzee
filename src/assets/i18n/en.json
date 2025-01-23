@@ -1,6 +1,3 @@
 {
-  "game": {
-    "new_game": "New Game",
-    "roll_to-start_message": "Roll the dice once to determine who will begin"
-  }
+  "greeting": "Hello, World!"
 }

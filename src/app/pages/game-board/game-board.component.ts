@@ -9,12 +9,11 @@ import { Position } from "../../shared/interfaces/position";
 import { MatDialog } from "@angular/material/dialog";
 import { EndGamePopupComponent } from "../../shared/components/popups/end-game-popup/end-game-popup.component";
 import { RulesService } from '../../shared/services/game/rules.service';
-import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-game-board',
   standalone: true,
-  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgClass, NgStyle, TranslatePipe],
+  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgClass, NgStyle],
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss'
 })
