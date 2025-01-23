@@ -1,0 +1,21 @@
+@import "../../../../../global.variables.scss";
+.title {
+  font-size: 1.2rem;
+  text-shadow: 0 0 0.5rem $base-black;
+}
+.room-code {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  color: $base-black;
+  width: fit-content;
+  background-color: $background-main-sub;
+  padding: 1.5rem 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 0.5rem $base-black;
+  text-shadow: 0 0 0.5rem $base-white;
+  transition: all 0.3s;
+  &:hover {
+    background-color: $background-main-base;
+  }
+}
