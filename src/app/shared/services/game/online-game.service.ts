@@ -1,21 +1,25 @@
-import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { GameState } from "../../interfaces/game-state";
-import { Player } from "../../models/player";
-import { Dice } from "../../models/dice";
-import {BehaviorSubject, Subject} from "rxjs";
-import { Position } from "../../interfaces/position";
-import { generateRandomDicePositions } from "../../helpers/generate-random-dice-positions";
-import { DiceService } from "./dice.service";
-import { RulesService } from "./rules.service";
-import { ScoreCard } from "../../interfaces/score-card";
-import { isPlatformBrowser } from '@angular/common';
-import { CONSTANTS } from '../../../../config/const.config';
+import {Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import {GameState} from "../../interfaces/game-state";
+import {Player} from "../../models/player";
+import {Dice} from "../../models/dice";
+import {BehaviorSubject, observable, Subject, tap} from "rxjs";
+import {DiceService} from "./dice.service";
+import {RulesService} from "./rules.service";
 import {AnimationsService} from "../animation/animations.service";
+import {generateRandomDicePositions} from "../../helpers/generate-random-dice-positions";
+import {isPlatformBrowser} from "@angular/common";
+import {CONSTANTS} from "../../../../config/const.config";
+import {ScoreCard} from "../../interfaces/score-card";
+import {Position} from "../../interfaces/position";
+import {HubService} from "../Hub/hub.service";
+import {ActivatedRoute} from "@angular/router";
+import {coerceStringArray} from "@angular/cdk/coercion";
+import {NUMPAD_EIGHT} from "@angular/cdk/keycodes";
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameService {
+export class OnlineGameService {
   private initialGameState: GameState = {
     players: [new Player('Player 1'), new Player('Player 2')],
     currentPlayerIndex: 0,
@@ -26,13 +30,15 @@ export class GameService {
   }
 
   private timerId: any;
+  private globalPlayerId: number = -1;
+  private roomCode: string = "";
   public isTimerEnabled: boolean = false;
   public startTimerNextTurn: boolean = false;
 
   private gameStateSubject = new BehaviorSubject<GameState>(this.initialGameState);
   gameState$ = this.gameStateSubject.asObservable();
 
-  rollCounter = 0;
+  rollCounter = -1;
   beforeGame = signal(false);
   total1 = signal(0);
   total2 = signal(0);
@@ -41,9 +47,10 @@ export class GameService {
     private diceService: DiceService,
     private rulesService: RulesService,
     private animationService: AnimationsService,
+    private hubService: HubService,
+    private activatedRoute: ActivatedRoute,
     @Inject(PLATFORM_ID) private platformId: any
   ) {
-
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
     });
@@ -53,10 +60,174 @@ export class GameService {
       if (storedState) {
         this.isTimerEnabled = storedState === 'true';
       }
+
+      this.activatedRoute.queryParamMap.subscribe((params) => {
+        if(params.has('room')){
+          this.roomCode = params.get('room')!;
+          this.hubService.checkRoom(params.get('room')!).subscribe(
+            (res)=>{
+              console.log(res);
+              if(res.split(':')[1]==="True"){
+                this.hubService.JoinRoom(params.get('room')!).subscribe(
+                  (res)=>{
+                    console.log(res);
+                    this.globalPlayerId = 1;
+                    this.initRoom();
+                  }
+                );
+              }else{
+                //We create
+                this.hubService.createRoom(params.get('room')!).subscribe(
+                  (res)=>{
+                    console.log(res);
+                    this.globalPlayerId = 0;
+                    this.initRoom();
+                  }
+                );
+              }
+            }
+          );
+        }
+      });
     }
 
-    this.rollCounter = 0;
+    this.rollCounter = -1;
   }
+
+  /**
+   *
+   * Initializes backend callbacks for the given room.
+   * Player will always be considered as "PLAYER 1" locally.
+   * */
+  initRoom(){
+    this.hubService.onRoomFilled().subscribe(()=>{
+
+    });
+    this.hubService.onGameEnd().subscribe(()=>{
+      this.gameEnded.next("");
+      alert('Sakrna el hanout')
+    })
+    this.hubService.onStartingPlayerRoll().subscribe(
+      (res)=>{
+        const vals = res.split(':').map(e=>Number(e));
+        if(vals[0]==this.globalPlayerId){
+          this.total1.set(vals[1]);
+        }else {
+          this.total2.set(vals[1]);
+        }
+      }
+    );
+    this.hubService.onSetDice().subscribe(
+      (res)=>{
+        console.log(res);
+        const gameState = this.getGameStateValue();
+        const diceVals = String(res.split(':')[1]).split(',').map(e=>Number(e));
+        const dice = gameState.dice;
+        const id = Number(res.split(':')[0]);
+        if(id < 2){
+          if(id == this.globalPlayerId){
+            for(let i = 0; i < 5;i++){
+              dice[i].value = diceVals[i];
+              dice[i].isHeld = false;
+            }
+            this.updateGameState({
+              dice: dice,
+              dicePositions: generateRandomDicePositions(),
+            });
+          }
+        }else{
+          for(let i = 0; i < 5;i++){
+            dice[i].value = diceVals[i];
+          }
+          this.updateGameState({
+            dice: dice,
+            dicePositions: generateRandomDicePositions(),
+          });
+          const currentPlayer = this.getGameStateValue().currentPlayerIndex;
+          this.calculateScoreCard(currentPlayer);
+        }
+      }
+    );
+    this.hubService.onGameStart().subscribe(
+      (res)=>{
+        const game = this.getGameStateValue();
+        let currentPlayer = game.currentPlayerIndex;
+        setTimeout(() => {
+          currentPlayer = Number(res) ^ this.globalPlayerId;
+          this.rollCounter=3;
+          this.beforeGame.set(false);
+          const gameState = this.getGameStateValue();
+          gameState.dice.map(die => {
+            die.isHeld = true;
+            return die;
+          });
+          this.updateGameState({ currentPlayerIndex: currentPlayer });
+          if(currentPlayer == 1){
+            this.updateGameState({rollsLeft: 0});
+            console.log("This player shall play later lol");
+          }
+        }, 3000);
+      }
+    )
+    this.hubService.onHideDice().subscribe((res)=>{
+      console.log(res)
+      const gameState = this.getGameStateValue();
+      const diceHeldVals = res.split(',');
+      for(let i = 0; i < 5;i++){
+        gameState.dice[i].isHeld = diceHeldVals[i]!='1';
+      }
+      this.gameStateSubject.next(gameState);
+    });
+    this.hubService.onScoreChosen().subscribe((res)=>{
+      console.log(res);
+      const score = res.split(':')[1];
+      const gameState = this.getGameStateValue();
+      const index = gameState.currentPlayerIndex;
+      const currentPlayer = gameState.players[index];
+      const scoreCard = currentPlayer.scoreCard;
+      const scoreCardItem = scoreCard[score];
+
+      if (scoreCardItem && !scoreCardItem.picked) {
+        scoreCardItem.picked = true;
+
+        for (const key in scoreCard) {
+          if (scoreCard.hasOwnProperty(key) && key !== score) {
+            const item = scoreCard[key];
+            if (item && typeof item === 'object' && !item.picked) {
+              item.value = null;
+            }
+          }
+        }
+
+        const dice = gameState.dice.map(die => {
+          die.isHeld = true;
+          return die;
+        });
+
+        if (score === 'yahtzee' && scoreCard.nbrOfYahtzee < 5) {
+          scoreCard.nbrOfYahtzee++;
+        }
+
+        // stop and reset the timer
+        if (this.isTimerEnabled && this.timerId) {
+          clearInterval(this.timerId);
+          this.timerId = null;
+        }
+        currentPlayer.timeLeft = 30;
+
+        this.updateGameState({
+          players: gameState.players,
+          currentPlayerIndex: (gameState.currentPlayerIndex + 1) % gameState.players.length,
+          rollsLeft: (gameState.currentPlayerIndex + 1) % gameState.players.length == 0 ? 3: 0,
+          dice: dice,
+          totalTurn: gameState.totalTurn + 1,
+        });
+        this.startTimerNextTurn = false;
+        this.calculateTotalScore(index);
+      }
+    })
+  }
+
 
   /**
    * know who will start the game
@@ -71,7 +242,6 @@ export class GameService {
       dice: dice,
       dicePositions: generateRandomDicePositions(),
     });
-
     return total;
   }
 
@@ -99,10 +269,18 @@ export class GameService {
    * @param diceIndex
    */
   toggleHoldDice(diceIndex: number) {
-    if (this.getGameStateValue().rollsLeft === 3) return;
+    if (this.getGameStateValue().rollsLeft === 3 || this.getGameStateValue().currentPlayerIndex==1) return;
+    console.log("Will hide dice")
     const gameState = this.gameStateSubject.getValue();
     gameState.dice[diceIndex].isHeld = !gameState.dice[diceIndex].isHeld;
     this.gameStateSubject.next(gameState);
+    let dice = ""
+    for(let i = 0; i < 5 ; i++){
+      dice += gameState.dice[i].isHeld ? "1" : "0"
+      console.log(i, gameState.dice[i].isHeld)
+    }
+    console.log(dice);
+    this.hubService.hideDice(this.roomCode, dice);
   }
 
   /**
@@ -203,35 +381,12 @@ export class GameService {
   rollDice(): void {
     const game = this.getGameStateValue();
     let currentPlayer = game.currentPlayerIndex;
-
-    if (this.rollCounter === 0) {
-
-      this.updateTotal1(game.currentPlayerIndex)
-      this.rollCounter++;
-
-    } else if (this.rollCounter === 1) {
-
-      this.updateTotal2(game.currentPlayerIndex);
-      currentPlayer = this.total1() > this.total2() ? 0 : 1;
+    if (this.rollCounter <2) {
+      this.hubService.StartingPlayerRoll(this.roomCode);
+      console.log(this.roomCode);
       this.beforeGame.set(true)
-
-      setTimeout(() => {
-        this.rollCounter++;
-        this.beforeGame.set(false);
-
-        const gameState = this.getGameStateValue();
-        gameState.dice.map(die => {
-          die.isHeld = true;
-          return die;
-        });
-      }, 3000);
-
-      this.updateGameState({ currentPlayerIndex: currentPlayer });
-
     } else {
-
       this.rollDiceInsideGame();
-
       const yahtzee = this.rulesService.calculateYahtzee(game.dice) > 0;
       const picked = game.players[currentPlayer].scoreCard.yahtzee.picked;
 
@@ -244,18 +399,16 @@ export class GameService {
   }
 
   private rollDiceInsideGame(): void {
-    const rollsLeft = this.getGameStateValue().rollsLeft;
+    let rollsLeft = this.getGameStateValue().rollsLeft;
     if (this.isTimerEnabled && rollsLeft === 3) {
       this.startTimer();
     }
     this.updateGameState({
-      dice: this.diceService.rollAllDice(this.getGameStateValue().dice, rollsLeft),
-      dicePositions: generateRandomDicePositions(),
+      //dice: this.diceService.rollAllDice(this.getGameStateValue().dice, rollsLeft),
+      //dicePositions: generateRandomDicePositions(),
       rollsLeft: Math.max(0, rollsLeft - 1),
     });
-
-    const currentPlayer = this.getGameStateValue().currentPlayerIndex;
-    this.calculateScoreCard(currentPlayer);
+    this.hubService.rollDice(this.roomCode);
   }
   /**
    * Get the positions of the dice.
@@ -300,55 +453,13 @@ export class GameService {
    * @param score
    */
   scoreChosen(score: string): void {
-    const gameState = this.getGameStateValue();
-    const index = gameState.currentPlayerIndex;
-    const currentPlayer = gameState.players[index];
-    const scoreCard = currentPlayer.scoreCard;
-    const scoreCardItem = scoreCard[score];
-
-    if (scoreCardItem && !scoreCardItem.picked) {
-      scoreCardItem.picked = true;
-
-      for (const key in scoreCard) {
-        if (scoreCard.hasOwnProperty(key) && key !== score) {
-          const item = scoreCard[key];
-          if (item && typeof item === 'object' && !item.picked) {
-            item.value = null;
-          }
-        }
-      }
-
-      const dice = gameState.dice.map(die => {
-        die.isHeld = true;
-        return die;
-      });
-
-      if (score === 'yahtzee' && scoreCard.nbrOfYahtzee < 5) {
-        scoreCard.nbrOfYahtzee++;
-      }
-
-      // stop and reset the timer
-      if (this.isTimerEnabled && this.timerId) {
-        clearInterval(this.timerId);
-        this.timerId = null;
-      }
-      currentPlayer.timeLeft = 30;
-
-      this.updateGameState({
-        players: gameState.players,
-        currentPlayerIndex: (gameState.currentPlayerIndex + 1) % gameState.players.length,
-        rollsLeft: 3,
-        dice: dice,
-        totalTurn: gameState.totalTurn + 1,
-      });
-      this.startTimerNextTurn = false;
-      this.calculateTotalScore(index);
-    }
+    console.log(score);
+    this.hubService.chooseScore(this.roomCode, score);
   }
 
   /**
-    * Check if the player is eligible for the bonus
-    */
+   * Check if the player is eligible for the bonus
+   */
   isBonusEligible(playerIndex: number): boolean {
     const gameState = this.getGameStateValue();
     const player = gameState.players[playerIndex];
@@ -512,13 +623,4 @@ export class GameService {
     return this.rulesService.calculateYahtzee(gameState.dice);
   }
 
-  updateTotal1(playerIndex: number): void {
-    const newTotal1 = this.rollStart(playerIndex);
-    this.total1.set(newTotal1);
-  }
-
-  updateTotal2(playerIndex: number): void {
-    const newTotal2 = this.rollStart(playerIndex);
-    this.total2.set(newTotal2);
-  }
 }

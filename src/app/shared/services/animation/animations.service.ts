@@ -30,7 +30,7 @@ export class AnimationsService {
         message.style.display = 'none';
       }
     }
-
+    //@ts-ignore
     confetti({
       particleCount: 400,
       spread: 100,

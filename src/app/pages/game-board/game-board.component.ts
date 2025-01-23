@@ -9,6 +9,8 @@ import { Position } from "../../shared/interfaces/position";
 import { MatDialog } from "@angular/material/dialog";
 import { EndGamePopupComponent } from "../../shared/components/popups/end-game-popup/end-game-popup.component";
 import { RulesService } from '../../shared/services/game/rules.service';
+import {OnlineGameService} from "../../shared/services/game/online-game.service";
+import {takeUntilDestroyed, toObservable} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-game-board',
@@ -18,15 +20,21 @@ import { RulesService } from '../../shared/services/game/rules.service';
   styleUrl: './game-board.component.scss'
 })
 export class GameBoardComponent {
-  gameService = inject(GameService);
+  gameService = inject(OnlineGameService);
   dialog = inject(MatDialog);
   gameState$: Observable<GameState> = this.gameService.gameState$;
   beforeGame = this.gameService.beforeGame;
 
   total1 = this.gameService.total1;
   total2 = this.gameService.total2;
-
+  gameEnded = this.gameService.gameEnded;
   yahtzee = 'yahtzee';
+
+  constructor() {
+    this.gameEnded.pipe(takeUntilDestroyed()).subscribe(()=>{
+      this.openEndGamePopup();
+    });
+  }
   toggleHold(index: number): void {
     this.gameService.toggleHoldDice(index);
   }
