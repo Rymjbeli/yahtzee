@@ -1,6 +1,3 @@
 {
-  "game": {
-    "new_game": "Nueva Partida",
-    "roll_to-start_message": "Lanza el dado una vez para determinar quién comenzará"
-  }
+  "greeting": "Hola"
 }

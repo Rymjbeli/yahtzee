@@ -1,6 +1,3 @@
 {
-  "game": {
-    "new_game": "Nouvelle Partie",
-    "roll_to-start_message": "Lancez le dé une fois pour déterminer qui commencera"
-  }
+  "greeting": "Bonjour"
 }
