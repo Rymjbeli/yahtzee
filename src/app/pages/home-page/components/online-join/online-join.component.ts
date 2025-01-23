@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, input, Output } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { ButtonPrimaryComponent } from '../../../../shared/components/buttons/button-primary/button-primary.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-online-join',
   standalone: true,
-  imports: [InputComponent, ButtonPrimaryComponent],
+  imports: [InputComponent, ButtonPrimaryComponent, TranslatePipe],
   templateUrl: './online-join.component.html',
   styleUrl: './online-join.component.scss',
 })

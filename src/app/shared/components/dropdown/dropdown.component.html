@@ -19,7 +19,7 @@
       (click)="selectOption(option)"
       [class.selected]="option === selectedOption"
     >
-      {{ option.label }}
+      {{ option.label | translate }}
     </li>
   </ul>
 </div>

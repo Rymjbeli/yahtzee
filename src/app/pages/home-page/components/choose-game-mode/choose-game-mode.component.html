@@ -1,8 +1,9 @@
 <div class="content">
-  <h2 class="title">Choose how you want to play!</h2>
+  <!-- <h2 class="title">Choose how you want to play!</h2> -->
+  <h2 class="title">{{ "home.choose_game_mode" | translate }}</h2>
   <div class="flex justify-center items-center space-x-4 mt-8 w-full">
     <app-button-primary
-      [text]="'Play Locally'"
+      [text]="'home.play_locally' | translate"
       [showLeftIcon]="true"
       size="md"
       (click)="playLocally()"
@@ -11,7 +12,7 @@
     </app-button-primary>
     <app-dropdown
       [options]="options"
-      [placeholder]="'Play Online'"
+      [placeholder]="'home.play_online' | translate"
       [leftIcon]="true"
       [changeSelected]="false"
       (selectionChange)="playOnline($event)"

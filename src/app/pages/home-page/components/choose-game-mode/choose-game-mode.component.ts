@@ -4,11 +4,12 @@ import {
   DropdownComponent,
   Option,
 } from '../../../../shared/components/dropdown/dropdown.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-choose-game-mode',
   standalone: true,
-  imports: [ButtonPrimaryComponent, DropdownComponent],
+  imports: [ButtonPrimaryComponent, DropdownComponent, TranslatePipe],
   templateUrl: './choose-game-mode.component.html',
   styleUrl: './choose-game-mode.component.scss',
 })

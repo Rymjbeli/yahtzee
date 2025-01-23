@@ -5,17 +5,15 @@ import {
   DropdownComponent,
   Option,
 } from '../../shared/components/dropdown/dropdown.component';
-import { InputComponent } from '../../shared/components/input/input.component';
 import { SettingsNavBarComponent } from '../../shared/components/navbar/settings/settings-navbar.component';
 import { GameService } from '../../shared/services/game/game.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SmallLoaderComponent } from '../../shared/components/loaders/small-loader/small-loader.component';
-import { isPlatformBrowser } from '@angular/common';
 import { LocalStorageService } from '../../shared/services/shared/local-storage.service';
 import { OnlineJoinComponent } from './components/online-join/online-join.component';
 import { OnlineCreateComponent } from './components/online-create/online-create.component';
 import { InputPlayerNameComponent } from './components/input-player-name/input-player-name.component';
 import { ChooseGameModeComponent } from './components/choose-game-mode/choose-game-mode.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home-page',
@@ -28,6 +26,7 @@ import { ChooseGameModeComponent } from './components/choose-game-mode/choose-ga
     OnlineCreateComponent,
     InputPlayerNameComponent,
     ChooseGameModeComponent,
+    TranslatePipe,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
@@ -48,8 +47,8 @@ export class HomePageComponent implements OnInit {
   roomCode = '';
   // online options
   options: Option[] = [
-    { value: 'create', label: 'Create a new room' },
-    { value: 'join', label: 'Join an existing room' },
+    { value: 'create', label: 'home.createNewRoom' },
+    { value: 'join', label: 'home.joinExistingRoom' },
   ];
   selectedOption: Option | null = null;
 

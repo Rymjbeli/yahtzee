@@ -7,7 +7,7 @@
     <!-- step 1 -->
     @if (step==1) {@defer {
     <app-button-primary
-      [text]="'Start Playing'"
+      [text]="'home.startPlaying' | translate"
       [showRightIcon]="true"
       class="content"
       size="lg"
@@ -32,7 +32,7 @@
     <!-- step 3 locally -->
     @if(step==3 && gameMode == 'local') {
     <app-input-player-name
-      [message]="'Type the first player name'"
+      [message]="'home.typeFirstPlayerName' | translate"
       [playerName]="playerName"
       (submitEvent)="saveName($event, 1)"
       (previousEvent)="previousStep()"
@@ -42,7 +42,7 @@
     <!-- step4 locally -->
     @if(step==4 && gameMode == 'local') {
     <app-input-player-name
-      [message]="'Type the second player name'"
+      [message]="'home.typeSecondPlayerName' | translate"
       [playerName]="playerTwoName"
       (submitEvent)="saveName($event, 2)"
       (previousEvent)="previousStep()"
@@ -52,7 +52,7 @@
     <!-- step3 online -->
     @if(step==3 && gameMode == 'online') {
     <app-input-player-name
-      [message]="'Type your name'"
+      [message]="'home.typeYourName' | translate"
       (submitEvent)="saveName($event, 1)"
       (previousEvent)="previousStep()"
       [playerName]="playerName"
