@@ -7,6 +7,7 @@ import {LocalStorageService} from "../shared/local-storage.service";
 })
 export class GameModeService {
   private gameMode = signal(CONSTANTS.GAME_MODE.LOCAL)
+  private
   constructor(
     private localStorageService: LocalStorageService,
     @Inject(PLATFORM_ID) protected platformId: any) { }

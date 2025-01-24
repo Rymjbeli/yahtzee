@@ -15,10 +15,10 @@ import {Position} from "../../interfaces/position";
 })
 export abstract class BaseGameService {
   // Inject the services
-  localStorageService = inject(LocalStorageService);
-  animationService = inject(AnimationsService);
-  rulesService = inject(RulesService);
-  diceService = inject(DiceService);
+  protected localStorageService = inject(LocalStorageService);
+  protected animationService = inject(AnimationsService);
+  protected rulesService = inject(RulesService);
+  protected diceService = inject(DiceService);
 
   // Inject the platformId
   protected platformId = inject(PLATFORM_ID);
