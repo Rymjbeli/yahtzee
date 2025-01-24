@@ -13,4 +13,9 @@ export const CONSTANTS = {
   },
   IS_MUSIC_PLAYING: 'isMusicPlaying',
   IS_TIMER_ENABLED: 'isTimerEnabled',
+
+  GAME_MODE: {
+    LOCAL: 'local',
+    ONLINE: 'online',
+  },
 }

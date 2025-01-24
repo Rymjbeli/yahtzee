@@ -18,13 +18,8 @@ import {BaseGameService} from "./base-game.service";
   providedIn: 'root'
 })
 export class GameService extends BaseGameService {
-  constructor(
-    diceService: DiceService,
-    rulesService: RulesService,
-    animationService: AnimationsService,
-    @Inject(PLATFORM_ID) platformId: any
-  ) {
-    super(diceService, rulesService, animationService, platformId);
+  constructor() {
+    super();
     console.log('GameService')
 
     this.updateGameState({
