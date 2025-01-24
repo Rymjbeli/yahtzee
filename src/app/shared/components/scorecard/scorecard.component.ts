@@ -4,14 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Player } from '../../models/player';
 import {RulesService} from "../../services/game/rules.service";
 import {GameService} from "../../services/game/game.service";
-
-
-interface Section {
-  variable: string,
-  name: string,
-  icon?: string,
-  disabled: boolean,
-}
+import {Section} from "../../interfaces/section.interface";
+import {BaseGameService} from "../../services/game/base-game.service";
 
 @Component({
   selector: 'app-scorecard',
@@ -28,7 +22,7 @@ export class ScorecardComponent {
   nbrOfYahtzee = 'nbrOfYahtzee';
 
   rulesService = inject(RulesService);
-  gameService = inject(GameService);
+  gameService = inject(BaseGameService);
 
   upperSection: Section[] = [
     { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', disabled: true },

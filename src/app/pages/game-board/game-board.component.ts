@@ -8,9 +8,9 @@ import { AsyncPipe, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
 import { Position } from "../../shared/interfaces/position";
 import { MatDialog } from "@angular/material/dialog";
 import { EndGamePopupComponent } from "../../shared/components/popups/end-game-popup/end-game-popup.component";
-import { RulesService } from '../../shared/services/game/rules.service';
 import {OnlineGameService} from "../../shared/services/game/online-game.service";
-import {takeUntilDestroyed, toObservable} from "@angular/core/rxjs-interop";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {BaseGameService} from "../../shared/services/game/base-game.service";
 
 @Component({
   selector: 'app-game-board',
@@ -20,7 +20,7 @@ import {takeUntilDestroyed, toObservable} from "@angular/core/rxjs-interop";
   styleUrl: './game-board.component.scss'
 })
 export class GameBoardComponent {
-  gameService = inject(OnlineGameService);
+  gameService = inject(BaseGameService);
   dialog = inject(MatDialog);
   gameState$: Observable<GameState> = this.gameService.gameState$;
   beforeGame = this.gameService.beforeGame;

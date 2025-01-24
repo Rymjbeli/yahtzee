@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GameService } from '../../../services/game/game.service';
 import { LocalStorageService } from '../../../services/shared/local-storage.service';
+import {BaseGameService} from "../../../services/game/base-game.service";
 
 @Component({
   selector: 'app-small-navbar',
@@ -25,7 +26,7 @@ export class SmallNavbarComponent {
   @Input() disabled: boolean = false;
   @Output() clicked = new EventEmitter<void>();
 
-  gameService = inject(GameService);
+  gameService = inject(BaseGameService);
   localStorageService = inject(LocalStorageService);
   router = inject(Router);
   private platformId = inject(PLATFORM_ID);

@@ -1,6 +1,6 @@
 import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TranslateModule} from "@ngx-translate/core";
 import {LanguageService} from "./shared/services/settings/language.service";
 import {HubService} from "./shared/services/Hub/hub.service";
 import {isPlatformServer} from "@angular/common";
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.languageService.languageSettings();
     if (!isPlatformServer(this.platformId)) {
-      this.hubService.startConnection().subscribe();
+      // this.hubService.startConnection().subscribe();
     }
   }
 }

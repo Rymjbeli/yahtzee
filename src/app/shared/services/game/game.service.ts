@@ -12,45 +12,20 @@ import { isPlatformBrowser } from '@angular/common';
 import { CONSTANTS } from '../../../../config/const.config';
 import {AnimationsService} from "../animation/animations.service";
 import { LocalStorageService } from '../shared/local-storage.service';
+import {BaseGameService} from "./base-game.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameService {
-  localStorageService = inject(LocalStorageService);
-  playerOneName =
-    this.localStorageService.getData('playerName', this.platformId) ||
-    'Player 1';
-  playerTwoName =
-    this.localStorageService.getData('playerTwoName', this.platformId) ||
-    'Player 2';
-  private initialGameState: GameState = {
-    players: [new Player(this.playerOneName), new Player(this.playerTwoName)],
-    currentPlayerIndex: 0,
-    dice: Array.from({ length: 5 }, () => new Dice()),
-    dicePositions: [],
-    rollsLeft: 3,
-    totalTurn: 0,
-  }
-
-  private timerId: any;
-  public isTimerEnabled: boolean = false;
-  public startTimerNextTurn: boolean = false;
-
-  private gameStateSubject = new BehaviorSubject<GameState>(this.initialGameState);
-  gameState$ = this.gameStateSubject.asObservable();
-
-  rollCounter = 0;
-  beforeGame = signal(false);
-  total1 = signal(0);
-  total2 = signal(0);
-  gameEnded =  new Subject();
+export class GameService extends BaseGameService {
   constructor(
-    private diceService: DiceService,
-    private rulesService: RulesService,
-    private animationService: AnimationsService,
-    @Inject(PLATFORM_ID) private platformId: any
+    diceService: DiceService,
+    rulesService: RulesService,
+    animationService: AnimationsService,
+    @Inject(PLATFORM_ID) platformId: any
   ) {
+    super(diceService, rulesService, animationService, platformId);
+    console.log('GameService')
 
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
@@ -197,7 +172,7 @@ export class GameService {
    * @param scoreCard
    * @param dice
    */
-  checkNewYahtzee(scoreCard: ScoreCard, dice: Dice[]) {
+  checkNewYahtzee(scoreCard: ScoreCard, dice: Dice[]): number | boolean | null {
     const gotYahtzee = this.rulesService.calculateYahtzee(dice) > 0;
     const yahtzeePick = scoreCard.yahtzee?.picked;
     const yahtzeeValue = scoreCard.yahtzee?.value;
@@ -251,7 +226,7 @@ export class GameService {
     }
   }
 
-  private rollDiceInsideGame(): void {
+  rollDiceInsideGame(): void {
     const rollsLeft = this.getGameStateValue().rollsLeft;
     if (this.isTimerEnabled && rollsLeft === 3) {
       this.startTimer();

@@ -3,6 +3,7 @@ import {NgOptimizedImage} from "@angular/common";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {GameService} from "../../../services/game/game.service";
+import {BaseGameService} from "../../../services/game/base-game.service";
 
 @Component({
   selector: 'app-end-game-popup',
@@ -23,7 +24,7 @@ export class EndGamePopupComponent {
   isTie = false;
 
   private dialogRef = inject(MatDialogRef<EndGamePopupComponent>);
-  gameService = inject(GameService);
+  gameService = inject(BaseGameService);
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     this.player1Name = data.player1Name;
     this.player2Name = data.player2Name;

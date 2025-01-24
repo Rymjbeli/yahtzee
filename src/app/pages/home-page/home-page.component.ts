@@ -14,6 +14,7 @@ import { OnlineCreateComponent } from './components/online-create/online-create.
 import { InputPlayerNameComponent } from './components/input-player-name/input-player-name.component';
 import { ChooseGameModeComponent } from './components/choose-game-mode/choose-game-mode.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import {BaseGameService} from "../../shared/services/game/base-game.service";
 
 @Component({
   selector: 'app-home-page',
@@ -33,7 +34,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class HomePageComponent implements OnInit {
   [x: string]: any;
-  gameService = inject(GameService);
+  gameService = inject(BaseGameService);
   router = inject(Router);
   platformId = inject(PLATFORM_ID);
   route = inject(ActivatedRoute);
