@@ -3,11 +3,5 @@
     <img  src="../../../assets/icons/dice-rules.svg" alt="{{ ruleTitle }}">
     <h2 class="text-2xl font-bold">{{ ruleTitle }}</h2>
   </div>
-<!--  <textarea class="text-gray-text leading-loose" [value]="markdown"></textarea>-->
-<!--  <markdown class="variable-binding" [data]="markdown"></markdown>-->
-  @for (descriptionItem of descriptionItems; track $index) {
-  <div class="text-gray-text leading-loose">
-    {{ descriptionItem }}
-  </div>
-  }
+  <markdown class="markdown variable-binding" [data]="descriptionMarkdown"></markdown>
 </div>
