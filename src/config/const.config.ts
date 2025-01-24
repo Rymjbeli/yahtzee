@@ -11,10 +11,12 @@ export const CONSTANTS = {
     SPANISH: 'Spanish',
     ARABIC: 'Arabic',
   },
+
   IS_MUSIC_PLAYING: 'isMusicPlaying',
   IS_TIMER_ENABLED: 'isTimerEnabled',
 
   GAME_MODE: {
+    GAME_MODE: 'gameMode',
     LOCAL: 'local',
     ONLINE: 'online',
   },

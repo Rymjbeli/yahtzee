@@ -7,7 +7,7 @@
     "Yahtzee_player": "Yahtzee Player",
     "back": "Back",
     "next": "Next",
-    "waitingForPlayers": "Waiting for the other player to join you ",
+    "waitingForPlayer": "Waiting for the other player to join you ",
     "roomCode": "Room Code",
     "typeRoomCode": "Type the room code",
     "join": "Join",

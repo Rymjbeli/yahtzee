@@ -9,7 +9,7 @@ import {isPlatformServer} from "@angular/common";
   standalone: true,
   imports: [ RouterModule, TranslateModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   title = 'yahtzee';
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.languageService.languageSettings();
     if (!isPlatformServer(this.platformId)) {
-      // this.hubService.startConnection().subscribe();
+      this.hubService.startConnection().subscribe();
     }
   }
 }

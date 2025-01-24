@@ -28,7 +28,6 @@ export class OnlineGameService extends BaseGameService {
 
   constructor() {
     super();
-    console.log("OnlineGameService")
     this.rollCounter = -1;
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
@@ -358,6 +357,7 @@ export class OnlineGameService extends BaseGameService {
    * Main roll function: Rolls the dice and updates the game state with the new values.
    */
   rollDice(): void {
+    console.log('rollDice from online game')
     const game = this.getGameStateValue();
     let currentPlayer = game.currentPlayerIndex;
     if (this.rollCounter <2) {
