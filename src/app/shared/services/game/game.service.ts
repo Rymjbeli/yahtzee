@@ -20,7 +20,6 @@ import {BaseGameService} from "./base-game.service";
 export class GameService extends BaseGameService {
   constructor() {
     super();
-    console.log('GameService')
 
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
@@ -179,6 +178,7 @@ export class GameService extends BaseGameService {
    * Main roll function: Rolls the dice and updates the game state with the new values.
    */
   rollDice(): void {
+    console.log('rollDice from offline game')
     const game = this.getGameStateValue();
     let currentPlayer = game.currentPlayerIndex;
 

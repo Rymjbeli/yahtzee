@@ -3,12 +3,10 @@ import { ScorecardComponent } from "../../shared/components/scorecard/scorecard.
 import { ButtonRollComponent } from "../../shared/components/buttons/button-roll/button-roll.component";
 import { Observable } from "rxjs";
 import { GameState } from "../../shared/interfaces/game-state";
-import { GameService } from "../../shared/services/game/game.service";
 import { AsyncPipe, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
 import { Position } from "../../shared/interfaces/position";
 import { MatDialog } from "@angular/material/dialog";
 import { EndGamePopupComponent } from "../../shared/components/popups/end-game-popup/end-game-popup.component";
-import {OnlineGameService} from "../../shared/services/game/online-game.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {BaseGameService} from "../../shared/services/game/base-game.service";
 
@@ -17,7 +15,7 @@ import {BaseGameService} from "../../shared/services/game/base-game.service";
   standalone: true,
   imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgClass, NgStyle],
   templateUrl: './game-board.component.html',
-  styleUrl: './game-board.component.scss'
+  styleUrl: './game-board.component.scss',
 })
 export class GameBoardComponent {
   gameService = inject(BaseGameService);
@@ -29,7 +27,6 @@ export class GameBoardComponent {
   total2 = this.gameService.total2;
   gameEnded = this.gameService.gameEnded;
   yahtzee = 'yahtzee';
-
   constructor() {
     this.gameEnded.pipe(takeUntilDestroyed()).subscribe(()=>{
       this.openEndGamePopup();
