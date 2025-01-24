@@ -1,0 +1,7 @@
+<div class="shadow-custom-light border-2 border-black rounded-3xl flex flex-col p-4 gap-2">
+  <div class="flex flex-row items-center gap-4">
+    <img  src="../../../assets/icons/dice-rules.svg" alt="{{ ruleTitle }}">
+    <h2 class="text-2xl font-bold">{{ ruleTitle }}</h2>
+  </div>
+  <markdown class="markdown variable-binding" [data]="descriptionMarkdown"></markdown>
+</div>

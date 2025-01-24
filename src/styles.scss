@@ -10,3 +10,9 @@ body {
 button {
   outline: none;
 }
+
+@layer base {
+  .markdown * {
+    all: revert;
+  }
+}

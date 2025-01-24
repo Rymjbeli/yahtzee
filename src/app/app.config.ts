@@ -9,11 +9,12 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {BaseGameService} from "./shared/services/game/base-game.service";
 import {httpLoaderFactory} from "./shared/factories/http-loader-factory";
 import {gameFactory} from "./shared/factories/game-factory";
+import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideClientHydration(),
+    provideClientHydration(), provideMarkdown(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
     importProvidersFrom([TranslateModule.forRoot({

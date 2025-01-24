@@ -28,6 +28,7 @@
     "@ngx-translate/http-loader": "^16.0.0",
     "canvas-confetti": "^1.9.3",
     "express": "^4.18.2",
+    "ngx-markdown": "^17.2.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "yahtzee": "file:",
