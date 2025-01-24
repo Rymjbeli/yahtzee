@@ -1,0 +1,23 @@
+<div class="content">
+  <h2 class="title">{{ message }}</h2>
+  <div class="flex flex-col items-center space-y-4 mt-8 w-full">
+    <app-input
+      [placeholder]="'home.Yahtzee_player' | translate"
+      [size]="'md'"
+      [(text)]="playerName"
+    ></app-input>
+    <div class="flex justify-center items-center mt-8 space-x-10 w-full">
+      <app-button-primary
+        [text]="'home.back' | translate"
+        size="sm"
+        (click)="previous()"
+      ></app-button-primary>
+      <app-button-primary
+        [text]="'home.next' | translate"
+        size="sm"
+        (click)="submitName()"
+        [type]="playerName.length > 0 ? 'normal' : 'disabled'"
+      ></app-button-primary>
+    </div>
+  </div>
+</div>

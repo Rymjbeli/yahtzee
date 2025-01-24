@@ -1,4 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { inject, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { GameState } from "../../interfaces/game-state";
 import { Player } from "../../models/player";
 import { Dice } from "../../models/dice";
@@ -11,13 +11,21 @@ import { ScoreCard } from "../../interfaces/score-card";
 import { isPlatformBrowser } from '@angular/common';
 import { CONSTANTS } from '../../../../config/const.config';
 import {AnimationsService} from "../animation/animations.service";
+import { LocalStorageService } from '../shared/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
+  localStorageService = inject(LocalStorageService);
+  playerOneName =
+    this.localStorageService.getData('playerName', this.platformId) ||
+    'Player 1';
+  playerTwoName =
+    this.localStorageService.getData('playerTwoName', this.platformId) ||
+    'Player 2';
   private initialGameState: GameState = {
-    players: [new Player('Player 1'), new Player('Player 2')],
+    players: [new Player(this.playerOneName), new Player(this.playerTwoName)],
     currentPlayerIndex: 0,
     dice: Array.from({ length: 5 }, () => new Dice()),
     dicePositions: [],

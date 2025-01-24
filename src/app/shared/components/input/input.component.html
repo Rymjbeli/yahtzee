@@ -1,5 +1,7 @@
 <div class="input-container" [ngClass]="size">
   <input
+    [(ngModel)]="text"
+    (ngModelChange)="textChange.emit($event)"
     [type]="text"
     class="input-field"
     [class.disabled]="type === 'disabled'"
