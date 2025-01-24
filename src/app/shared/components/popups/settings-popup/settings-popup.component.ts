@@ -8,6 +8,7 @@ import {CONSTANTS} from "../../../../../config/const.config";
 import {LanguageService} from "../../../services/settings/language.service";
 import {LanguageInterface} from "../../../interfaces/language.interface";
 import { GameService } from '../../../services/game/game.service';
+import {BaseGameService} from "../../../services/game/base-game.service";
 
 @Component({
   selector: 'app-settings-popup',
@@ -26,7 +27,7 @@ export class SettingsPopupComponent implements OnInit{
   private soundService = inject(SoundService);
   private languageService = inject(LanguageService);
   private platformId = inject(PLATFORM_ID);
-  private gameService = inject(GameService);
+  private gameService = inject(BaseGameService);
 
   isMusicPlaying = false;
   languages: LanguageInterface[] = [];

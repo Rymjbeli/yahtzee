@@ -15,42 +15,27 @@ import {HubService} from "../Hub/hub.service";
 import {ActivatedRoute} from "@angular/router";
 import {coerceStringArray} from "@angular/cdk/coercion";
 import {NUMPAD_EIGHT} from "@angular/cdk/keycodes";
+import {BaseGameService} from "./base-game.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class OnlineGameService {
-  private initialGameState: GameState = {
-    players: [new Player('Player 1'), new Player('Player 2')],
-    currentPlayerIndex: 0,
-    dice: Array.from({ length: 5 }, () => new Dice()),
-    dicePositions: [],
-    rollsLeft: 3,
-    totalTurn: 0,
-  }
+export class OnlineGameService extends BaseGameService {
 
-  private timerId: any;
   private globalPlayerId: number = -1;
   private roomCode: string = "";
-  public isTimerEnabled: boolean = false;
-  public startTimerNextTurn: boolean = false;
 
-  private gameStateSubject = new BehaviorSubject<GameState>(this.initialGameState);
-  gameState$ = this.gameStateSubject.asObservable();
-
-  rollCounter = -1;
-  beforeGame = signal(false);
-  total1 = signal(0);
-  total2 = signal(0);
-  gameEnded =  new Subject();
   constructor(
-    private diceService: DiceService,
-    private rulesService: RulesService,
-    private animationService: AnimationsService,
+    diceService: DiceService,
+    rulesService: RulesService,
+    animationService: AnimationsService,
     private hubService: HubService,
     private activatedRoute: ActivatedRoute,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) platformId: any
   ) {
+    super(diceService, rulesService, animationService, platformId);
+    console.log("OnlineGameService")
+    this.rollCounter = -1;
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
     });
@@ -398,7 +383,7 @@ export class OnlineGameService {
     }
   }
 
-  private rollDiceInsideGame(): void {
+  rollDiceInsideGame(): void {
     let rollsLeft = this.getGameStateValue().rollsLeft;
     if (this.isTimerEnabled && rollsLeft === 3) {
       this.startTimer();
