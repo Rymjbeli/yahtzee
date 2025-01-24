@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './button-roll.component.scss'
 })
 export class ButtonRollComponent {
-  @Input() text: string = '';
+  @Input() text: 'Roll Dice' | 'Reroll Dice' = 'Roll Dice';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() type: 'normal' | 'disabled' = 'normal';
 }

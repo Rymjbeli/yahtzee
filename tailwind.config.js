@@ -15,6 +15,7 @@ module.exports = {
         'gray-text-light': '#a3a3a3',
         'secondary': '#FDFCFC',
         'base-gray': '#F5F4F4',
+        'home': '#6050B7',
         'main': '#AE9AFF',
         'main-base': '#D4C9FF',
         'main-sub': '#E2DCFD',
@@ -24,6 +25,7 @@ module.exports = {
       },
       fontSize: {
         'base': '16px',
+        '4.5xl': '2.5rem',
       },
       lineHeight: {
         'base': '1.5',
@@ -41,6 +43,9 @@ module.exports = {
       boxShadow: {
         'custom-light': '0 4px 6px rgba(4, 16, 21, 0.09)',
       },
+      rotate: {
+        '37': '37deg',
+      }
     },
   },
   plugins: [],

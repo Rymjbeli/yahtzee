@@ -1,8 +1,15 @@
-<div class="dropdown-container" [class.disabled]="disabled">
+<div class="dropdown-container" [class.disabled]="disabled" [ngClass]="[size]">
   <div class="dropdown-header" (click)="toggleDropdown()">
-    <span>{{ selectedOption || placeholder }}</span>
-    @if (withIcon) {
-    <span class="dropdown-icon">&#x25BC;</span>
+    @if (leftIcon) {
+    <div class="icon flex justify-center items-center">
+      <ng-content select="[left]"></ng-content>
+    </div>
+    }
+    <span>{{ selectedOption?.label || placeholder }}</span>
+    @if (rightIcon) {
+    <div class="icon flex justify-center items-center">
+      <ng-content select="[left]"></ng-content>
+    </div>
     }
   </div>
 
@@ -12,7 +19,7 @@
       (click)="selectOption(option)"
       [class.selected]="option === selectedOption"
     >
-      {{ option }}
+      {{ option.label | translate }}
     </li>
   </ul>
 </div>

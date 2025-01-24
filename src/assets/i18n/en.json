@@ -1,3 +1,21 @@
 {
-  "greeting": "Hello, World!"
+  "greeting": "Hello, World!",
+  "home": {
+    "choose_game_mode": "Choose how you want to play!",
+    "play_locally": "Play Locally",
+    "play_online": "Play Online",
+    "Yahtzee_player": "Yahtzee Player",
+    "back": "Back",
+    "next": "Next",
+    "waitingForPlayers": "Waiting for the other player to join you ",
+    "roomCode": "Room Code",
+    "typeRoomCode": "Type the room code",
+    "join": "Join",
+    "startPlaying": "Start Playing",
+    "typeFirstPlayerName": "Type the first player name",
+    "typeSecondPlayerName": "Type the second player name",
+    "typeYourName": "Type your name",
+    "createNewRoom": "Create a new room",
+    "joinExistingRoom": "Join an existing room"
+  }
 }

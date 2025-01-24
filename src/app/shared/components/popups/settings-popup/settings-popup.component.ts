@@ -2,13 +2,13 @@ import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {isPlatformBrowser, NgClass, NgOptimizedImage} from "@angular/common";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
-import {SoundService} from "../../../services/sound.service";
+import {SoundService} from "../../../services/settings/sound.service";
 import {FormsModule} from "@angular/forms";
 import {CONSTANTS} from "../../../../../config/const.config";
-import {MatFormField} from "@angular/material/form-field";
-import {MatOption, MatSelect} from "@angular/material/select";
-import {LanguageService} from "../../../services/language.service";
+import {LanguageService} from "../../../services/settings/language.service";
 import {LanguageInterface} from "../../../interfaces/language.interface";
+import { GameService } from '../../../services/game/game.service';
+import {BaseGameService} from "../../../services/game/base-game.service";
 
 @Component({
   selector: 'app-settings-popup',
@@ -17,9 +17,6 @@ import {LanguageInterface} from "../../../interfaces/language.interface";
     NgOptimizedImage,
     ButtonPrimaryComponent,
     FormsModule,
-    MatFormField,
-    MatSelect,
-    MatOption,
     NgClass
   ],
   templateUrl: './settings-popup.component.html',
@@ -30,15 +27,19 @@ export class SettingsPopupComponent implements OnInit{
   private soundService = inject(SoundService);
   private languageService = inject(LanguageService);
   private platformId = inject(PLATFORM_ID);
+  private gameService = inject(BaseGameService);
 
   isMusicPlaying = false;
   languages: LanguageInterface[] = [];
   selectedLanguage: LanguageInterface = { name: CONSTANTS.LANGUAGES.ENGLISH, code: CONSTANTS.LANGUAGES.EN };
   dropdownOpen: boolean = false;
+  isTimerEnabled: boolean = false;
+
   ngOnInit(): void {
     this.isMusicPlaying = this.soundService.getMusicState();
     this.languages = this.languageService.languages;
     this.selectedLanguage = this.languageService.getLanguage();
+    this.isTimerEnabled = this.gameService.getTimerState();
   }
   closeDialog(): void {
     this.dialogRef.close();
@@ -58,5 +59,11 @@ export class SettingsPopupComponent implements OnInit{
     this.selectedLanguage = language;
     this.dropdownOpen = false;
     this.languageService.setLanguage(language);
+  }
+
+  toggleTimer() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isTimerEnabled = this.gameService.toggleTimer();
+    }
   }
 }

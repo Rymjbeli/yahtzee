@@ -2,8 +2,9 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 50px;
+  align-items: flex-start;
+  padding: 20px 50px;
+  padding-bottom: 0;
 }
 
 .yahtzee-logo-navbar {
