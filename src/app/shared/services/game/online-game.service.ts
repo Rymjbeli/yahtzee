@@ -1,4 +1,4 @@
-import {Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import {inject, Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
 import {GameState} from "../../interfaces/game-state";
 import {Player} from "../../models/player";
 import {Dice} from "../../models/dice";
@@ -21,19 +21,13 @@ import {BaseGameService} from "./base-game.service";
   providedIn: 'root'
 })
 export class OnlineGameService extends BaseGameService {
-
+  private hubService = inject(HubService);
+  private activatedRoute = inject(ActivatedRoute);
   private globalPlayerId: number = -1;
   private roomCode: string = "";
 
-  constructor(
-    diceService: DiceService,
-    rulesService: RulesService,
-    animationService: AnimationsService,
-    private hubService: HubService,
-    private activatedRoute: ActivatedRoute,
-    @Inject(PLATFORM_ID) platformId: any
-  ) {
-    super(diceService, rulesService, animationService, platformId);
+  constructor() {
+    super();
     console.log("OnlineGameService")
     this.rollCounter = -1;
     this.updateGameState({

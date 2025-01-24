@@ -1,4 +1,4 @@
-import {Inject, inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import {inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
 import {GameState} from "../../interfaces/game-state";
 import {Player} from "../../models/player";
 import {Dice} from "../../models/dice";
@@ -14,8 +14,16 @@ import {Position} from "../../interfaces/position";
   providedIn: 'root'
 })
 export abstract class BaseGameService {
-  localStorageService = inject(LocalStorageService);
+  // Inject the services
+  protected localStorageService = inject(LocalStorageService);
+  protected animationService = inject(AnimationsService);
+  protected rulesService = inject(RulesService);
+  protected diceService = inject(DiceService);
 
+  // Inject the platformId
+  protected platformId = inject(PLATFORM_ID);
+
+  // Define the properties
   playerOneName =
     this.localStorageService.getData('playerName', this.platformId) ||
     'Player 1';
@@ -43,12 +51,7 @@ export abstract class BaseGameService {
   total1 = signal(0);
   total2 = signal(0);
   gameEnded =  new Subject();
-  protected constructor(
-    protected diceService: DiceService,
-    protected rulesService: RulesService,
-    protected animationService: AnimationsService,
-    @Inject(PLATFORM_ID) protected platformId: any
-  ) { }
+  protected constructor() { }
 
   abstract rollStart(playerIndex: number): number
   abstract updatePlayerName(playerIndex: number, name: string): void
