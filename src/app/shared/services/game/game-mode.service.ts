@@ -1,4 +1,4 @@
-import {Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import {inject, Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
 import {CONSTANTS} from "../../../../config/const.config";
 import {LocalStorageService} from "../shared/local-storage.service";
 
@@ -7,10 +7,9 @@ import {LocalStorageService} from "../shared/local-storage.service";
 })
 export class GameModeService {
   private gameMode = signal(CONSTANTS.GAME_MODE.LOCAL)
-  private
-  constructor(
-    private localStorageService: LocalStorageService,
-    @Inject(PLATFORM_ID) protected platformId: any) { }
+  private localStorageService = inject(LocalStorageService);
+  private platformId = inject(PLATFORM_ID);
+  constructor() { }
 
   get mode() {
     return this.gameMode.asReadonly();
