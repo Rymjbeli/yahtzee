@@ -9,6 +9,7 @@ import {HttpTransportType, HubConnection, HubConnectionBuilder, LogLevel} from "
 })
 export class HubService {
   hubConnection !: HubConnection;
+  IsConnected : boolean = false;
   constructor() {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(environment.apiUrl +"/Game",{
@@ -17,18 +18,17 @@ export class HubService {
       }).build();
   }
   startConnection(): Observable<void> {
-    console.log("Starting hub connection...");
     return new Observable<void>((observer) => {
       this.hubConnection
         .start()
         .then(() => {
-          console.log('Connection established with SignalR hub');
+          this.IsConnected = true;
           observer.next();
           observer.complete();
         })
         .catch((error) => {
-          console.error('Error connecting to SignalR hub:', error);
-          observer.error(error);
+          this.IsConnected = false;
+          //observer.error(error);
         });
     });
   }
@@ -43,9 +43,9 @@ export class HubService {
       }
     ).pipe(first());
   }
-  createRoom(roomCode: string){
+  createRoom(playerName: string){
     return defer(()=>{
-      this.hubConnection.invoke("CreateRoom", String(roomCode));
+      this.hubConnection.invoke("CreateRoom",String(playerName));
       return new Observable<string>((observer) => {
         this.hubConnection.on('RoomCreation', (message: string) => {
           observer.next(message);
@@ -53,9 +53,9 @@ export class HubService {
       });
     }).pipe(first());
   }
-  JoinRoom(roomCode: string) : Observable<string>{
+  JoinRoom(roomCode: string, playerName: string) : Observable<string>{
     return defer(()=>{
-      this.hubConnection.invoke("JoinRoom", String(roomCode));
+      this.hubConnection.invoke("JoinRoom", String(roomCode), String(playerName));
       return new Observable<string>((observer) => {
         this.hubConnection.on('RoomJoining', (message: string) => {
           observer.next(message);
@@ -64,6 +64,13 @@ export class HubService {
     }).pipe(first());
   }
 
+  onSecondPlayerJoined(){
+    return new Observable<string>((observer) => {
+      this.hubConnection.on('RoomJoining', (message: string) => {
+        observer.next(message);
+      });
+    });
+  }
   onStartingPlayerRoll() : Observable<string>{
     return new Observable<string>((observer) => {
       this.hubConnection.on('StartingRoll', (message: string) => {
