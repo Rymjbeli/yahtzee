@@ -14,6 +14,8 @@ import { OnlineCreateComponent } from './components/online-create/online-create.
 import { InputPlayerNameComponent } from './components/input-player-name/input-player-name.component';
 import { ChooseGameModeComponent } from './components/choose-game-mode/choose-game-mode.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import {HubService} from "../../shared/services/Hub/hub.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-home-page',
@@ -35,6 +37,7 @@ export class HomePageComponent implements OnInit {
   [x: string]: any;
   gameService = inject(GameService);
   router = inject(Router);
+  hubService = inject(HubService);
   platformId = inject(PLATFORM_ID);
   route = inject(ActivatedRoute);
   localStorageService = inject(LocalStorageService);
@@ -79,7 +82,7 @@ export class HomePageComponent implements OnInit {
       this.retrieveFromLocalStorage('playerTwoName') || 'Player 2';
     this.roomCode =
       this.retrieveFromLocalStorage('roomCode') ||
-      Math.random().toString(36).substring(2, 10);
+      "PLEASE WAIT";
   }
 
   nextStep() {
@@ -87,7 +90,19 @@ export class HomePageComponent implements OnInit {
       this.roomCode = '';
     }
     if (this.step === 3 && this.onlineOption === 'create') {
-      this.saveToLocalStorage('roomCode', this.roomCode);
+      this.hubService.createRoom(this.playerName).subscribe((res)=>{
+        if(res != "0"){
+          this.roomCode = res;
+          this.saveToLocalStorage('roomCode', this.roomCode);
+          this.hubService.onSecondPlayerJoined().subscribe((playerNames)=>{
+            this.saveToLocalStorage("GlobalId", "0");
+            this.saveToLocalStorage('roomCode', this.roomCode);
+            this.playerTwoName = playerNames.split(":")[1];
+            this.saveToLocalStorage('playerTwoName', this.playerTwoName);
+            this.router.navigate(["/game/gameboard"]);
+          })
+        }
+      });
     }
     if (this.step === 3) {
       this.saveToLocalStorage('playerName', this.playerName);
@@ -105,6 +120,11 @@ export class HomePageComponent implements OnInit {
   }
 
   playOnline($event: Option) {
+    if(!this.hubService.IsConnected){
+      alert("Couldn't establish a connection with the server, please check your internet.");
+      this.hubService.startConnection().subscribe();
+      return;
+    }
     this.gameMode = 'online';
     this.saveToLocalStorage('gameMode', this.gameMode);
     this.onlineOption = $event.value as 'create' | 'join';
@@ -158,6 +178,18 @@ export class HomePageComponent implements OnInit {
 
   joinRoom($event: { roomCode: string }) {
     this.roomCode = $event.roomCode;
-    alert('Joining room ' + this.roomCode);
+    this.hubService.checkRoom(this.roomCode).subscribe((res)=>{
+      if(res.split(':')[1] == "False") {
+        alert("Room does not exist.");
+      }else {
+        this.saveToLocalStorage('roomCode', this.roomCode);
+        this.hubService.JoinRoom(this.roomCode, this.playerName).subscribe((playerNames)=>{
+          this.playerTwoName = playerNames.split(":")[0];
+          this.saveToLocalStorage('playerTwoName', this.playerTwoName);
+          this.saveToLocalStorage("GlobalId", "1");
+          this.router.navigate(["/game/gameboard"]);
+        });
+      }
+    });
   }
 }

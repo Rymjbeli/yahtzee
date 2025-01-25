@@ -1,4 +1,4 @@
-import {inject, Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import {inject, Inject, Injectable, OnInit, PLATFORM_ID, signal} from '@angular/core';
 import {GameState} from "../../interfaces/game-state";
 import {Player} from "../../models/player";
 import {Dice} from "../../models/dice";
@@ -20,7 +20,7 @@ import {BaseGameService} from "./base-game.service";
 @Injectable({
   providedIn: 'root'
 })
-export class OnlineGameService extends BaseGameService {
+export class OnlineGameService extends BaseGameService{
   private hubService = inject(HubService);
   private activatedRoute = inject(ActivatedRoute);
   private globalPlayerId: number = -1;
@@ -32,45 +32,12 @@ export class OnlineGameService extends BaseGameService {
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
     });
-
-    if (isPlatformBrowser(this.platformId)) {
-      const storedState = localStorage.getItem(CONSTANTS.IS_TIMER_ENABLED);
-      if (storedState) {
-        this.isTimerEnabled = storedState === 'true';
-      }
-
-      this.activatedRoute.queryParamMap.subscribe((params) => {
-        if(params.has('room')){
-          this.roomCode = params.get('room')!;
-          this.hubService.checkRoom(params.get('room')!).subscribe(
-            (res)=>{
-              console.log(res);
-              if(res.split(':')[1]==="True"){
-                this.hubService.JoinRoom(params.get('room')!).subscribe(
-                  (res)=>{
-                    console.log(res);
-                    this.globalPlayerId = 1;
-                    this.initRoom();
-                  }
-                );
-              }else{
-                //We create
-                this.hubService.createRoom(params.get('room')!).subscribe(
-                  (res)=>{
-                    console.log(res);
-                    this.globalPlayerId = 0;
-                    this.initRoom();
-                  }
-                );
-              }
-            }
-          );
-        }
-      });
-    }
-
-    this.rollCounter = -1;
+    this.roomCode = this.localStorageService.getData("roomCode", this.platformId);
+    this.globalPlayerId = Number(this.localStorageService.getData("GlobalId", this.platformId));
+    console.log(this.globalPlayerId, this.roomCode)
+    this.initRoom();
   }
+
 
   /**
    *
@@ -142,7 +109,6 @@ export class OnlineGameService extends BaseGameService {
           this.updateGameState({ currentPlayerIndex: currentPlayer });
           if(currentPlayer == 1){
             this.updateGameState({rollsLeft: 0});
-            console.log("This player shall play later lol");
           }
         }, 3000);
       }
