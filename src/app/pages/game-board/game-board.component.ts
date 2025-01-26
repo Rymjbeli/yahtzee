@@ -9,6 +9,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { EndGamePopupComponent } from "../../shared/components/popups/end-game-popup/end-game-popup.component";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {BaseGameService} from "../../shared/services/game/base-game.service";
+import {SoundService} from "../../shared/services/settings/sound.service";
 
 @Component({
   selector: 'app-game-board',
@@ -19,6 +20,7 @@ import {BaseGameService} from "../../shared/services/game/base-game.service";
 })
 export class GameBoardComponent {
   gameService = inject(BaseGameService);
+  soundService = inject(SoundService);
   dialog = inject(MatDialog);
   gameState$: Observable<GameState> = this.gameService.gameState$;
   beforeGame = this.gameService.beforeGame;
@@ -41,6 +43,7 @@ export class GameBoardComponent {
   }
 
   rollDice(): void {
+    this.soundService.playDiceSound();
     this.gameService.rollDice();
   }
 

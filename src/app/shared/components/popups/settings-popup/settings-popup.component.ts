@@ -29,7 +29,7 @@ export class SettingsPopupComponent implements OnInit{
   private platformId = inject(PLATFORM_ID);
   private gameService = inject(BaseGameService);
 
-  isMusicPlaying = false;
+  isMusicPlaying = true;
   languages: LanguageInterface[] = [];
   selectedLanguage: LanguageInterface = { name: CONSTANTS.LANGUAGES.ENGLISH, code: CONSTANTS.LANGUAGES.EN };
   dropdownOpen: boolean = false;
@@ -46,9 +46,7 @@ export class SettingsPopupComponent implements OnInit{
   }
 
   toggleMusic(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isMusicPlaying = this.soundService.toggleMusic();
-    }
+    this.isMusicPlaying = this.soundService.toggleMusic();
   }
 
   toggleDropdown() {

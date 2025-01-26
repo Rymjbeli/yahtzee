@@ -16,6 +16,7 @@ import { ChooseGameModeComponent } from './components/choose-game-mode/choose-ga
 import { TranslatePipe } from '@ngx-translate/core';
 import {HubService} from "../../shared/services/Hub/hub.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {SoundService} from "../../shared/services/settings/sound.service";
 
 @Component({
   selector: 'app-home-page',
@@ -36,6 +37,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 export class HomePageComponent implements OnInit {
   [x: string]: any;
   gameService = inject(GameService);
+  soundService = inject(SoundService);
   router = inject(Router);
   hubService = inject(HubService);
   platformId = inject(PLATFORM_ID);
@@ -191,5 +193,9 @@ export class HomePageComponent implements OnInit {
         });
       }
     });
+  }
+
+  playSound(): void {
+    this.soundService.playSound();
   }
 }
