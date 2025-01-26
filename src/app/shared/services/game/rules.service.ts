@@ -86,7 +86,6 @@ export class RulesService {
    */
   applyYahtzeeBonus(scoreCard: ScoreCard, dice: Dice[]): void {
     const upperSectionKey = this.getAppropriateUpperSectionKeyForYahtzee(dice);
-    console.log("appropriate", upperSectionKey);
 
     scoreCard.total += 100;
 

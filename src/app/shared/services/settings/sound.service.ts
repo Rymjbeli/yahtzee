@@ -25,6 +25,7 @@ export class SoundService {
     if (!this.audio) {
       this.audio = new Audio('assets/songs/yahtzee.mp3');
       this.audio.loop = true;
+      // this.audio.volume = 0.1;
       this.audio.load();
     }
 
