@@ -9,7 +9,6 @@ export function gameFactory(): BaseGameService {
   const localStorageService = inject(LocalStorageService);
   const platformId = inject(PLATFORM_ID);
   const gameMode = localStorageService.getData(CONSTANTS.GAME_MODE.GAME_MODE, platformId)
-  console.log('gameMode', gameMode)
   return gameMode === CONSTANTS.GAME_MODE.ONLINE ?
     new OnlineGameService() :
     new GameService();

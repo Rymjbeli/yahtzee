@@ -48,17 +48,25 @@
     </div>
 
     <div class="flex gap-6 flex-wrap justify-center">
-      <app-button-primary (click)="playAgain()" class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
-        <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
+      <app-button-primary [type]="disableReplay? 'disabled': 'normal'" (click)="playAgain()" class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
+        @if(!disableReplay){
+          <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
+        } @else {
+          <img left ngSrc="../../../../../assets/icons/replay-grey.svg" alt="replay" width="33" height="33">
+        }
       </app-button-primary>
-      <app-button-primary class="hidden xs:flex" text="Home" size="md" [showLeftIcon]="true">
+      <app-button-primary (click)="redirectToHome()" class="hidden xs:flex" text="Home" size="md" [showLeftIcon]="true">
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
       </app-button-primary>
 
-      <app-button-primary (click)="playAgain()" class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
-        <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
+      <app-button-primary [type]="disableReplay? 'disabled': 'normal'" (click)="playAgain()" class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
+        @if(!disableReplay){
+          <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
+        } @else {
+          <img left ngSrc="../../../../../assets/icons/replay-grey.svg" alt="replay" width="33" height="33">
+        }
       </app-button-primary>
-      <app-button-primary class="xs:hidden" text="Home" size="sm" [showLeftIcon]="true">
+      <app-button-primary (click)="redirectToHome()" class="xs:hidden" text="Home" size="sm" [showLeftIcon]="true">
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
       </app-button-primary>
     </div>
