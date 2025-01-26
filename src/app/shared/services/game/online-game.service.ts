@@ -24,7 +24,6 @@ export class OnlineGameService extends BaseGameService{
   private hubService = inject(HubService);
   private router = inject(Router);
   private globalPlayerId: number = -1;
-  private roomCode: string = "";
 
   constructor() {
     super();
@@ -43,6 +42,7 @@ export class OnlineGameService extends BaseGameService{
     })
     this.hubService.onRoomClosed().subscribe(()=>{
       this.canPlayAgain.set(false);
+      this.gameEnded.next("");
     });
     this.hubService.onGameReset().subscribe(()=>{
       super.resetGame();
@@ -168,6 +168,7 @@ export class OnlineGameService extends BaseGameService{
     })
   }
   public override initGame(){
+    alert("initting")
     if(!this.hubService.IsInRoom){
       this.router.navigate(['/']);
     }
@@ -175,12 +176,11 @@ export class OnlineGameService extends BaseGameService{
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
     });
-    this.roomCode = this.localStorageService.getData("roomCode", this.platformId);
     this.globalPlayerId = Number(this.localStorageService.getData("GlobalId", this.platformId));
   }
 
   public override destroyGame() {
-    this.hubService.quitRoom(this.roomCode);
+    this.hubService.quitRoom(this.hubService.roomCode);
     super.resetGame();
     this.rollCounter = -1;
   }
@@ -197,15 +197,15 @@ export class OnlineGameService extends BaseGameService{
       console.log(i, gameState.dice[i].isHeld)
     }
     console.log(dice);
-    this.hubService.hideDice(this.roomCode, dice);
+    this.hubService.hideDice(this.hubService.roomCode, dice);
   }
 
   rollDice(): void {
     const game = this.getGameStateValue();
     let currentPlayer = game.currentPlayerIndex;
     if (this.rollCounter <2) {
-      this.hubService.StartingPlayerRoll(this.roomCode);
-      console.log(this.roomCode);
+      this.hubService.StartingPlayerRoll(this.hubService.roomCode);
+      console.log(this.hubService.roomCode);
       this.beforeGame.set(true)
     } else {
       this.rollDiceInsideGame();
@@ -230,19 +230,19 @@ export class OnlineGameService extends BaseGameService{
       //dicePositions: generateRandomDicePositions(),
       rollsLeft: Math.max(0, rollsLeft - 1),
     });
-    this.hubService.rollDice(this.roomCode);
+    this.hubService.rollDice(this.hubService.roomCode);
   }
 
 
-  // TODO : FIX ROOMCODE BECOMING EMPTY OUT OF  A SUDDEN
+
   override resetGame(): void {
-    this.roomCode = this.localStorageService.getData("roomCode", this.platformId);
-    this.hubService.requestPlayAgain(this.roomCode);
+    this.hubService.requestPlayAgain(this.hubService.roomCode);
   }
+
 
   scoreChosen(score: string): void {
     console.log(score);
-    this.hubService.chooseScore(this.roomCode, score);
+    this.hubService.chooseScore(this.hubService.roomCode, score);
   }
 
   startTimer(): void {
