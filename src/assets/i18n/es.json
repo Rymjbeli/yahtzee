@@ -1,3 +1,89 @@
 {
-  "greeting": "Hola"
+  "greeting": "Hola",
+  "home": {
+    "choose_game_mode": "¡Elige cómo quieres jugar!",
+    "play_locally": "Jugar Localmente",
+    "play_online": "Jugar en Línea",
+    "Yahtzee_player": "Jugador de Yahtzee",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "waitingForPlayer": "Esperando a que el otro jugador se una a ti ",
+    "roomCode": "Código de la sala",
+    "typeRoomCode": "Escribe el código de la sala",
+    "join": "Unirse",
+    "startPlaying": "Comenzar a Jugar",
+    "typeFirstPlayerName": "Escribe el nombre del primer jugador",
+    "typeSecondPlayerName": "Escribe el nombre del segundo jugador",
+    "typeYourName": "Escribe tu nombre",
+    "createNewRoom": "Crear una nueva sala",
+    "joinExistingRoom": "Unirse a una sala existente"
+  },
+  "rules": {
+    "page1": {
+      "rule1": {
+        "title": "Objetivo",
+        "description": "Lanza los dados para formar combinaciones de puntuación y consigue la mayor puntuación total."
+      },
+      "rule2": {
+        "title": "Resumen del Juego",
+        "description": "- En cada turno, lanza los dados hasta 3 veces para obtener la combinación de puntuación más alta en una de las 13 categorías.\n - Tras terminar de lanzar, debes colocar una puntuación o un cero en una de las 13 casillas de tu tarjeta de puntuación.\n - El juego termina cuando todos los jugadores han llenado sus 13 casillas. Se suman las puntuaciones, incluyendo los puntos de bonificación. Gana el jugador con la mayor puntuación total."
+      }
+    },
+    "page2": {
+      "rule3": {
+        "title": "Cómo Jugar",
+        "description": "### **Inicio del Juego**\n1. Cada jugador lanza los 5 dados. El jugador con el total más alto comienza.\n2. Los turnos alternan entre jugadores."
+      },
+      "rule4": {
+        "title": "Tomar un Turno",
+        "description": "1. **Lanzar**: Lanza los 5 dados.  \n2. **Mantener o Relanzar**: Elige los dados que quieras mantener y vuelve a lanzar los demás (máximo 2 relanzamientos permitidos).\n3. **Anotar**: Tras tu último lanzamiento, el sistema mostrará las opciones de puntuación disponibles. Elige una para registrar tu puntuación.  \n"
+      }
+    },
+    "page3": {
+      "rule5": {
+        "title": "Puntuación",
+        "description": "- El sistema realiza automáticamente el seguimiento de los totales y las opciones de puntuación disponibles.\n- Si no existe una opción de puntuación válida, debes asignar un **cero** a una categoría.\n\n La tarjeta de puntuación se divide en una Sección Superior y una Sección Inferior. Las combinaciones de puntuación para cada sección se explican a continuación."
+      }
+    },
+    "page4": {
+      "rule6": {
+        "title": "Categorías de Puntuación",
+        "description": "## **Sección Superior**\n<div class=\"flex justify-center\">\n\n| Categoría  | Qué Puntuar                  |\n|------------|-------------------------------|\n| Unos       | Total solo de los Unos       |\n| Doses      | Total solo de los Doses      |\n| Treses     | Total solo de los Treses     |\n| Cuatros    | Total solo de los Cuatros    |\n| Cincos     | Total solo de los Cincos     |\n| Seises     | Total solo de los Seises     |\n\n</div>\n\n-> Para puntuar en la Sección Superior, suma solo los dados con el mismo número y selecciona el total en la casilla correspondiente.\n\n- **Bono de la Sección Superior**: Si tu puntuación total en esta sección es 63 o más, ganas **+35 puntos de bonificación**.\n"
+      }
+    },
+    "page5": {
+      "rule7": {
+        "title": "Categorías de Puntuación",
+        "description": "## **Sección Inferior**\n<div class=\"flex justify-center\">\n\n| **Categoría**      | **Qué Puntuar**                        | **Detalles**                                                                                     | **Ejemplo**                                |\n|---------------------|------------------------------------------|--------------------------------------------------------------------------------------------------|--------------------------------------------|\n| **Tercia**          | Total de los 5 dados                   | Puntúa si al menos 3 dados muestran el mismo número.                                              | 3 Cincos, 2 Doses → Puntuación: 18 puntos  |\n| **Cuaterna**        | Total de los 5 dados                   | Puntúa si al menos 4 dados muestran el mismo número.                                              | 4 Doses, 1 Seis → Puntuación: 14 puntos    |\n| **Full**            | 25 puntos                              | Puntúa si 3 dados muestran un número y 2 dados otro.                                              | 3 Treses, 2 Cincos → Puntuación: 25 puntos |\n| **Escalera Pequeña**| 30 puntos                              | Puntúa si los dados muestran cualquier secuencia de 4 números.                                    | 1-2-3-4 → Puntuación: 30 puntos            |\n| **Escalera Grande** | 40 puntos                              | Puntúa si los dados muestran cualquier secuencia de 5 números.                                    | 1-2-3-4-5 → Puntuación: 40 puntos          |\n| **YAHTZEE**         | 50 puntos                              | Puntúa si los 5 dados muestran el mismo número.                                                  | 5 Cuatros → Puntuación: 50 puntos          |\n| **Chance**          | Total de los 5 dados                   | Usa esta categoría como última opción cuando no haya otra disponible.                            | 2-4-5-6-5 → Puntuación: 22 puntos          |\n\n</div>\n\n-> **Opciones de Puntuación Alternativa**: Si no puedes puntuar en una categoría específica, considera puntuar en la casilla de **Chance** o en la **Sección Superior** (si es válida).  \n"
+      }
+    },
+    "page6": {
+      "rule8": {
+        "title": "Bono de Yahtzee",
+        "description": "- **Cómo ganar el bono**:  \n  Si logras un YAHTZEE y ya has anotado **50 puntos** en la casilla de YAHTZEE, ganas un **bono de 100 puntos**.  \n  - Toma una ficha de bonificación.  \n  - Marca con un ✔ en la casilla de BONO YAHTZEE en tu tarjeta de puntuación.  \n  - Llena una de las 13 casillas de tu tarjeta de puntuación según las **Reglas de Joker** (explicadas más adelante).  \n\n- **Límite de Bonos**:  \n  Puedes ganar un bono de YAHTZEE por **solo 3 YAHTZEEs adicionales** después del primero. Para el **4.º YAHTZEE**, no se otorgan más bonos, y las reglas de Joker dejan de aplicarse.  \n\n- **Cero en la Casilla de Yahtzee**:  \n  Si has anotado un **cero** en la casilla de YAHTZEE, no ganas un bono. Sin embargo, debes llenar una de las 13 casillas como de costumbre.  \n"
+      }
+    },
+    "page7": {
+      "rule9": {
+        "title": "Reglas de Joker",
+        "description": "Al llenar tu tarjeta de puntuación después de ganar un bono de YAHTZEE, sigue estos pasos:  \n\n1. **Sección Superior**:  \n   - Anota el **total de los 5 dados** en la casilla correspondiente de la Sección Superior.  \n\n2. **Sección Inferior** (si la casilla correspondiente de la Sección Superior ya está llena):  \n   - **Tercia**: Total de los 5 dados.  \n   - **Cuaterna**: Total de los 5 dados.  \n   - **Full**: 25 puntos.  \n   - **Escalera Pequeña**: 30 puntos.  \n   - **Escalera Grande**: 40 puntos.  \n   - **Chance**: Total de los 5 dados.  \n\n3. **Si Todas las Casillas Están Llenas**:  \n   - Escribe un **cero** en cualquier casilla abierta de la Sección Superior.  \n\n ### Ejemplo:  \nTiras **5 Cuatros**.  \n- Ya has anotado un cero en la casilla de YAHTZEE y puntuado en la casilla de **Cuatros** en la Sección Superior.  \n- Según las reglas de Joker, puedes puntuar en cualquier casilla abierta de la Sección Inferior.  \n- Decides anotar **40 puntos** en la casilla de **Escalera Grande**.  "
+      }
+    },
+    "page8": {
+      "rule10": {
+        "title": "Finalización del Juego",
+        "description": "1. **Sección Superior**:  \n   - Suma las puntuaciones de la Sección Superior y escribe el total en la casilla de **PUNTUACIÓN TOTAL**.  \n   - Si alcanzaste **63 puntos o más**, escribe los **35 puntos de bonificación** en la casilla de **BONIFICACIÓN**.  \n   - Suma la PUNTUACIÓN TOTAL y la BONIFICACIÓN, y escribe el resultado en la casilla de **TOTAL**.  \n\n2. **Sección Inferior**:  \n   - Suma las puntuaciones de la Sección Inferior y escribe el total en la casilla de **TOTAL DE LA SECCIÓN INFERIOR**.  \n   - Agrega **100 puntos** por cada marca de verificación en las casillas de **BONO YAHTZEE** (una marca por cada ficha de bonificación).  \n\n3. **Gran Total**:  \n   - Suma el **total de la Sección Superior** y el **total de la Sección Inferior**, y escribe el resultado en la casilla de **GRAN TOTAL**.  \n   - El GRAN TOTAL es tu puntuación final del juego.  "
+      },
+      "rule11": {
+        "title": "Ganar el Juego",
+        "description": "- El jugador con el **GRAN TOTAL más alto** gana el juego.  \n- En caso de empate, los jugadores comparten la victoria.  "
+      }
+    },
+    "page9": {
+      "rule12": {
+        "title": "Ejemplo de un Turno",
+        "description": "1. **Primer Lanzamiento**:  \n   - Resultado de los dados: **2, 3, 4, 5 y un dado aleatorio**.  \n   - Opciones posibles: **Cuatros**, **Tercia** o **Escalera Grande**.  \n   - Dado que la Escalera Pequeña ya está puntuada, eliges la Escalera Grande, manteniendo **2/3/4/5** y relanzando un dado.  \n\n2. **Segundo Lanzamiento**:  \n   - Sacas un **Dos**.  \n     - Relanzar para la **Escalera Grande**, o  \n     - Mantener los **2 Doses** y apuntar a **Doses** o **Tercia**.  \n   - Decides mantener los Doses y relanzar los tres dados restantes.  \n\n3. **Tercer Lanzamiento**:  \n   - Resultado de los dados: **1 Dos y 2 Treses**.  \n     - **6 puntos en Doses**,  \n     - **12 puntos en Tercia**, o  \n     - **25 puntos en Full**.  \n   - Escoges **Full** porque:  \n     - Es más difícil de sacar más tarde.  \n     - Estás adelante en la Sección Superior y tal vez no necesites 3 Doses para el bono.  \n     - Es posible obtener una Tercia con mayor puntuación después.  "
+      }
+    }
+  }
 }

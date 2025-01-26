@@ -10,6 +10,7 @@ import {LanguageInterface} from "../../../interfaces/language.interface";
 import {BaseGameService} from "../../../services/game/base-game.service";
 import {GameManagerService} from "../../../services/game/game-manager.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings-popup',
@@ -30,6 +31,7 @@ export class SettingsPopupComponent implements OnInit{
   private platformId = inject(PLATFORM_ID);
   gameService!: BaseGameService;
   gameManagerService = inject(GameManagerService);
+  private router = inject(Router);
 
   isMusicPlaying = true;
   languages: LanguageInterface[] = [];
@@ -81,4 +83,9 @@ export class SettingsPopupComponent implements OnInit{
   }
 
   protected readonly CONSTANTS = CONSTANTS;
+
+  openRules() {
+    this.router.navigate(['game/game-rules']);
+    this.closeDialog();
+  }
 }

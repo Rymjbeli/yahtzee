@@ -68,11 +68,11 @@
           </div>
       </div>
     </div>
-    <app-button-primary class="hidden xs:flex" text="YAHTZEE Rules" size="md" [showLeftIcon]="true">
+    <app-button-primary (click)="openRules()" class="hidden xs:flex" text="YAHTZEE Rules" size="md" [showLeftIcon]="true">
       <img left src="../../../../../assets/icons/rules.svg" alt="rules">
     </app-button-primary>
 
-    <app-button-primary class="xs:hidden" text="YAHTZEE Rules" size="sm" [showLeftIcon]="true">
+    <app-button-primary (click)="openRules()" class="xs:hidden" text="YAHTZEE Rules" size="sm" [showLeftIcon]="true">
       <img left src="../../../../../assets/icons/rules.svg" alt="rules">
     </app-button-primary>
 </div>
