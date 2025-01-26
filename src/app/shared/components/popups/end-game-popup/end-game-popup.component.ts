@@ -38,7 +38,9 @@ export class EndGamePopupComponent {
     this.dialogRef.close();
   }
   playAgain(): void {
-    this.closeDialog();
+    if(this.gameService.canPlayAgain()){
+      this.closeDialog();
+    }
   }
 
   checkWinner(): void {

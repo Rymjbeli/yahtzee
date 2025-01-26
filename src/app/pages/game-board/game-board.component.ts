@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, Input } from '@angular/core';
+import {Component, HostListener, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import { ScorecardComponent } from "../../shared/components/scorecard/scorecard.component";
 import { ButtonRollComponent } from "../../shared/components/buttons/button-roll/button-roll.component";
 import { Observable } from "rxjs";
@@ -17,7 +17,7 @@ import {BaseGameService} from "../../shared/services/game/base-game.service";
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss',
 })
-export class GameBoardComponent {
+export class GameBoardComponent implements OnInit, OnDestroy {
   gameService = inject(BaseGameService);
   dialog = inject(MatDialog);
   gameState$: Observable<GameState> = this.gameService.gameState$;
@@ -32,6 +32,14 @@ export class GameBoardComponent {
       this.openEndGamePopup();
     });
   }
+
+  ngOnDestroy(): void {
+        this.gameService.destroyGame();
+    }
+
+  ngOnInit(): void {
+        this.gameService.initGame();
+    }
   toggleHold(index: number): void {
     this.gameService.toggleHoldDice(index);
   }
