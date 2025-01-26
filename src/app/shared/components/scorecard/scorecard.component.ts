@@ -1,11 +1,12 @@
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Player } from '../../models/player';
 import {RulesService} from "../../services/game/rules.service";
-import {GameService} from "../../services/game/game.service";
 import {Section} from "../../interfaces/section.interface";
 import {BaseGameService} from "../../services/game/base-game.service";
+import {GameManagerService} from "../../services/game/game-manager.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-scorecard',
@@ -22,7 +23,8 @@ export class ScorecardComponent {
   nbrOfYahtzee = 'nbrOfYahtzee';
 
   rulesService = inject(RulesService);
-  gameService = inject(BaseGameService);
+  gameService!: BaseGameService;
+  gameManagerService = inject(GameManagerService);
 
   upperSection: Section[] = [
     { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', disabled: true },
@@ -42,6 +44,14 @@ export class ScorecardComponent {
     { variable: 'yahtzee', name: 'YAHTZEE', disabled: true }
   ];
 
+  constructor() {
+    // Subscribe to the current game service
+    this.gameManagerService.currentGameService
+      .pipe(takeUntilDestroyed())
+      .subscribe((gameService) => {
+      this.gameService = gameService!;
+    });
+  }
   checkScore(item: Section): boolean {
     if (!this.isActivePlayer) {
       item.disabled = true;

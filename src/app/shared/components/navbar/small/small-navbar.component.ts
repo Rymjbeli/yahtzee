@@ -10,9 +10,10 @@ import {
 import { SettingsPopupComponent } from '../../popups/settings-popup/settings-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { GameService } from '../../../services/game/game.service';
 import { LocalStorageService } from '../../../services/shared/local-storage.service';
 import {BaseGameService} from "../../../services/game/base-game.service";
+import {GameManagerService} from "../../../services/game/game-manager.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-small-navbar',
@@ -26,13 +27,23 @@ export class SmallNavbarComponent {
   @Input() disabled: boolean = false;
   @Output() clicked = new EventEmitter<void>();
 
-  gameService = inject(BaseGameService);
+  gameService!: BaseGameService;
+  gameManagerService = inject(GameManagerService);
+
   localStorageService = inject(LocalStorageService);
   router = inject(Router);
   private platformId = inject(PLATFORM_ID);
 
   dialog = inject(MatDialog);
 
+  constructor() {
+    // Subscribe to the current game service
+    this.gameManagerService.currentGameService
+      .pipe(takeUntilDestroyed())
+      .subscribe((gameService) => {
+      this.gameService = gameService!;
+    });
+  }
   onClick() {
     if (!this.disabled) {
       this.clicked.emit();

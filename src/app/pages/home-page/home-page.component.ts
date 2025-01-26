@@ -16,6 +16,8 @@ import { ChooseGameModeComponent } from './components/choose-game-mode/choose-ga
 import { TranslatePipe } from '@ngx-translate/core';
 import {HubService} from "../../shared/services/Hub/hub.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {SoundService} from "../../shared/services/settings/sound.service";
+import {GameManagerService} from "../../shared/services/game/game-manager.service";
 
 @Component({
   selector: 'app-home-page',
@@ -36,6 +38,8 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 export class HomePageComponent implements OnInit {
   [x: string]: any;
   gameService = inject(GameService);
+  gameManagerService = inject(GameManagerService);
+  soundService = inject(SoundService);
   router = inject(Router);
   hubService = inject(HubService);
   platformId = inject(PLATFORM_ID);
@@ -130,6 +134,7 @@ export class HomePageComponent implements OnInit {
     this.onlineOption = $event.value as 'create' | 'join';
     this.saveToLocalStorage('onlineOption', this.onlineOption);
     this.nextStep();
+    this.gameManagerService.switchService();
   }
 
   // decide to play locally
@@ -137,6 +142,7 @@ export class HomePageComponent implements OnInit {
     this.gameMode = 'local';
     this.saveToLocalStorage('gameMode', this.gameMode);
     this.nextStep();
+    this.gameManagerService.switchService();
   }
 
   // start a local game
@@ -191,5 +197,9 @@ export class HomePageComponent implements OnInit {
         });
       }
     });
+  }
+
+  playSound(): void {
+    this.soundService.playSound();
   }
 }

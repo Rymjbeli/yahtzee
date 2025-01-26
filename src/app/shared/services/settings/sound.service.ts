@@ -7,6 +7,7 @@ import {CONSTANTS} from "../../../../config/const.config";
 })
 export class SoundService {
   private audio: HTMLAudioElement | null = null;
+  private diceAudio: HTMLAudioElement | null = null;
   private isMusicPlaying: boolean = true;
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
@@ -20,16 +21,24 @@ export class SoundService {
     }
   }
   private initializeAudio() {
+    // initialize music audio
     if (!this.audio) {
       this.audio = new Audio('assets/songs/yahtzee.mp3');
       this.audio.loop = true;
+      // this.audio.volume = 0.1;
       this.audio.load();
+    }
+
+    // initialize dice audio when rolling
+    if (!this.diceAudio) {
+      this.diceAudio = new Audio('assets/songs/dice.mp3');
+      this.diceAudio.load();
     }
   }
   toggleMusic(): boolean {
     if (isPlatformBrowser(this.platformId)) {
 
-      if (this.audio?.paused) {
+      if (this.audio?.paused && !this.isMusicPlaying) {
         this.audio.play().catch((err) => console.error('Playback failed:', err));
         this.isMusicPlaying = true;
       } else {
@@ -46,12 +55,13 @@ export class SoundService {
     return this.isMusicPlaying;
   }
 
-  // This function is for the play now button
+  playSound() {
+    if(this.isMusicPlaying) {
+      this.audio?.play().catch((err) => console.error('Playback failed:', err));
+    }
+  }
 
-  // playSound(): void {
-  //   this.isMusicPlaying = this.soundService.getMusicState();
-  //   if (this.isMusicPlaying) {
-  //     this.soundService.toggleMusic();
-  //   }
-  // }
+  playDiceSound() {
+    this.diceAudio?.play().catch((err) => console.error('Playback failed:', err));
+  }
 }
