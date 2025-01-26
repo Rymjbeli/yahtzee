@@ -9,6 +9,7 @@ import {RulesService} from "./rules.service";
 import {AnimationsService} from "../animation/animations.service";
 import {ScoreCard} from "../../interfaces/score-card";
 import {Position} from "../../interfaces/position";
+import {generateRandomDicePositions} from "../../helpers/generate-random-dice-positions";
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,7 @@ export abstract class BaseGameService {
   beforeGame = signal(false);
   total1 = signal(0);
   total2 = signal(0);
+  canPlayAgain = signal(true);
   gameEnded =  new Subject();
   protected constructor() { }
 
@@ -64,7 +66,28 @@ export abstract class BaseGameService {
   abstract rollDice(): void
   protected abstract rollDiceInsideGame(): void
   abstract getDicePositions(index: number): Position
-  abstract resetGame(): void
+  public resetGame(): void{
+    const currentGameState = this.getGameStateValue();
+    const playerNames = currentGameState.players.map(player => player.name);
+    const dicePositions = generateRandomDicePositions();
+    this.rollCounter = 0;
+    this.total1.set(0);
+    this.total2.set(0);
+    const newDice = Array.from({ length: 5 }, () => new Dice());
+    this.startTimerNextTurn = false;
+
+    // Create a fresh game state while keeping the player names intact
+    const freshGameState: GameState = {
+      players: playerNames.map(name => new Player(name)), // Re-create players with their names
+      currentPlayerIndex: 0,
+      dice: newDice,
+      dicePositions: dicePositions,
+      rollsLeft: 3,
+      totalTurn: 0,
+    };
+    // Update the game state
+    this.gameStateSubject.next(freshGameState);
+  }
   abstract scoreChosen(score: string): void
   abstract isBonusEligible(playerIndex: number): boolean
   abstract calculateTotalScore(playerIndex: number): void
@@ -75,4 +98,10 @@ export abstract class BaseGameService {
   abstract getTimerState(): boolean
   abstract getNbrOfYahtzee(): number
   abstract getYahtzeeScore(): number
+  public initGame() : void {
+    //do nothing
+  }
+  public destroyGame(): void{
+    //do nothing
+  }
 }

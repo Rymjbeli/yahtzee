@@ -12,7 +12,7 @@ import {CONSTANTS} from "../../../../config/const.config";
 import {ScoreCard} from "../../interfaces/score-card";
 import {Position} from "../../interfaces/position";
 import {HubService} from "../Hub/hub.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {coerceStringArray} from "@angular/cdk/coercion";
 import {NUMPAD_EIGHT} from "@angular/cdk/keycodes";
 import {BaseGameService} from "./base-game.service";
@@ -22,20 +22,13 @@ import {BaseGameService} from "./base-game.service";
 })
 export class OnlineGameService extends BaseGameService{
   private hubService = inject(HubService);
-  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
   private globalPlayerId: number = -1;
   private roomCode: string = "";
 
   constructor() {
     super();
-    this.rollCounter = -1;
-    this.updateGameState({
-      dicePositions: generateRandomDicePositions(),
-    });
-    this.roomCode = this.localStorageService.getData("roomCode", this.platformId);
-    this.globalPlayerId = Number(this.localStorageService.getData("GlobalId", this.platformId));
-    console.log(this.globalPlayerId, this.roomCode)
-    this.initRoom();
+    this.innitCallbacks();
   }
 
 
@@ -44,14 +37,17 @@ export class OnlineGameService extends BaseGameService{
    * Initializes backend callbacks for the given room.
    * Player will always be considered as "PLAYER 1" locally.
    * */
-  initRoom(){
-    this.hubService.onRoomFilled().subscribe(()=>{
-
-    });
+  public innitCallbacks(){
     this.hubService.onGameEnd().subscribe(()=>{
       this.gameEnded.next("");
-      alert('Sakrna el hanout')
     })
+    this.hubService.onRoomClosed().subscribe(()=>{
+      this.canPlayAgain.set(false);
+    });
+    this.hubService.onGameReset().subscribe(()=>{
+      super.resetGame();
+      this.rollCounter = -1;
+    });
     this.hubService.onStartingPlayerRoll().subscribe(
       (res)=>{
         const vals = res.split(':').map(e=>Number(e));
@@ -171,7 +167,23 @@ export class OnlineGameService extends BaseGameService{
       }
     })
   }
+  public override initGame(){
+    if(!this.hubService.IsInRoom){
+      this.router.navigate(['/']);
+    }
+    this.rollCounter = -1;
+    this.updateGameState({
+      dicePositions: generateRandomDicePositions(),
+    });
+    this.roomCode = this.localStorageService.getData("roomCode", this.platformId);
+    this.globalPlayerId = Number(this.localStorageService.getData("GlobalId", this.platformId));
+  }
 
+  public override destroyGame() {
+    this.hubService.quitRoom(this.roomCode);
+    super.resetGame();
+    this.rollCounter = -1;
+  }
 
   /**
    * know who will start the game
@@ -369,28 +381,10 @@ export class OnlineGameService extends BaseGameService{
   /**
    * Resets the game state to the initial state.
    */
-  resetGame(): void {
-    const currentGameState = this.getGameStateValue();
-    const playerNames = currentGameState.players.map(player => player.name);
-    const dicePositions = generateRandomDicePositions();
-    this.rollCounter = 0;
-    this.total1.set(0);
-    this.total2.set(0);
-    const newDice = Array.from({ length: 5 }, () => new Dice());
-    this.startTimerNextTurn = false;
-
-    // Create a fresh game state while keeping the player names intact
-    const freshGameState: GameState = {
-      players: playerNames.map(name => new Player(name)), // Re-create players with their names
-      currentPlayerIndex: 0,
-      dice: newDice,
-      dicePositions: dicePositions,
-      rollsLeft: 3,
-      totalTurn: 0,
-    };
-
-    // Update the game state
-    this.gameStateSubject.next(freshGameState);
+  // TODO : FIX ROOMCODE BECOMING EMPTY OUT OF  A SUDDEN
+  override resetGame(): void {
+    this.roomCode = this.localStorageService.getData("roomCode", this.platformId);
+    this.hubService.requestPlayAgain(this.roomCode);
   }
 
   /**
