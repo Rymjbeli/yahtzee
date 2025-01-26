@@ -246,32 +246,6 @@ export class GameService extends BaseGameService {
     return { top: '50%', left: '50%', transform: 'rotate(0deg)' };
   }
 
-  /**
-   * Resets the game state to the initial state.
-   */
-  resetGame(): void {
-    const currentGameState = this.getGameStateValue();
-    const playerNames = currentGameState.players.map(player => player.name);
-    const dicePositions = generateRandomDicePositions();
-    this.rollCounter = 0;
-    this.total1.set(0);
-    this.total2.set(0);
-    const newDice = Array.from({ length: 5 }, () => new Dice());
-    this.startTimerNextTurn = false;
-
-    // Create a fresh game state while keeping the player names intact
-    const freshGameState: GameState = {
-      players: playerNames.map(name => new Player(name)), // Re-create players with their names
-      currentPlayerIndex: 0,
-      dice: newDice,
-      dicePositions: dicePositions,
-      rollsLeft: 3,
-      totalTurn: 0,
-    };
-
-    // Update the game state
-    this.gameStateSubject.next(freshGameState);
-  }
 
   /**
    * Updates the game state with the chosen score.

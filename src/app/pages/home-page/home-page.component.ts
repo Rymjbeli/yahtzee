@@ -69,6 +69,7 @@ export class HomePageComponent implements OnInit {
 
   reloadLocalStorageData() {
     this.step = parseInt(this.retrieveFromLocalStorage('step') || '1', 10);
+    if(this.step==4){this.step=1;}
     this.gameMode =
       (this.retrieveFromLocalStorage('gameMode') as
         | 'online'
@@ -122,7 +123,6 @@ export class HomePageComponent implements OnInit {
   playOnline($event: Option) {
     if(!this.hubService.IsConnected){
       alert("Couldn't establish a connection with the server, please check your internet.");
-      this.hubService.startConnection().subscribe();
       return;
     }
     this.gameMode = 'online';
