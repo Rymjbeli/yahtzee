@@ -63,10 +63,10 @@
         "description": "- **Earning the Bonus**:  \n  If you roll a YAHTZEE and have already scored **50 points** in the YAHTZEE box, you receive a **100-point bonus**.  \n  - Take one bonus chip.  \n  - Place a ✔ check mark in the YAHTZEE BONUS box on your scorecard.  \n  - Fill in one of the 13 boxes on your scorecard according to the **JOKER RULES** (explained below).  \n\n- **Limit on Bonuses**:  \n  You can earn a YAHTZEE bonus for **only 3 additional YAHTZEEs** after the first one. For the **4th YAHTZEE**, no more bonuses are awarded, and the Joker rules no longer apply.  \n\n- **Zero in the YAHTZEE Box**:  \n  If you've entered **zero** in the YAHTZEE box, you do **not** earn a bonus. However, you must still fill in one of the 13 boxes on your scorecard as usual.  \n"
       }
     },
-    "page7" : {
+    "page7": {
       "rule9": {
         "title": "Joker Rules",
-        "description":"When filling in your scorecard after earning a YAHTZEE bonus, follow these steps:  \n\n1. **Upper Section**:  \n   - Score the **total of all 5 dice** in the corresponding box of the Upper Section.  \n\n2. **Lower Section** (if the corresponding Upper Section box is already filled):  \n   - **3 of a Kind**: Total of all 5 dice  \n   - **4 of a Kind**: Total of all 5 dice  \n   - **Full House**: 25 points  \n   - **Small Straight**: 30 points  \n   - **Large Straight**: 40 points  \n   - **Chance**: Total of all 5 dice  \n\n3. **If All Boxes Are Filled**:  \n   - Enter a **zero** in any open box in the Upper Section.  \n\n ### Example:  \nYou roll **5 Fours**.  \n- You’ve already entered zero in the YAHTZEE box and scored in the **Fours box** in the Upper Section.  \n- According to the Joker rules, you can score in any open box in the Lower Section.  \n- You decide to score **40 points** in the **Large Straight** box.  "
+        "description": "When filling in your scorecard after earning a YAHTZEE bonus, follow these steps:  \n\n1. **Upper Section**:  \n   - Score the **total of all 5 dice** in the corresponding box of the Upper Section.  \n\n2. **Lower Section** (if the corresponding Upper Section box is already filled):  \n   - **3 of a Kind**: Total of all 5 dice  \n   - **4 of a Kind**: Total of all 5 dice  \n   - **Full House**: 25 points  \n   - **Small Straight**: 30 points  \n   - **Large Straight**: 40 points  \n   - **Chance**: Total of all 5 dice  \n\n3. **If All Boxes Are Filled**:  \n   - Enter a **zero** in any open box in the Upper Section.  \n\n ### Example:  \nYou roll **5 Fours**.  \n- You’ve already entered zero in the YAHTZEE box and scored in the **Fours box** in the Upper Section.  \n- According to the Joker rules, you can score in any open box in the Lower Section.  \n- You decide to score **40 points** in the **Large Straight** box.  "
       }
     },
     "page8": {
@@ -80,7 +80,7 @@
       }
     },
     "page9": {
-      "rule12" : {
+      "rule12": {
         "title": "A Turn Example",
         "description": "1. **First Roll**:  \n   - Dice result: **2, 3, 4, 5, and a random die**.  \n   - Possible options: **Fours**, **3 of a Kind**, or **Large Straight**.  \n   - Since the Small Straight is already scored, you go for the Large Straight, keeping **2/3/4/5** and rerolling one die.  \n\n2. **Second Roll**:  \n   - You roll a **Two**.  \n     - Reroll for the **Large Straight**, or  \n     - Keep the **2 Twos** and aim for **Twos** or **3 of a Kind**.  \n   - You keep the Twos and reroll the remaining three dice.  \n\n3. **Third Roll**:  \n   - Dice result: **1 Two and 2 Threes**.  \n     - **6 points for Twos**,  \n     - **12 points for 3 of a Kind**, or  \n     - **25 points for Full House**.  \n   - You pick **Full House** because:  \n     - It’s harder to roll later.  \n     - You’re ahead in the Upper Section and might not need 3 Twos for the bonus.  \n     - A higher-scoring **3 of a Kind** is possible later.  "
       }

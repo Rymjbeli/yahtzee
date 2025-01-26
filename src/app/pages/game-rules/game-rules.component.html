@@ -3,8 +3,7 @@
     class="rounded-full border-2 border-black p-2 bg-base-gray w-16 h-16"
     (click)="previousPage()"
     (keydown)="previousPage()"
-    [class.opacity-50]="currentPageIndex() === 0"
-    [class.cursor-not-allowed]="currentPageIndex() === 0"
+    [class.invisible]="currentPageIndex() === 0"
   >
     <img ngSrc="../../../assets/icons/arrow-left.svg" alt="dice-rules" width="100" height="100">
   </button>
@@ -19,8 +18,7 @@
   <button
     class="rounded-full border-2 border-black p-2 bg-base-gray w-16 h-16"
     (click)="nextPage()"
-    [class.opacity-50]="currentPageIndex() === pages().length - 1"
-    [class.cursor-not-allowed]="currentPageIndex() === pages().length - 1"
+    [class.invisible]="currentPageIndex() === pages().length - 1"
   >
     <img src="../../../assets/icons/arrow-right.svg" alt="dice-rules" width="100" height="100">
   </button>
