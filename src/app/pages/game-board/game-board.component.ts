@@ -31,6 +31,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   total2 = signal(0);
   gameEnded = new Subject();
   yahtzee = 'yahtzee';
+  startMessage: string = '';
+
   constructor() {
     // Subscribe to the current game service
     this.gameManagerService.currentGameService
@@ -42,6 +44,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
       this.beforeGame = this.gameService?.beforeGame;
       this.total1 = this.gameService?.total1;
       this.total2 = this.gameService?.total2;
+      this.startMessage = '';
       this.gameEnded = this.gameService?.gameEnded;
     });
 

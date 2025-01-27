@@ -38,6 +38,8 @@ export class GameService extends BaseGameService {
 
       this.updateTotal2(game.currentPlayerIndex);
       currentPlayer = this.total1() > this.total2() ? 0 : 1;
+      this.startMessage = `Player ${currentPlayer + 1} will start`;
+
       this.beforeGame.set(true)
 
       setTimeout(() => {
@@ -49,7 +51,7 @@ export class GameService extends BaseGameService {
           die.isHeld = true;
           return die;
         });
-      }, 3000);
+      }, 2000);
 
       this.updateGameState({ currentPlayerIndex: currentPlayer });
 

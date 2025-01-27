@@ -53,6 +53,8 @@ export abstract class BaseGameService {
   beforeGame = signal(false);
   total1 = signal(0);
   total2 = signal(0);
+  startMessage: string = '';
+
   canPlayAgain = signal(true);
   gameEnded =  new Subject();
   protected constructor() {
@@ -216,6 +218,7 @@ export abstract class BaseGameService {
     this.rollCounter = 0;
     this.total1.set(0);
     this.total2.set(0);
+    this.startMessage = '';
     const newDice = Array.from({ length: 5 }, () => new Dice());
     this.startTimerNextTurn = false;
 
