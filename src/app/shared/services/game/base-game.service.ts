@@ -221,7 +221,8 @@ export abstract class BaseGameService {
     this.startMessage = '';
     const newDice = Array.from({ length: 5 }, () => new Dice());
     this.startTimerNextTurn = false;
-
+    clearInterval(this.timerId);
+    this.timerId = null;
     // Create a fresh game state while keeping the player names intact
     const freshGameState: GameState = {
       players: playerNames.map(name => new Player(name)), // Re-create players with their names

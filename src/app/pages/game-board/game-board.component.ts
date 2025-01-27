@@ -26,6 +26,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   gameState$: Observable<GameState> = new Observable();
   beforeGame = signal(false);
+  gameMode = this.gameManagerService.gameMode;
 
   total1 = signal(0);
   total2 = signal(0);

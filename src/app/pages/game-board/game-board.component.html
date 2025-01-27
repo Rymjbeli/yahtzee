@@ -19,7 +19,9 @@
       <div class="flex flex-col items-center justify-center">
         @if (!gameService.startMessage) {
           <span id="roll-to-start-message">Roll the dice once to determine who will begin</span>
-          <span class="text-xl">{{ gameState?.players?.[0]?.name }} will roll first</span>
+          @if(gameMode == 'local') {
+            <span class="text-xl">{{ gameState?.players?.[0]?.name }} will roll first</span>
+          }
         }
         @if (gameService.startMessage) {
           <span id="roll-to-start-message">{{ gameService.startMessage }}</span>
