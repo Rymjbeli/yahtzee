@@ -101,6 +101,10 @@ export class OnlineGameService extends BaseGameService{
       (res)=>{
         const game = this.getGameStateValue();
         let currentPlayer = game.currentPlayerIndex;
+
+        const playerName = game.players[Number(res) ^ this.globalPlayerId].name;
+        this.startMessage = `${playerName} will start`;
+
         setTimeout(() => {
           currentPlayer = Number(res) ^ this.globalPlayerId;
           this.rollCounter=3;

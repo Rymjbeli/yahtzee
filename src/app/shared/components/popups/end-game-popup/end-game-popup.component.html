@@ -13,10 +13,14 @@
     </div>
 
       <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
-        @if (!isTie) {
-        {{winnerName}} wins the game!
+        @if(!canPlayAgain()){
+          The other player left the game :(
         } @else {
-          It’s a tie!
+          @if (!isTie) {
+          {{winnerName}} wins the game!
+          } @else {
+            It’s a tie!
+          }
         }
       </div>
 
