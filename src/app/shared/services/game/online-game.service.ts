@@ -23,11 +23,13 @@ import {BaseGameService} from "./base-game.service";
 export class OnlineGameService extends BaseGameService{
   private hubService = inject(HubService);
   private router = inject(Router);
+  private notifiedEnding = false;
   private globalPlayerId: number = -1;
 
   constructor() {
     super();
     this.innitCallbacks();
+    this.gameEnded.next(0);
   }
 
 
@@ -38,15 +40,23 @@ export class OnlineGameService extends BaseGameService{
    * */
   public innitCallbacks(){
     this.hubService.onGameEnd().subscribe(()=>{
-      if(this.gameEnded.value!=1)
+      if(!this.notifiedEnding) {
+        alert("will end")
         this.gameEnded.next(1);
+      }
+      this.notifiedEnding = true;
     })
     this.hubService.onRoomClosed().subscribe(()=>{
       this.canPlayAgain.set(false);
-      if(this.gameEnded.value!=1)
+      if(!this.notifiedEnding) {
+        alert("will end")
         this.gameEnded.next(1);
+      }
+      this.notifiedEnding = true;
     });
     this.hubService.onGameReset().subscribe(()=>{
+      alert("reset")
+      this.notifiedEnding = false;
       super.resetGame();
       this.rollCounter = -1;
     });
@@ -170,7 +180,7 @@ export class OnlineGameService extends BaseGameService{
     })
   }
   public override initGame(){
-    alert("initting")
+    this.notifiedEnding = false;
     this.canPlayAgain.set(true);
     if(!this.hubService.IsInRoom){
       this.router.navigate(['/']);
@@ -186,6 +196,7 @@ export class OnlineGameService extends BaseGameService{
     this.hubService.quitRoom(this.hubService.roomCode);
     super.resetGame();
     this.rollCounter = -1;
+    this.gameEnded.next(0);
   }
 
   toggleHoldDice(diceIndex: number) {
@@ -239,7 +250,6 @@ export class OnlineGameService extends BaseGameService{
 
 
   override resetGame(): void {
-    this.gameEnded.next(0);
     this.hubService.requestPlayAgain(this.hubService.roomCode);
   }
 

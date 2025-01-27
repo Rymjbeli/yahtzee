@@ -29,7 +29,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   total1 = signal(0);
   total2 = signal(0);
-  gameEnded = new BehaviorSubject(0);
+  gameEnded = new Subject();
   yahtzee = 'yahtzee';
   constructor() {
     // Subscribe to the current game service
@@ -78,7 +78,6 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   openEndGamePopup(disableReplay = false): void {
-    alert("will display popup")
     this.dialog.open(EndGamePopupComponent, {
       width: '600px',
       disableClose: true,

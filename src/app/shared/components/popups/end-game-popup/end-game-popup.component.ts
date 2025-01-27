@@ -52,11 +52,11 @@ export class EndGamePopupComponent {
   }
 
   closeDialog(): void {
-    this.gameService.resetGame();
     this.dialogRef.close();
   }
   playAgain(): void {
     if(this.canPlayAgain()){
+      this.gameService.resetGame();
       this.closeDialog();
     }
   }
@@ -74,8 +74,6 @@ export class EndGamePopupComponent {
   redirectToHome(): void {
     this.localStorageService.removeData('step', this.platformId);
     this.localStorageService.removeData('gameMode', this.platformId);
-
-    this.gameService.resetGame();
     this.router.navigate(['/']);
 
     this.closeDialog();
