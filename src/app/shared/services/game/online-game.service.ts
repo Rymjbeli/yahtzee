@@ -96,8 +96,17 @@ export class OnlineGameService extends BaseGameService{
             dice: dice,
             dicePositions: generateRandomDicePositions(),
           });
-          const currentPlayer = this.getGameStateValue().currentPlayerIndex;
+
+          const game = this.getGameStateValue();
+          const currentPlayer = game.currentPlayerIndex;
           this.calculateScoreCard(currentPlayer);
+          const yahtzee = this.rulesService.calculateYahtzee(game.dice) > 0;
+          const picked = game.players[currentPlayer].scoreCard.yahtzee.picked;
+          const nbrOfYahtzee = this.getNbrOfYahtzee();
+          if (yahtzee && !picked)
+            this.animationService.displayYahtzee(false, nbrOfYahtzee);
+          if (yahtzee && picked)
+            this.animationService.displayYahtzee(true, nbrOfYahtzee);
         }
       }
     );
@@ -223,14 +232,6 @@ export class OnlineGameService extends BaseGameService{
       this.beforeGame.set(true)
     } else {
       this.rollDiceInsideGame();
-      const yahtzee = this.rulesService.calculateYahtzee(game.dice) > 0;
-      const picked = game.players[currentPlayer].scoreCard.yahtzee.picked;
-
-      const nbrOfYahtzee = this.getNbrOfYahtzee();
-      if (yahtzee && !picked)
-        this.animationService.displayYahtzee(false, nbrOfYahtzee);
-      if (yahtzee && picked)
-        this.animationService.displayYahtzee(true, nbrOfYahtzee);
     }
   }
 
