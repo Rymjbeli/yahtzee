@@ -1,7 +1,7 @@
 import {Component, HostListener, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import { ScorecardComponent } from "../../shared/components/scorecard/scorecard.component";
 import { ButtonRollComponent } from "../../shared/components/buttons/button-roll/button-roll.component";
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, filter, Observable, Subject} from "rxjs";
 import { GameState } from "../../shared/interfaces/game-state";
 import { AsyncPipe, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
 import { Position } from "../../shared/interfaces/position";
@@ -45,7 +45,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
       this.gameEnded = this.gameService?.gameEnded;
     });
 
-    this.gameEnded.pipe(takeUntilDestroyed()).subscribe(()=>{
+    this.gameEnded.pipe(takeUntilDestroyed()).pipe(filter(x=>x==1)).subscribe(()=>{
       this.openEndGamePopup(true);
     });
   }
@@ -85,8 +85,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
         player1Name: this.gameService?.getGameStateValue().players[0].name,
         player2Name: this.gameService?.getGameStateValue().players[1].name,
         player1Score: this.gameService?.getGameStateValue().players[0]?.scoreCard?.total,
-        player2Score: this.gameService?.getGameStateValue().players[1]?.scoreCard?.total,
-        disableReplay: disableReplay
+        player2Score: this.gameService?.getGameStateValue().players[1]?.scoreCard?.total
       }
     });
   }
