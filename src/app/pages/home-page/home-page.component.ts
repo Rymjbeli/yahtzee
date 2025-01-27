@@ -105,7 +105,7 @@ export class HomePageComponent implements OnInit {
             this.saveToLocalStorage('roomCode', this.roomCode);
             this.playerTwoName = playerNames.split(":")[1];
             this.saveToLocalStorage('playerTwoName', this.playerTwoName);
-            this.router.navigate(["/game/gameboard"]);
+            this.router.navigate(["/game"]);
           })
         }
       });
@@ -151,7 +151,7 @@ export class HomePageComponent implements OnInit {
   startLocalGame() {
     this.gameService.updatePlayerName(0, this.playerName);
     this.gameService.updatePlayerName(1, this.playerTwoName);
-    this.router.navigate(['/game/gameboard']);
+    this.router.navigate(['/game']);
   }
 
   saveName(event: string, playerNumber: number) {
@@ -199,7 +199,7 @@ export class HomePageComponent implements OnInit {
           this.playerTwoName = playerNames.split(":")[0];
           this.saveToLocalStorage('playerTwoName', this.playerTwoName);
           this.saveToLocalStorage("GlobalId", "1");
-          this.router.navigate(["/game/gameboard"]);
+          this.router.navigate(["/game"]);
         });
       }
     });

@@ -9,11 +9,11 @@ export const MainGameRoutes: Routes = [
     component: LayoutMainGameComponent,
     children: [
       {
-        path: 'gameboard',
+        path: '',
         component: GameBoardComponent,
       },
       {
-        path: 'game-rules',
+        path: 'rules',
         component: GameRulesComponent,
       }
     ]

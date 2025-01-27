@@ -78,7 +78,7 @@ export class SettingsPopupComponent implements OnInit{
   protected readonly CONSTANTS = CONSTANTS;
 
   openRules() {
-    this.router.navigate(['game/game-rules']);
+    this.router.navigate(['game/rules']);
     this.closeDialog();
   }
 }

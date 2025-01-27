@@ -29,7 +29,7 @@ export class MainNavbarComponent implements OnInit {
     this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isGameRulesPage.update(() =>
-          event.urlAfterRedirects.includes('game-rules') // Adjust based on your route
+          event.urlAfterRedirects.includes('rules') // Adjust based on your route
         );
       }
     });
