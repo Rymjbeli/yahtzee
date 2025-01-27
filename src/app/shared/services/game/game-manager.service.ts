@@ -10,9 +10,9 @@ import {GameService} from "./game.service";
   providedIn: 'root'
 })
 export class GameManagerService {
-  private currentGameServiceSubject$ = new BehaviorSubject<BaseGameService | null>(null);
-  public currentGameService = this.currentGameServiceSubject$.asObservable();
-
+  // private currentGameServiceSubject$ = new BehaviorSubject<BaseGameService | null>(null);
+  // public currentGameService = this.currentGameServiceSubject$.asObservable();
+  public currentGameService! : BaseGameService;
   localStorageService = inject(LocalStorageService);
   platformId = inject(PLATFORM_ID);
   gameService =inject(GameService);
@@ -23,11 +23,15 @@ export class GameManagerService {
 
   switchService(): void {
     const gameMode = this.gameMode;
-    const currentService =
+    // const currentService =
+    //   gameMode === CONSTANTS.GAME_MODE.ONLINE
+    //     ? this.onlineGameService
+    //     : this.gameService;
+    // this.currentGameServiceSubject$.next(currentService);
+    this.currentGameService =
       gameMode === CONSTANTS.GAME_MODE.ONLINE
         ? this.onlineGameService
         : this.gameService;
-    this.currentGameServiceSubject$.next(currentService);
   }
 
   get gameMode(): string {

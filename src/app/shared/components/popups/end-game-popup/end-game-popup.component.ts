@@ -28,8 +28,8 @@ export class EndGamePopupComponent {
   isTie = false;
 
   private dialogRef = inject(MatDialogRef<EndGamePopupComponent>);
-  gameService!: BaseGameService;
   gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
   private platformId = inject(PLATFORM_ID);
   private localStorageService = inject(LocalStorageService);
   private router = inject(Router);
@@ -42,12 +42,6 @@ export class EndGamePopupComponent {
     this.player2Score = data.player2Score;
     this.checkWinner();
 
-    // Subscribe to the current game service
-    this.gameManagerService.currentGameService
-      .pipe(takeUntilDestroyed())
-      .subscribe((gameService) => {
-      this.gameService = gameService!;
-    });
     this.canPlayAgain = this.gameService.canPlayAgain;
   }
 

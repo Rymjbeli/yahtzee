@@ -1,7 +1,7 @@
 @if((gameState$ | async); as gameState) {
 <div class="game-board">
   <div class="scorecard-container">
-    @if(gameState?.currentPlayerIndex === 0 && gameService.getTimerState() && gameService.rollCounter > 1 && !gameService.startTimerNextTurn) {
+    @if(gameState?.currentPlayerIndex === 0 && enableTimer && gameService.rollCounter > 1 && !gameService.startTimerNextTurn) {
     <div class="timer">
       <span>{{getFormattedTimeLeft()}}</span>
       <img class="alarm" src="assets/icons/alarm.svg" alt="alarm">
@@ -73,7 +73,7 @@
     </div>
   </div>
   <div class="scorecard-container">
-    @if(gameState?.currentPlayerIndex === 1 && gameService.getTimerState() && gameService.rollCounter > 1 && !gameService.startTimerNextTurn) {
+    @if(gameState?.currentPlayerIndex === 1 && enableTimer && gameService.rollCounter > 1 && !gameService.startTimerNextTurn) {
     <div class="timer right">
       <img class="alarm" src="assets/icons/alarm.svg">
       <span>{{getFormattedTimeLeft()}}</span>
