@@ -54,7 +54,7 @@ export abstract class BaseGameService {
   total1 = signal(0);
   total2 = signal(0);
   canPlayAgain = signal(true);
-  gameEnded =  new Subject();
+  gameEnded =  new BehaviorSubject(0);
   protected constructor() {
     this.getTimerState();
   }

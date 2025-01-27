@@ -38,11 +38,13 @@ export class OnlineGameService extends BaseGameService{
    * */
   public innitCallbacks(){
     this.hubService.onGameEnd().subscribe(()=>{
-      this.gameEnded.next("");
+      if(this.gameEnded.value!=1)
+        this.gameEnded.next(1);
     })
     this.hubService.onRoomClosed().subscribe(()=>{
       this.canPlayAgain.set(false);
-      this.gameEnded.next("");
+      if(this.gameEnded.value!=1)
+        this.gameEnded.next(1);
     });
     this.hubService.onGameReset().subscribe(()=>{
       super.resetGame();
@@ -169,6 +171,7 @@ export class OnlineGameService extends BaseGameService{
   }
   public override initGame(){
     alert("initting")
+    this.canPlayAgain.set(true);
     if(!this.hubService.IsInRoom){
       this.router.navigate(['/']);
     }
@@ -236,6 +239,7 @@ export class OnlineGameService extends BaseGameService{
 
 
   override resetGame(): void {
+    this.gameEnded.next(0);
     this.hubService.requestPlayAgain(this.hubService.roomCode);
   }
 

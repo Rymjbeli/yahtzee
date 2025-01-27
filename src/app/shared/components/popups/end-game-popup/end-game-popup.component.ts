@@ -1,4 +1,4 @@
-import {Component, inject, Inject, Input, PLATFORM_ID} from '@angular/core';
+import {Component, inject, Inject, Input, PLATFORM_ID, signal} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
@@ -7,6 +7,7 @@ import {GameManagerService} from "../../../services/game/game-manager.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {LocalStorageService} from "../../../services/shared/local-storage.service";
 import {Router} from "@angular/router";
+import {sign} from "node:crypto";
 
 @Component({
   selector: 'app-end-game-popup',
@@ -25,7 +26,6 @@ export class EndGamePopupComponent {
   player1Score: number = 0;
   player2Score: number = 0;
   isTie = false;
-  disableReplay = false;
 
   private dialogRef = inject(MatDialogRef<EndGamePopupComponent>);
   gameService!: BaseGameService;
@@ -33,13 +33,13 @@ export class EndGamePopupComponent {
   private platformId = inject(PLATFORM_ID);
   private localStorageService = inject(LocalStorageService);
   private router = inject(Router);
+  canPlayAgain = signal(true);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     this.player1Name = data.player1Name;
     this.player2Name = data.player2Name;
     this.player1Score = data.player1Score;
     this.player2Score = data.player2Score;
-    this.disableReplay = data.disableReplay;
     this.checkWinner();
 
     // Subscribe to the current game service
@@ -48,6 +48,7 @@ export class EndGamePopupComponent {
       .subscribe((gameService) => {
       this.gameService = gameService!;
     });
+    this.canPlayAgain = this.gameService.canPlayAgain;
   }
 
   closeDialog(): void {
@@ -55,7 +56,7 @@ export class EndGamePopupComponent {
     this.dialogRef.close();
   }
   playAgain(): void {
-    if(this.gameService.canPlayAgain()){
+    if(this.canPlayAgain()){
       this.closeDialog();
     }
   }
