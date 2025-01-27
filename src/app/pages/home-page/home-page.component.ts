@@ -13,7 +13,7 @@ import { OnlineJoinComponent } from './components/online-join/online-join.compon
 import { OnlineCreateComponent } from './components/online-create/online-create.component';
 import { InputPlayerNameComponent } from './components/input-player-name/input-player-name.component';
 import { ChooseGameModeComponent } from './components/choose-game-mode/choose-game-mode.component';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {HubService} from "../../shared/services/Hub/hub.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {SoundService} from "../../shared/services/settings/sound.service";
@@ -39,13 +39,14 @@ export class HomePageComponent implements OnInit {
   [x: string]: any;
   gameService = inject(GameService);
   gameManagerService = inject(GameManagerService);
+  translateService = inject(TranslateService);
   soundService = inject(SoundService);
   router = inject(Router);
   hubService = inject(HubService);
   platformId = inject(PLATFORM_ID);
   route = inject(ActivatedRoute);
   localStorageService = inject(LocalStorageService);
-
+  roomMessage = '';
   step: number = 1;
   gameMode: 'online' | 'local' | null = null;
   onlineOption: 'create' | 'join' | null = null;
@@ -133,6 +134,7 @@ export class HomePageComponent implements OnInit {
     this.saveToLocalStorage('gameMode', this.gameMode);
     this.onlineOption = $event.value as 'create' | 'join';
     this.saveToLocalStorage('onlineOption', this.onlineOption);
+    this.roomMessage = '';
     this.nextStep();
     this.gameManagerService.switchService();
   }
@@ -186,8 +188,12 @@ export class HomePageComponent implements OnInit {
     this.roomCode = $event.roomCode;
     this.hubService.checkRoom(this.roomCode).subscribe((res)=>{
       if(res.split(':')[1] == "False") {
-        alert("Room does not exist.");
-      }else {
+        this.translateService.stream('home.room_message').subscribe((res) => {
+          this.roomMessage = res;
+        });
+        // alert("Room does not exist.");
+      } else {
+        this.roomMessage = '';
         this.saveToLocalStorage('roomCode', this.roomCode);
         this.hubService.JoinRoom(this.roomCode, this.playerName).subscribe((playerNames)=>{
           this.playerTwoName = playerNames.split(":")[0];

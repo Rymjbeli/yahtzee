@@ -16,7 +16,8 @@
     "typeSecondPlayerName": "Type the second player name",
     "typeYourName": "Type your name",
     "createNewRoom": "Create a new room",
-    "joinExistingRoom": "Join an existing room"
+    "joinExistingRoom": "Join an existing room",
+    "room_message" : "Room does not exist."
   },
   "rules": {
     "page1": {

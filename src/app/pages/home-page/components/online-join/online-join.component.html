@@ -6,6 +6,9 @@
       [size]="'md'"
       [(text)]="roomCode"
     ></app-input>
+    @if (roomMessage) {
+      <div class="title color">{{ roomMessage }}</div>
+    }
     <div class="flex justify-center items-center mt-8 space-x-10 w-full">
       <app-button-primary
         [text]="'home.join' | translate"
