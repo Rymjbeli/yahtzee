@@ -27,8 +27,8 @@ export class SmallNavbarComponent {
   @Input() disabled: boolean = false;
   @Output() clicked = new EventEmitter<void>();
 
-  gameService!: BaseGameService;
   gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
 
   localStorageService = inject(LocalStorageService);
   router = inject(Router);
@@ -36,14 +36,6 @@ export class SmallNavbarComponent {
 
   dialog = inject(MatDialog);
 
-  constructor() {
-    // Subscribe to the current game service
-    this.gameManagerService.currentGameService
-      .pipe(takeUntilDestroyed())
-      .subscribe((gameService) => {
-      this.gameService = gameService!;
-    });
-  }
   onClick() {
     if (!this.disabled) {
       this.clicked.emit();

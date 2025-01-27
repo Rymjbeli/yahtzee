@@ -16,8 +16,8 @@ import {Router, NavigationEnd} from '@angular/router';
   styleUrl: './main-navbar.component.scss',
 })
 export class MainNavbarComponent implements OnInit {
-  gameService!: BaseGameService;
   gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
   location = inject(Location);
   router = inject(Router);
 
@@ -25,13 +25,6 @@ export class MainNavbarComponent implements OnInit {
   isGameRulesPage = signal(false); // Tracks if we are on the GameRules page
 
   constructor() {
-    // Subscribe to the current game service
-    this.gameManagerService.currentGameService
-      .pipe(takeUntilDestroyed())
-      .subscribe((gameService) => {
-        this.gameService = gameService!;
-      });
-
     // Track route changes to determine if the GameRulesComponent is active
     this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
       if (event instanceof NavigationEnd) {

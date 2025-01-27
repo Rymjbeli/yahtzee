@@ -11,6 +11,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {BaseGameService} from "../../shared/services/game/base-game.service";
 import {SoundService} from "../../shared/services/settings/sound.service";
 import {GameManagerService} from "../../shared/services/game/game-manager.service";
+import {CONSTANTS} from "../../../config/const.config";
 
 @Component({
   selector: 'app-game-board',
@@ -20,31 +21,17 @@ import {GameManagerService} from "../../shared/services/game/game-manager.servic
   styleUrl: './game-board.component.scss',
 })
 export class GameBoardComponent implements OnInit, OnDestroy {
-  gameService!: BaseGameService;
   gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
   soundService = inject(SoundService);
   dialog = inject(MatDialog);
-  gameState$: Observable<GameState> = new Observable();
-  beforeGame = signal(false);
-
-  total1 = signal(0);
-  total2 = signal(0);
-  gameEnded = new Subject();
+  gameState$ = this.gameService?.gameState$;
+  beforeGame = this.gameService?.beforeGame;
+  total1 = this.gameService?.total1;
+  total2 = this.gameService?.total2;
+  gameEnded = this.gameService?.gameEnded;
   yahtzee = 'yahtzee';
   constructor() {
-    // Subscribe to the current game service
-    this.gameManagerService.currentGameService
-      .pipe(takeUntilDestroyed())
-      .subscribe((gameService) => {
-      this.gameService = gameService!;
-
-      this.gameState$ = this.gameService?.gameState$;
-      this.beforeGame = this.gameService?.beforeGame;
-      this.total1 = this.gameService?.total1;
-      this.total2 = this.gameService?.total2;
-      this.gameEnded = this.gameService?.gameEnded;
-    });
-
     this.gameEnded.pipe(takeUntilDestroyed()).pipe(filter(x=>x==1)).subscribe(()=>{
       this.openEndGamePopup(true);
     });
@@ -117,4 +104,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
 
+  get enableTimer() {
+    const gameMode = this.gameManagerService.gameMode;
+    return gameMode === CONSTANTS.GAME_MODE.LOCAL && this.gameService.getTimerState()
+  }
 }

@@ -1,20 +1,7 @@
-import {inject, Inject, Injectable, OnInit, PLATFORM_ID, signal} from '@angular/core';
-import {GameState} from "../../interfaces/game-state";
-import {Player} from "../../models/player";
-import {Dice} from "../../models/dice";
-import {BehaviorSubject, observable, Subject, tap} from "rxjs";
-import {DiceService} from "./dice.service";
-import {RulesService} from "./rules.service";
-import {AnimationsService} from "../animation/animations.service";
+import {inject, Injectable} from '@angular/core';
 import {generateRandomDicePositions} from "../../helpers/generate-random-dice-positions";
-import {isPlatformBrowser} from "@angular/common";
-import {CONSTANTS} from "../../../../config/const.config";
-import {ScoreCard} from "../../interfaces/score-card";
-import {Position} from "../../interfaces/position";
 import {HubService} from "../Hub/hub.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {coerceStringArray} from "@angular/cdk/coercion";
-import {NUMPAD_EIGHT} from "@angular/cdk/keycodes";
+import {Router} from "@angular/router";
 import {BaseGameService} from "./base-game.service";
 
 @Injectable({
