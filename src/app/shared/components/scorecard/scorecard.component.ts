@@ -23,8 +23,8 @@ export class ScorecardComponent {
   nbrOfYahtzee = 'nbrOfYahtzee';
 
   rulesService = inject(RulesService);
-  gameService!: BaseGameService;
   gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
 
   upperSection: Section[] = [
     { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', disabled: true },
@@ -44,14 +44,6 @@ export class ScorecardComponent {
     { variable: 'yahtzee', name: 'YAHTZEE', disabled: true }
   ];
 
-  constructor() {
-    // Subscribe to the current game service
-    this.gameManagerService.currentGameService
-      .pipe(takeUntilDestroyed())
-      .subscribe((gameService) => {
-      this.gameService = gameService!;
-    });
-  }
   checkScore(item: Section): boolean {
     if (!this.isActivePlayer) {
       item.disabled = true;
