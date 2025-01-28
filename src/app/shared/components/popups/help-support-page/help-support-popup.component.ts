@@ -48,7 +48,6 @@ export class HelpSupportPopupComponent implements OnInit {
         this.closeDialog();
         this.openConfirmationDialog();
       });
-      console.log(form.value);
     }
   }
 }
