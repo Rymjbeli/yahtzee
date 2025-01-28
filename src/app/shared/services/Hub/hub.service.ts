@@ -74,6 +74,7 @@ export class HubService {
       return new Observable<string>((observer) => {
         this.hubConnection.on('RoomJoining', (message: string) => {
           if(message!="0"){
+            console.log("Setting room code to ", message)
             this.IsInRoom= true;
             this.roomCode = roomCode;
           }
