@@ -100,9 +100,10 @@ export class HomePageComponent implements OnInit {
         if(res != "0"){
           this.roomCode = res;
           this.saveToLocalStorage('roomCode', this.roomCode);
+          console.log("Created a room with code, ", this.hubService.roomCode)
+          console.log("Created a room with code2, ", this.roomCode)
           this.hubService.onSecondPlayerJoined().subscribe((playerNames)=>{
             this.saveToLocalStorage("GlobalId", "0");
-            this.saveToLocalStorage('roomCode', this.roomCode);
             this.playerTwoName = playerNames.split(":")[1];
             this.startOnlineGame();
           })
