@@ -34,10 +34,9 @@
         "http://localhost:5122/**"
       ],
       "cacheConfig": {
-        "strategy": "performance",
-        "maxSize": 50,
-        "maxAge": "1d",
-        "timeout": "5s"
+        "strategy": "freshness",
+        "maxAge": "0s",
+        "maxSize": 0
       }
     }
   ]
