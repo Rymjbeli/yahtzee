@@ -15,6 +15,8 @@ export class HubService {
   IsConnected : boolean = false;
   IsInRoom : boolean = false;
   roomCode: string = "";
+  roomCreated : Observable<string>;
+  roomFilled : Observable<string>;
 
   constructor() {
     this.hubConnection = new HubConnectionBuilder()
@@ -25,7 +27,25 @@ export class HubService {
       .withAutomaticReconnect()
       .configureLogging(new MyLogger())
       .build();
+
+    this.roomFilled = new Observable<string>((observer) => {
+      this.hubConnection.on('RoomJoining', (message: string) => {
+        if(message!="0"){this.IsInRoom= true;}
+        observer.next(message);
+      });
+    });
+
+    this.roomCreated = new Observable<string>((observer) => {
+      this.hubConnection.on('RoomCreation', (message: string) => {
+        if(message!="0"){
+          this.IsInRoom= true;
+          this.roomCode = message;
+        }
+        observer.next(message);
+      });
+    });
   }
+
   startConnection(): Observable<void> {
     return new Observable<void>((observer) => {
       this.hubConnection
@@ -54,42 +74,17 @@ export class HubService {
     ).pipe(first());
   }
   createRoom(playerName: string){
-    return defer(()=>{
-      this.hubConnection.invoke("CreateRoom",String(playerName));
-      return new Observable<string>((observer) => {
-        this.hubConnection.on('RoomCreation', (message: string) => {
-          if(message!="0"){
-            this.IsInRoom= true;
-             console.log("Setting room code to", message)
-            this.roomCode = message;
-          }
-          observer.next(message);
-        });
-      });
-    }).pipe(first());
+    this.hubConnection.invoke("CreateRoom",String(playerName));
+    return this.roomCreated.pipe(first());
   }
   JoinRoom(roomCode: string, playerName: string) : Observable<string>{
-    return defer(()=>{
-      this.hubConnection.invoke("JoinRoom", String(roomCode), String(playerName));
-      return new Observable<string>((observer) => {
-        this.hubConnection.on('RoomJoining', (message: string) => {
-          if(message!="0"){
-            this.IsInRoom= true;
-            this.roomCode = roomCode;
-          }
-          observer.next(message);
-        });
-      });
-    }).pipe(first());
+    this.hubConnection.invoke("JoinRoom", String(roomCode), String(playerName));
+    this.roomCode = roomCode;
+    return this.roomFilled.pipe(first());
   }
 
-  onSecondPlayerJoined(){
-    return new Observable<string>((observer) => {
-      this.hubConnection.on('RoomJoining', (message: string) => {
-        if(message!="0"){this.IsInRoom= true;}
-        observer.next(message);
-      });
-    });
+  onAllPlayersJoined(){
+    return this.roomFilled.pipe(first());
   }
   onStartingPlayerRoll() : Observable<string>{
     return new Observable<string>((observer) => {
