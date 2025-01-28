@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { ButtonPrimaryComponent } from '../../../../shared/components/buttons/button-primary/button-primary.component';
 import { TranslatePipe } from '@ngx-translate/core';
