@@ -14,6 +14,7 @@ export class HubService {
   hubConnection !: HubConnection;
   IsConnected : boolean = false;
   IsInRoom : boolean = false;
+  roomCode: string = "";
 
   constructor() {
     this.hubConnection = new HubConnectionBuilder()
@@ -57,6 +58,11 @@ export class HubService {
       this.hubConnection.invoke("CreateRoom",String(playerName));
       return new Observable<string>((observer) => {
         this.hubConnection.on('RoomCreation', (message: string) => {
+          if(message!="0"){
+            this.IsInRoom= true;
+             console.log("Setting room code to", message)
+            this.roomCode = message;
+          }
           observer.next(message);
         });
       });
@@ -67,7 +73,10 @@ export class HubService {
       this.hubConnection.invoke("JoinRoom", String(roomCode), String(playerName));
       return new Observable<string>((observer) => {
         this.hubConnection.on('RoomJoining', (message: string) => {
-          if(message!="0"){this.IsInRoom= true;}
+          if(message!="0"){
+            this.IsInRoom= true;
+            this.roomCode = roomCode;
+          }
           observer.next(message);
         });
       });
@@ -122,8 +131,10 @@ export class HubService {
   }
 
   quitRoom(roomCode: string){
+    if(this.IsInRoom) {
+      this.hubConnection.invoke("QuitRoom", String(roomCode));
+    }
     this.IsInRoom = false;
-    this.hubConnection.invoke("QuitRoom", String(roomCode));
   }
   onGameEnd(){
     return new Observable<any>((observer) => {

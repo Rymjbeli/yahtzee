@@ -16,7 +16,8 @@
     "typeSecondPlayerName": "Tapez le nom du deuxième joueur",
     "typeYourName": "Tapez votre nom",
     "createNewRoom": "Créer une nouvelle salle",
-    "joinExistingRoom": "Rejoindre une salle existante"
+    "joinExistingRoom": "Rejoindre une salle existante",
+    "room_message" : "La salle n'existe pas."
   },
   "rules": {
     "page1": {

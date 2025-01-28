@@ -12,6 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class OnlineJoinComponent {
   @Input() roomCode: string = '';
+  @Input() roomMessage: string = '';
   @Output() joinRoom = new EventEmitter<{ roomCode: string }>();
 
   join() {

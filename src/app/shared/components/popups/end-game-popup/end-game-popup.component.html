@@ -13,10 +13,14 @@
     </div>
 
       <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
-        @if (!isTie) {
-        {{winnerName}} wins the game!
+        @if(!canPlayAgain()){
+          The other player left the game :(
         } @else {
-          It’s a tie!
+          @if (!isTie) {
+          {{winnerName}} wins the game!
+          } @else {
+            It’s a tie!
+          }
         }
       </div>
 
@@ -48,8 +52,8 @@
     </div>
 
     <div class="flex gap-6 flex-wrap justify-center">
-      <app-button-primary [type]="disableReplay? 'disabled': 'normal'" (click)="playAgain()" class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
-        @if(!disableReplay){
+      <app-button-primary [type]="!canPlayAgain()? 'disabled': 'normal'" (click)="playAgain()" class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
+        @if(canPlayAgain()){
           <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
         } @else {
           <img left ngSrc="../../../../../assets/icons/replay-grey.svg" alt="replay" width="33" height="33">
@@ -59,8 +63,8 @@
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
       </app-button-primary>
 
-      <app-button-primary [type]="disableReplay? 'disabled': 'normal'" (click)="playAgain()" class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
-        @if(!disableReplay){
+      <app-button-primary [type]="!canPlayAgain()? 'disabled': 'normal'" (click)="playAgain()" class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
+        @if(canPlayAgain()){
           <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
         } @else {
           <img left ngSrc="../../../../../assets/icons/replay-grey.svg" alt="replay" width="33" height="33">

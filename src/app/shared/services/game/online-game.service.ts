@@ -1,20 +1,7 @@
-import {inject, Inject, Injectable, OnInit, PLATFORM_ID, signal} from '@angular/core';
-import {GameState} from "../../interfaces/game-state";
-import {Player} from "../../models/player";
-import {Dice} from "../../models/dice";
-import {BehaviorSubject, observable, Subject, tap} from "rxjs";
-import {DiceService} from "./dice.service";
-import {RulesService} from "./rules.service";
-import {AnimationsService} from "../animation/animations.service";
+import {inject, Injectable} from '@angular/core';
 import {generateRandomDicePositions} from "../../helpers/generate-random-dice-positions";
-import {isPlatformBrowser} from "@angular/common";
-import {CONSTANTS} from "../../../../config/const.config";
-import {ScoreCard} from "../../interfaces/score-card";
-import {Position} from "../../interfaces/position";
 import {HubService} from "../Hub/hub.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {coerceStringArray} from "@angular/cdk/coercion";
-import {NUMPAD_EIGHT} from "@angular/cdk/keycodes";
+import {Router} from "@angular/router";
 import {BaseGameService} from "./base-game.service";
 
 @Injectable({
@@ -23,12 +10,13 @@ import {BaseGameService} from "./base-game.service";
 export class OnlineGameService extends BaseGameService{
   private hubService = inject(HubService);
   private router = inject(Router);
+  private notifiedEnding = false;
   private globalPlayerId: number = -1;
-  private roomCode: string = "";
 
   constructor() {
     super();
     this.innitCallbacks();
+    this.gameEnded.next(0);
   }
 
 
@@ -39,12 +27,23 @@ export class OnlineGameService extends BaseGameService{
    * */
   public innitCallbacks(){
     this.hubService.onGameEnd().subscribe(()=>{
-      this.gameEnded.next("");
+      if(!this.notifiedEnding) {
+        console.log("Game Ended");
+        this.gameEnded.next(1);
+      }
+      this.notifiedEnding = true;
     })
     this.hubService.onRoomClosed().subscribe(()=>{
       this.canPlayAgain.set(false);
+      if(!this.notifiedEnding) {
+        console.log("room closed");
+        this.gameEnded.next(1);
+      }
+      this.notifiedEnding = true;
     });
     this.hubService.onGameReset().subscribe(()=>{
+      console.log("Game Reset");
+      this.notifiedEnding = false;
       super.resetGame();
       this.rollCounter = -1;
     });
@@ -84,8 +83,17 @@ export class OnlineGameService extends BaseGameService{
             dice: dice,
             dicePositions: generateRandomDicePositions(),
           });
-          const currentPlayer = this.getGameStateValue().currentPlayerIndex;
+
+          const game = this.getGameStateValue();
+          const currentPlayer = game.currentPlayerIndex;
           this.calculateScoreCard(currentPlayer);
+          const yahtzee = this.rulesService.calculateYahtzee(game.dice) > 0;
+          const picked = game.players[currentPlayer].scoreCard.yahtzee.picked;
+          const nbrOfYahtzee = this.getNbrOfYahtzee();
+          if (yahtzee && !picked)
+            this.animationService.displayYahtzee(false, nbrOfYahtzee);
+          if (yahtzee && picked)
+            this.animationService.displayYahtzee(true, nbrOfYahtzee);
         }
       }
     );
@@ -93,6 +101,10 @@ export class OnlineGameService extends BaseGameService{
       (res)=>{
         const game = this.getGameStateValue();
         let currentPlayer = game.currentPlayerIndex;
+
+        const playerName = game.players[Number(res) ^ this.globalPlayerId].name;
+        this.startMessage = `${playerName} will start`;
+
         setTimeout(() => {
           currentPlayer = Number(res) ^ this.globalPlayerId;
           this.rollCounter=3;
@@ -168,6 +180,13 @@ export class OnlineGameService extends BaseGameService{
     })
   }
   public override initGame(){
+    super.resetGame();
+    this.updatePlayerName(0, this.localStorageService.getData('playerName', this.platformId) ||
+      'Player 1');
+    this.updatePlayerName(1, this.localStorageService.getData('playerTwoName', this.platformId) ||
+      'Player 2');
+    this.notifiedEnding = false;
+    this.canPlayAgain.set(true);
     if(!this.hubService.IsInRoom){
       this.router.navigate(['/']);
     }
@@ -175,14 +194,14 @@ export class OnlineGameService extends BaseGameService{
     this.updateGameState({
       dicePositions: generateRandomDicePositions(),
     });
-    this.roomCode = this.localStorageService.getData("roomCode", this.platformId);
     this.globalPlayerId = Number(this.localStorageService.getData("GlobalId", this.platformId));
   }
 
   public override destroyGame() {
-    this.hubService.quitRoom(this.roomCode);
+    this.hubService.quitRoom(this.hubService.roomCode);
     super.resetGame();
     this.rollCounter = -1;
+    this.gameEnded.next(0);
   }
 
   toggleHoldDice(diceIndex: number) {
@@ -197,26 +216,18 @@ export class OnlineGameService extends BaseGameService{
       console.log(i, gameState.dice[i].isHeld)
     }
     console.log(dice);
-    this.hubService.hideDice(this.roomCode, dice);
+    this.hubService.hideDice(this.hubService.roomCode, dice);
   }
 
   rollDice(): void {
     const game = this.getGameStateValue();
     let currentPlayer = game.currentPlayerIndex;
     if (this.rollCounter <2) {
-      this.hubService.StartingPlayerRoll(this.roomCode);
-      console.log(this.roomCode);
+      this.hubService.StartingPlayerRoll(this.hubService.roomCode);
+      console.log(this.hubService.roomCode);
       this.beforeGame.set(true)
     } else {
       this.rollDiceInsideGame();
-      const yahtzee = this.rulesService.calculateYahtzee(game.dice) > 0;
-      const picked = game.players[currentPlayer].scoreCard.yahtzee.picked;
-
-      const nbrOfYahtzee = this.getNbrOfYahtzee();
-      if (yahtzee && !picked)
-        this.animationService.displayYahtzee(false, nbrOfYahtzee);
-      if (yahtzee && picked)
-        this.animationService.displayYahtzee(true, nbrOfYahtzee);
     }
   }
 
@@ -230,19 +241,19 @@ export class OnlineGameService extends BaseGameService{
       //dicePositions: generateRandomDicePositions(),
       rollsLeft: Math.max(0, rollsLeft - 1),
     });
-    this.hubService.rollDice(this.roomCode);
+    this.hubService.rollDice(this.hubService.roomCode);
   }
 
 
-  // TODO : FIX ROOMCODE BECOMING EMPTY OUT OF  A SUDDEN
+
   override resetGame(): void {
-    this.roomCode = this.localStorageService.getData("roomCode", this.platformId);
-    this.hubService.requestPlayAgain(this.roomCode);
+    this.hubService.requestPlayAgain(this.hubService.roomCode);
   }
+
 
   scoreChosen(score: string): void {
     console.log(score);
-    this.hubService.chooseScore(this.roomCode, score);
+    this.hubService.chooseScore(this.hubService.roomCode, score);
   }
 
   startTimer(): void {

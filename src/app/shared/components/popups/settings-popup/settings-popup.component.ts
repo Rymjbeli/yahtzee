@@ -29,8 +29,8 @@ export class SettingsPopupComponent implements OnInit{
   private soundService = inject(SoundService);
   private languageService = inject(LanguageService);
   private platformId = inject(PLATFORM_ID);
-  gameService!: BaseGameService;
   gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
   private router = inject(Router);
 
   isMusicPlaying = true;
@@ -40,14 +40,7 @@ export class SettingsPopupComponent implements OnInit{
   isTimerEnabled: boolean = false;
 
   gameMode = this.gameManagerService.gameMode;
-  constructor() {
-    // Subscribe to the current game service
-    this.gameManagerService.currentGameService
-      .pipe(takeUntilDestroyed())
-      .subscribe((gameService) => {
-      this.gameService = gameService!;
-    });
-  }
+
   ngOnInit(): void {
     this.isMusicPlaying = this.soundService.getMusicState();
     this.languages = this.languageService.languages;
@@ -85,7 +78,7 @@ export class SettingsPopupComponent implements OnInit{
   protected readonly CONSTANTS = CONSTANTS;
 
   openRules() {
-    this.router.navigate(['game/game-rules']);
+    this.router.navigate(['game/rules']);
     this.closeDialog();
   }
 }

@@ -1,9 +1,9 @@
-import {Component, HostListener, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, HostListener, Inject, inject, OnDestroy, OnInit, PLATFORM_ID, signal} from '@angular/core';
 import { ScorecardComponent } from "../../shared/components/scorecard/scorecard.component";
 import { ButtonRollComponent } from "../../shared/components/buttons/button-roll/button-roll.component";
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, filter, Observable, Subject} from "rxjs";
 import { GameState } from "../../shared/interfaces/game-state";
-import { AsyncPipe, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
+import { AsyncPipe, isPlatformBrowser, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
 import { Position } from "../../shared/interfaces/position";
 import { MatDialog } from "@angular/material/dialog";
 import { EndGamePopupComponent } from "../../shared/components/popups/end-game-popup/end-game-popup.component";
@@ -11,6 +11,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {BaseGameService} from "../../shared/services/game/base-game.service";
 import {SoundService} from "../../shared/services/settings/sound.service";
 import {GameManagerService} from "../../shared/services/game/game-manager.service";
+import {CONSTANTS} from "../../../config/const.config";
 
 @Component({
   selector: 'app-game-board',
@@ -20,35 +21,31 @@ import {GameManagerService} from "../../shared/services/game/game-manager.servic
   styleUrl: './game-board.component.scss',
 })
 export class GameBoardComponent implements OnInit, OnDestroy {
-  gameService!: BaseGameService;
   gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
   soundService = inject(SoundService);
   dialog = inject(MatDialog);
-  gameState$: Observable<GameState> = new Observable();
-  beforeGame = signal(false);
+  platformId = inject(PLATFORM_ID);
+  gameState$ = this.gameService?.gameState$;
+  beforeGame = this.gameService?.beforeGame;
+  gameMode = this.gameManagerService.gameMode;
 
-  total1 = signal(0);
-  total2 = signal(0);
-  gameEnded = new Subject();
+  total1 = this.gameService?.total1;
+  total2 = this.gameService?.total2;
+  gameEnded = this.gameService?.gameEnded;
   yahtzee = 'yahtzee';
+  startMessage: string = '';
+
   constructor() {
-    // Subscribe to the current game service
-    this.gameManagerService.currentGameService
-      .pipe(takeUntilDestroyed())
-      .subscribe((gameService) => {
-      this.gameService = gameService!;
-
-      this.gameState$ = this.gameService?.gameState$;
-      this.beforeGame = this.gameService?.beforeGame;
-      this.total1 = this.gameService?.total1;
-      this.total2 = this.gameService?.total2;
-      this.gameEnded = this.gameService?.gameEnded;
-    });
-
-    this.gameEnded.pipe(takeUntilDestroyed()).subscribe(()=>{
+    this.gameEnded.pipe(takeUntilDestroyed()).pipe(filter(x=>x==1)).subscribe(()=>{
       this.openEndGamePopup(true);
     });
+    if (isPlatformBrowser(this.platformId)) {
+      // Push the initial state into the history stack only in the browser
+      window.history.pushState(null, '', window.location.href);
+    }
   }
+
   ngOnDestroy(): void {
     this.gameService?.destroyGame();
   }
@@ -56,6 +53,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.gameService?.initGame();
   }
+
   toggleHold(index: number): void {
     this.gameService?.toggleHoldDice(index);
   }
@@ -85,8 +83,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
         player1Name: this.gameService?.getGameStateValue().players[0].name,
         player2Name: this.gameService?.getGameStateValue().players[1].name,
         player1Score: this.gameService?.getGameStateValue().players[0]?.scoreCard?.total,
-        player2Score: this.gameService?.getGameStateValue().players[1]?.scoreCard?.total,
-        disableReplay: disableReplay
+        player2Score: this.gameService?.getGameStateValue().players[1]?.scoreCard?.total
       }
     });
   }
@@ -110,6 +107,17 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     $event.preventDefault();
   }
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const confirmNavigation = confirm('You may lose unsaved changes. Do you want to quit the game?');
+      if (!confirmNavigation) {
+        // Push the state back to prevent navigation
+        window.history.pushState(null, '', window.location.href);
+      }
+    }
+  }
+
   getFormattedTimeLeft(): string {
     const currentPlayer = this.gameService?.getGameStateValue().currentPlayerIndex;
     const timeLeft = this.gameService?.getGameStateValue().players[currentPlayer].timeLeft;
@@ -118,4 +126,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
 
+  get enableTimer() {
+    const gameMode = this.gameManagerService.gameMode;
+    return gameMode === CONSTANTS.GAME_MODE.LOCAL && this.gameService.getTimerState()
+  }
 }
