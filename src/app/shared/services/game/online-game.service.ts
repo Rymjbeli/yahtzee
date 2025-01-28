@@ -26,7 +26,16 @@ export class OnlineGameService extends BaseGameService{
    * Player will always be considered as "PLAYER 1" locally.
    * */
   public innitCallbacks(){
-    this.hubService.onGameEnd().subscribe(()=>{
+    this.hubService.onGameEnd().subscribe((scrs)=>{
+      const scores = String(scrs).split(":");
+      console.log(scrs);
+      if(this.globalPlayerId==0){
+        this.total1.set(Number(scores[0]));
+        this.total2.set(Number(scores[1]));
+      }else{
+        this.total1.set(Number(scores[1]));
+        this.total2.set(Number(scores[0]));
+      }
       if(!this.notifiedEnding) {
         console.log("Game Ended");
         this.gameEnded.next(1);
@@ -180,6 +189,7 @@ export class OnlineGameService extends BaseGameService{
     })
   }
   public override initGame(){
+    console.log('inniting game with code, ', this.hubService.roomCode)
     super.resetGame();
     this.updatePlayerName(0, this.localStorageService.getData('playerName', this.platformId) ||
       'Player 1');
