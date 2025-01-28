@@ -34,7 +34,7 @@ import {NgOptimizedImage} from "@angular/common";
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent implements OnInit {
   [x: string]: any;
