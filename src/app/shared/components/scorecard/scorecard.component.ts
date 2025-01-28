@@ -1,17 +1,12 @@
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {ChangeDetectorRef, Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Player } from '../../models/player';
 import {RulesService} from "../../services/game/rules.service";
-import {GameService} from "../../services/game/game.service";
-
-
-interface Section {
-  variable: string,
-  name: string,
-  icon?: string,
-  disabled: boolean,
-}
+import {Section} from "../../interfaces/section.interface";
+import {BaseGameService} from "../../services/game/base-game.service";
+import {GameManagerService} from "../../services/game/game-manager.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-scorecard',
@@ -28,7 +23,8 @@ export class ScorecardComponent {
   nbrOfYahtzee = 'nbrOfYahtzee';
 
   rulesService = inject(RulesService);
-  gameService = inject(GameService);
+  gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
 
   upperSection: Section[] = [
     { variable: 'aces', name: 'Aces', icon: 'assets/icons/dices/die-1.svg', disabled: true },

@@ -35,7 +35,7 @@
         </div>
 
         <label class="switch relative inline-block text-sm">
-          <input type="checkbox" class="opacity-0 w-0 h-0" [(ngModel)]="isTimerEnabled" (change)="toggleTimer()" />
+          <input type="checkbox" class="opacity-0 w-0 h-0" [disabled]="gameMode === CONSTANTS.GAME_MODE.ONLINE" [(ngModel)]="isTimerEnabled" (change)="toggleTimer()" />
           <span class="slider absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-3xl bg-light-red"></span>
         </label>
 
@@ -68,11 +68,11 @@
           </div>
       </div>
     </div>
-    <app-button-primary class="hidden xs:flex" text="YAHTZEE Rules" size="md" [showLeftIcon]="true">
+    <app-button-primary (click)="openRules()" class="hidden xs:flex" text="YAHTZEE Rules" size="md" [showLeftIcon]="true">
       <img left src="../../../../../assets/icons/rules.svg" alt="rules">
     </app-button-primary>
 
-    <app-button-primary class="xs:hidden" text="YAHTZEE Rules" size="sm" [showLeftIcon]="true">
+    <app-button-primary (click)="openRules()" class="xs:hidden" text="YAHTZEE Rules" size="sm" [showLeftIcon]="true">
       <img left src="../../../../../assets/icons/rules.svg" alt="rules">
     </app-button-primary>
 </div>

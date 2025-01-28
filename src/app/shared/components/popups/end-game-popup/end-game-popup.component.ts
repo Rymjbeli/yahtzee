@@ -1,8 +1,13 @@
-import {Component, inject, Inject, Input} from '@angular/core';
+import {Component, inject, Inject, Input, PLATFORM_ID, signal} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {GameService} from "../../../services/game/game.service";
+import {BaseGameService} from "../../../services/game/base-game.service";
+import {GameManagerService} from "../../../services/game/game-manager.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {LocalStorageService} from "../../../services/shared/local-storage.service";
+import {Router} from "@angular/router";
+import {sign} from "node:crypto";
 
 @Component({
   selector: 'app-end-game-popup',
@@ -23,21 +28,31 @@ export class EndGamePopupComponent {
   isTie = false;
 
   private dialogRef = inject(MatDialogRef<EndGamePopupComponent>);
-  gameService = inject(GameService);
+  gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
+  private platformId = inject(PLATFORM_ID);
+  private localStorageService = inject(LocalStorageService);
+  private router = inject(Router);
+  canPlayAgain = signal(true);
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     this.player1Name = data.player1Name;
     this.player2Name = data.player2Name;
     this.player1Score = data.player1Score;
     this.player2Score = data.player2Score;
     this.checkWinner();
+
+    this.canPlayAgain = this.gameService.canPlayAgain;
   }
 
   closeDialog(): void {
-    this.gameService.resetGame();
     this.dialogRef.close();
   }
   playAgain(): void {
-    this.closeDialog();
+    if(this.canPlayAgain()){
+      this.gameService.resetGame();
+      this.closeDialog();
+    }
   }
 
   checkWinner(): void {
@@ -48,5 +63,13 @@ export class EndGamePopupComponent {
     } else {
       this.isTie = true;
     }
+  }
+
+  redirectToHome(): void {
+    this.localStorageService.removeData('step', this.platformId);
+    this.localStorageService.removeData('gameMode', this.platformId);
+    this.router.navigate(['/']);
+
+    this.closeDialog();
   }
 }

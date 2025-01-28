@@ -1,3 +1,90 @@
 {
-  "greeting": "Bonjour"
+  "greeting": "Bonjour",
+  "home": {
+    "choose_game_mode": "Choisissez comment vous voulez jouer!",
+    "play_locally": "Jouer en local",
+    "play_online": "Jouer en ligne",
+    "Yahtzee_player": "Joueur de Yahtzee",
+    "back": "Retour",
+    "next": "Suivant",
+    "waitingForPlayer": "En attente de l'autre joueur pour vous rejoindre ",
+    "roomCode": "Code de la salle",
+    "typeRoomCode": "Tapez le code de la salle",
+    "join": "Rejoindre",
+    "startPlaying": "Commencer à jouer",
+    "typeFirstPlayerName": "Tapez le nom du premier joueur",
+    "typeSecondPlayerName": "Tapez le nom du deuxième joueur",
+    "typeYourName": "Tapez votre nom",
+    "createNewRoom": "Créer une nouvelle salle",
+    "joinExistingRoom": "Rejoindre une salle existante",
+    "room_message" : "La salle n'existe pas."
+  },
+  "rules": {
+    "page1": {
+      "rule1": {
+        "title": "Objectif",
+        "description": "Lancez les dés pour obtenir des combinaisons gagnantes et réaliser le score total le plus élevé."
+      },
+      "rule2": {
+        "title": "Résumé du jeu",
+        "description": "- À chaque tour, lancez les dés jusqu'à 3 fois pour obtenir la meilleure combinaison possible pour l'une des 13 catégories.\n - Une fois vos lancers terminés, vous devez inscrire un score ou un zéro dans l'une des 13 cases de votre fiche de score.\n - Le jeu se termine lorsque tous les joueurs ont rempli leurs 13 cases. Les scores sont additionnés, bonus compris. Le joueur avec le total le plus élevé gagne."
+      }
+    },
+    "page2": {
+      "rule3": {
+        "title": "Comment jouer",
+        "description": "### **Début de la partie**\n1. Chaque joueur lance les 5 dés. Celui qui obtient le total le plus élevé commence.\n2. Les tours alternent entre les joueurs."
+      },
+      "rule4": {
+        "title": "Prendre un tour",
+        "description": "1. **Lancer** : Lancez les 5 dés.  \n2. **Garder ou relancer** : Sélectionnez les dés à conserver et relancez les autres (jusqu'à 2 relances autorisées).\n3. **Marquer** : Après votre dernier lancer, le système affichera les options de score disponibles. Choisissez-en une pour verrouiller votre score.\n"
+      }
+    },
+    "page3": {
+      "rule5": {
+        "title": "Marquer des points",
+        "description": "- Le système suit automatiquement les totaux et les options de score disponibles pour vous.\n- Si aucune option de score valide n'est disponible, vous devez attribuer un **zéro** à une catégorie.\n\n La fiche de score est divisée en une Section Supérieure et une Section Inférieure. Les combinaisons de score pour chaque section sont expliquées ci-dessous."
+      }
+    },
+    "page4": {
+      "rule6": {
+        "title": "Catégories de points",
+        "description": "## **Section Supérieure**\n<div class=\"flex justify-center\">\n\n| Catégorie  | Ce qu'il faut marquer         |\n|------------|-------------------------------|\n| As         | Total uniquement des As       |\n| Deux       | Total uniquement des Deux     |\n| Trois      | Total uniquement des Trois    |\n| Quatre     | Total uniquement des Quatre   |\n| Cinq       | Total uniquement des Cinq     |\n| Six        | Total uniquement des Six      |\n\n</div>\n\n-> Pour marquer dans la Section Supérieure, additionnez uniquement les dés avec le même numéro et sélectionnez le total dans la case appropriée.\n\n- **Bonus Section Supérieure** : Si votre total dans cette section atteint 63 points ou plus, vous gagnez **+35 points de bonus**.\n"
+      }
+    },
+    "page5": {
+      "rule7": {
+        "title": "Catégories de points",
+        "description": "## **Section Inférieure**\n<div class=\"flex justify-center\">\n\n| **Catégorie**      | **Ce qu'il faut marquer**              | **Détails**                                                                                     | **Exemple**                                |\n|--------------------|----------------------------------------|-------------------------------------------------------------------------------------------------|--------------------------------------------|\n| **Brelan**         | Total des 5 dés                       | Marquez si au moins 3 dés affichent le même numéro.                                              | 3 Cinq, 2 Deux → Score : 18 points         |\n| **Carré**          | Total des 5 dés                       | Marquez si au moins 4 dés affichent le même numéro.                                              | 4 Deux, 1 Six → Score : 14 points          |\n| **Full House**     | 25 points                             | Marquez si 3 dés affichent un numéro et 2 dés un autre.                                          | 3 Trois, 2 Cinq → Score : 25 points        |\n| **Petite Suite**   | 30 points                             | Marquez si les dés affichent une séquence de 4 numéros.                                          | 1-2-3-4 → Score : 30 points                |\n| **Grande Suite**   | 40 points                             | Marquez si les dés affichent une séquence de 5 numéros.                                          | 1-2-3-4-5 → Score : 40 points              |\n| **YAHTZEE**        | 50 points                             | Marquez si les 5 dés affichent le même numéro.                                                  | 5 Quatre → Score : 50 points               |\n| **Chance**         | Total des 5 dés                       | Utilisez cette catégorie si aucune autre option de score n'est disponible.                       | 2-4-5-6-5 → Score : 22 points              |\n\n</div>\n\n -> **Options alternatives** : Si vous ne pouvez pas marquer dans une catégorie spécifique, envisagez de marquer dans la case **Chance** ou dans la **Section Supérieure** (si valide).  \n"
+      }
+    },
+    "page6": {
+      "rule8": {
+        "title": "Bonus Yahtzee",
+        "description": "- **Gagner le Bonus** :  \n  Si vous obtenez un YAHTZEE après avoir marqué **50 points** dans la case YAHTZEE, vous recevez un **bonus de 100 points**.  \n  - Prenez un jeton bonus.  \n  - Cochez une case dans le tableau des bonus YAHTZEE.  \n  - Remplissez l'une des 13 cases selon les **règles JOKER** (voir ci-dessous).  \n\n- **Limite de bonus** :  \n  Vous pouvez gagner un bonus YAHTZEE pour seulement **3 YAHTZEEs supplémentaires** après le premier. Aucun autre bonus n'est accordé après le 4e YAHTZEE, et les règles Joker ne s'appliquent plus.  \n\n- **Zéro dans la case YAHTZEE** :  \n  Si vous avez inscrit **zéro** dans la case YAHTZEE, vous ne recevez **pas** de bonus. Cependant, vous devez toujours remplir l'une des 13 cases comme d'habitude.  \n"
+      }
+    },
+    "page7": {
+      "rule9": {
+        "title": "Règles Joker",
+        "description": "Après avoir obtenu un bonus YAHTZEE, suivez ces étapes pour remplir votre fiche de score :  \n\n1. **Section Supérieure** :  \n   - Marquez le **total des 5 dés** dans la case correspondante.  \n\n2. **Section Inférieure** (si la case correspondante dans la Section Supérieure est déjà remplie) :  \n   - **Brelan** : Total des 5 dés  \n   - **Carré** : Total des 5 dés  \n   - **Full House** : 25 points  \n   - **Petite Suite** : 30 points  \n   - **Grande Suite** : 40 points  \n   - **Chance** : Total des 5 dés  \n\n3. **Si toutes les cases sont remplies** :  \n   - Inscrivez un **zéro** dans une case ouverte de la Section Supérieure.  \n\n ### Exemple :  \nVous obtenez **5 Quatre**.  \n- Vous avez déjà inscrit zéro dans la case YAHTZEE et marqué dans la case **Quatre** de la Section Supérieure.  \n- Selon les règles Joker, vous pouvez marquer dans n'importe quelle case ouverte de la Section Inférieure.  \n- Vous décidez de marquer **40 points** dans la case **Grande Suite**.  "
+      }
+    },
+    "page8": {
+      "rule10": {
+        "title": "Finir une partie",
+        "description": "1. **Section Supérieure** :  \n   - Additionnez les scores dans la Section Supérieure et inscrivez le total dans la case **TOTAL SCORE**.  \n   - Si vous avez atteint **63 points ou plus**, inscrivez le **bonus de 35 points** dans la case **BONUS**.  \n   - Additionnez TOTAL SCORE et BONUS, puis inscrivez le résultat dans la case **TOTAL**.  \n\n2. **Section Inférieure** :  \n   - Additionnez les scores dans la Section Inférieure et inscrivez le total dans la case **TOTAL of Lower Section**.  \n   - Ajoutez **100 points** pour chaque coche dans les cases **YAHTZEE BONUS** (une coche par jeton bonus).  \n\n3. **Grand Total** :  \n   - Additionnez le **total de la Section Supérieure** et le **total de la Section Inférieure**, puis inscrivez le résultat dans la case **GRAND TOTAL**.  \n   - Le GRAND TOTAL est votre score final pour le jeu.  "
+      },
+      "rule11": {
+        "title": "Gagner la partie",
+        "description": "- Le joueur avec le **plus grand GRAND TOTAL** remporte la partie.  \n- En cas d'égalité, les joueurs partagent la victoire.  "
+      }
+    },
+    "page9": {
+      "rule12": {
+        "title": "Exemple de tour",
+        "description": "1. **Premier lancer** :  \n   - Résultat des dés : **2, 3, 4, 5 et un dé aléatoire**.  \n   - Options possibles : **Quatre**, **Brelan** ou **Grande Suite**.  \n   - La Petite Suite étant déjà marquée, vous tentez la Grande Suite, en gardant **2/3/4/5** et en relançant un dé.  \n\n2. **Deuxième lancer** :  \n   - Vous obtenez un **Deux**.  \n     - Relancez pour la **Grande Suite**, ou  \n     - Gardez les **2 Deux** et visez **Deux** ou **Brelan**.  \n   - Vous gardez les Deux et relancez les trois dés restants.  \n\n3. **Troisième lancer** :  \n   - Résultat des dés : **1 Deux et 2 Trois**.  \n     - **6 points pour les Deux**,  \n     - **12 points pour le Brelan**, ou  \n     - **25 points pour le Full House**.  \n   - Vous choisissez **Full House** car :  \n     - Il est difficile à obtenir plus tard.  \n     - Vous êtes en avance dans la Section Supérieure et n’avez peut-être pas besoin du bonus.  \n   - Vous marquez **25 points** dans la case Full House."
+      }
+    }
+  }
 }

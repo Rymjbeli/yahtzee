@@ -10,3 +10,35 @@ body {
 button {
   outline: none;
 }
+
+@layer base {
+  .markdown {
+    * {
+    all: revert;
+    margin: 0;
+    color: $gray-text;
+    }
+    p {
+    font-size: 16px;
+    font-weight: 400;
+    }
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    table {
+      border-collapse: collapse;
+      min-width: 50%;
+      margin-bottom: 8px;
+      margin-top: 8px;
+    }
+    td, th {
+      border: 1px solid #dddddd;
+      padding: 2px;
+    }
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  }
+}

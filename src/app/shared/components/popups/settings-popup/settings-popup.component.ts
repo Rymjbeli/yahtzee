@@ -7,7 +7,10 @@ import {FormsModule} from "@angular/forms";
 import {CONSTANTS} from "../../../../../config/const.config";
 import {LanguageService} from "../../../services/settings/language.service";
 import {LanguageInterface} from "../../../interfaces/language.interface";
-import { GameService } from '../../../services/game/game.service';
+import {BaseGameService} from "../../../services/game/base-game.service";
+import {GameManagerService} from "../../../services/game/game-manager.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings-popup',
@@ -26,28 +29,34 @@ export class SettingsPopupComponent implements OnInit{
   private soundService = inject(SoundService);
   private languageService = inject(LanguageService);
   private platformId = inject(PLATFORM_ID);
-  private gameService = inject(GameService);
+  gameManagerService = inject(GameManagerService);
+  gameService = this.gameManagerService.currentGameService;
+  private router = inject(Router);
 
-  isMusicPlaying = false;
+  isMusicPlaying = true;
   languages: LanguageInterface[] = [];
   selectedLanguage: LanguageInterface = { name: CONSTANTS.LANGUAGES.ENGLISH, code: CONSTANTS.LANGUAGES.EN };
   dropdownOpen: boolean = false;
   isTimerEnabled: boolean = false;
 
+  gameMode = this.gameManagerService.gameMode;
+
   ngOnInit(): void {
     this.isMusicPlaying = this.soundService.getMusicState();
     this.languages = this.languageService.languages;
     this.selectedLanguage = this.languageService.getLanguage();
-    this.isTimerEnabled = this.gameService.getTimerState();
+    if (this.gameMode === CONSTANTS.GAME_MODE.ONLINE) {
+      this.isTimerEnabled = false;
+    } else {
+      this.isTimerEnabled = this.gameService.getTimerState();
+    }
   }
   closeDialog(): void {
     this.dialogRef.close();
   }
 
   toggleMusic(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isMusicPlaying = this.soundService.toggleMusic();
-    }
+    this.isMusicPlaying = this.soundService.toggleMusic();
   }
 
   toggleDropdown() {
@@ -64,5 +73,12 @@ export class SettingsPopupComponent implements OnInit{
     if (isPlatformBrowser(this.platformId)) {
       this.isTimerEnabled = this.gameService.toggleTimer();
     }
+  }
+
+  protected readonly CONSTANTS = CONSTANTS;
+
+  openRules() {
+    this.router.navigate(['game/rules']);
+    this.closeDialog();
   }
 }
