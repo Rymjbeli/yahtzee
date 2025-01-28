@@ -1,14 +1,12 @@
-import {Component, HostListener, Inject, inject, OnDestroy, OnInit, PLATFORM_ID, signal} from '@angular/core';
+import {Component, HostListener, inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
 import { ScorecardComponent } from "../../shared/components/scorecard/scorecard.component";
 import { ButtonRollComponent } from "../../shared/components/buttons/button-roll/button-roll.component";
-import {BehaviorSubject, filter, Observable, Subject} from "rxjs";
-import { GameState } from "../../shared/interfaces/game-state";
+import { filter} from "rxjs";
 import { AsyncPipe, isPlatformBrowser, NgClass, NgOptimizedImage, NgStyle } from "@angular/common";
 import { Position } from "../../shared/interfaces/position";
 import { MatDialog } from "@angular/material/dialog";
 import { EndGamePopupComponent } from "../../shared/components/popups/end-game-popup/end-game-popup.component";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {BaseGameService} from "../../shared/services/game/base-game.service";
 import {SoundService} from "../../shared/services/settings/sound.service";
 import {GameManagerService} from "../../shared/services/game/game-manager.service";
 import {CONSTANTS} from "../../../config/const.config";
@@ -30,8 +28,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   beforeGame = this.gameService?.beforeGame;
   gameMode = this.gameManagerService.gameMode;
 
-  total1 = this.gameService?.total1;
-  total2 = this.gameService?.total2;
+  total1 = this.gameService?.total1!;
+  total2 = this.gameService?.total2!;
   gameEnded = this.gameService?.gameEnded;
   yahtzee = 'yahtzee';
   startMessage: string = '';

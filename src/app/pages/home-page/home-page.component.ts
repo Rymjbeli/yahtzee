@@ -1,8 +1,7 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import { ButtonPrimaryComponent } from '../../shared/components/buttons/button-primary/button-primary.component';
 import { LargeLoaderComponent } from '../../shared/components/loaders/large-loader/large-loader.component';
 import {
-  DropdownComponent,
   Option,
 } from '../../shared/components/dropdown/dropdown.component';
 import { SettingsNavBarComponent } from '../../shared/components/navbar/settings/settings-navbar.component';
@@ -15,9 +14,9 @@ import { InputPlayerNameComponent } from './components/input-player-name/input-p
 import { ChooseGameModeComponent } from './components/choose-game-mode/choose-game-mode.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {HubService} from "../../shared/services/Hub/hub.service";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {SoundService} from "../../shared/services/settings/sound.service";
 import {GameManagerService} from "../../shared/services/game/game-manager.service";
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-home-page',
@@ -31,9 +30,11 @@ import {GameManagerService} from "../../shared/services/game/game-manager.servic
     InputPlayerNameComponent,
     ChooseGameModeComponent,
     TranslatePipe,
+    NgOptimizedImage,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent implements OnInit {
   [x: string]: any;
@@ -165,16 +166,6 @@ export class HomePageComponent implements OnInit {
       this.startLocalGame();
     }
   }
-
-  // skipName(step: number) {
-  //   if (step === 1) {
-  //     this.playerName = 'Player 1';
-  //   }
-  //   if (step === 2) {
-  //     this.playerTwoName = 'Player 2';
-  //   }
-  //   this.nextStep();
-  // }
 
   saveToLocalStorage(key: string, value: string) {
     this.localStorageService.saveData(key, value, this.platformId);

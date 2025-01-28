@@ -7,9 +7,7 @@ import {FormsModule} from "@angular/forms";
 import {CONSTANTS} from "../../../../../config/const.config";
 import {LanguageService} from "../../../services/settings/language.service";
 import {LanguageInterface} from "../../../interfaces/language.interface";
-import {BaseGameService} from "../../../services/game/base-game.service";
 import {GameManagerService} from "../../../services/game/game-manager.service";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {Router} from "@angular/router";
 
 @Component({
