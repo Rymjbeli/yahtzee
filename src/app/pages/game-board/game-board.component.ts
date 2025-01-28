@@ -30,8 +30,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   beforeGame = this.gameService?.beforeGame;
   gameMode = this.gameManagerService.gameMode;
 
-  total1 = this.gameService?.total1;
-  total2 = this.gameService?.total2;
+  total1 = this.gameService?.total1!;
+  total2 = this.gameService?.total2!;
   gameEnded = this.gameService?.gameEnded;
   yahtzee = 'yahtzee';
   startMessage: string = '';

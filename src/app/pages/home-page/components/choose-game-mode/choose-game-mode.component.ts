@@ -15,6 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ChooseGameModeComponent {
   @Input() options: Option[] = [];
+  @Input() disabledOnline: boolean = false;
   @Output() playLocllyEvent = new EventEmitter<void>();
   @Output() playOnlineEvent = new EventEmitter<Option>();
 

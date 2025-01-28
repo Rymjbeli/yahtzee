@@ -1,13 +1,10 @@
-import {Component, inject, Inject, Input, PLATFORM_ID, signal} from '@angular/core';
+import {Component, inject, Inject, PLATFORM_ID, signal} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {BaseGameService} from "../../../services/game/base-game.service";
 import {GameManagerService} from "../../../services/game/game-manager.service";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {LocalStorageService} from "../../../services/shared/local-storage.service";
 import {Router} from "@angular/router";
-import {sign} from "node:crypto";
 
 @Component({
   selector: 'app-end-game-popup',

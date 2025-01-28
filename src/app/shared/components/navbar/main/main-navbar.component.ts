@@ -1,7 +1,6 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {SmallNavbarComponent} from '../small/small-navbar.component';
 import {ButtonSecondaryComponent} from '../../buttons/button-secondary/button-secondary.component';
-import {BaseGameService} from "../../../services/game/base-game.service";
 import {GameManagerService} from "../../../services/game/game-manager.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {CONSTANTS} from "../../../../../config/const.config";

@@ -11,6 +11,7 @@
       <img left src="assets/icons/desktop.svg" alt="locally" />
     </app-button-primary>
     <app-dropdown
+      [disabled]="disabledOnline"
       [options]="options"
       [placeholder]="'home.play_online' | translate"
       [leftIcon]="true"

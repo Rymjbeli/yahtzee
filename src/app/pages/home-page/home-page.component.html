@@ -25,6 +25,7 @@
       [options]="options"
       (playLocllyEvent)="playLocally()"
       (playOnlineEvent)="playOnline($event)"
+      [disabledOnline]="!this.hubService.IsConnected"
     ></app-choose-game-mode>
 
     }

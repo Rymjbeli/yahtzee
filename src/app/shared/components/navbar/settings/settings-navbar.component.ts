@@ -1,10 +1,8 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   inject,
   Input,
-  Output,
   PLATFORM_ID,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';

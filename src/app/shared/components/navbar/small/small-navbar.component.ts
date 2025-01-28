@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -11,9 +11,7 @@ import { SettingsPopupComponent } from '../../popups/settings-popup/settings-pop
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../../services/shared/local-storage.service';
-import {BaseGameService} from "../../../services/game/base-game.service";
 import {GameManagerService} from "../../../services/game/game-manager.service";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-small-navbar',
@@ -35,12 +33,6 @@ export class SmallNavbarComponent {
   private platformId = inject(PLATFORM_ID);
 
   dialog = inject(MatDialog);
-
-  onClick() {
-    if (!this.disabled) {
-      this.clicked.emit();
-    }
-  }
 
   openSettings() {
     this.dialog.open(SettingsPopupComponent, {
