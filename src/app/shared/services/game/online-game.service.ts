@@ -189,6 +189,7 @@ export class OnlineGameService extends BaseGameService{
     })
   }
   public override initGame(){
+    console.log('inniting game with code, ', this.hubService.roomCode)
     super.resetGame();
     this.updatePlayerName(0, this.localStorageService.getData('playerName', this.platformId) ||
       'Player 1');
