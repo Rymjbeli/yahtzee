@@ -1,0 +1,30 @@
+<div class="relative">
+  <div
+    (click)="closeDialog()"
+    class="absolute -right-8 -top-10 rounded-3xl bg-base-gray border-black border-3 p-1 cursor-pointer"
+  >
+    <img
+      ngSrc="../../../../../assets/icons/cross.svg"
+      alt="cross"
+      width="25"
+      height="25"
+    />
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="font-bold xs:text-lg">Thank you</div>
+    <div>
+      We have received your response and it's under review by our support Team.
+      <br>
+      We will get back to you as soon as possible.
+    </div>
+    <app-button-primary
+      class="flex flex-col items-center"
+      buttonType="submit"
+      [text]="'Close'"
+      [type]="'normal'"
+      size="md"
+      (click)="closeDialog()"
+    ></app-button-primary>
+  </div>
+</div>

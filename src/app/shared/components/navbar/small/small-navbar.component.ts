@@ -14,6 +14,7 @@ import { LocalStorageService } from '../../../services/shared/local-storage.serv
 import {BaseGameService} from "../../../services/game/base-game.service";
 import {GameManagerService} from "../../../services/game/game-manager.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {HelpSupportPopupComponent} from "../../popups/help-support-page/help-support-popup.component";
 
 @Component({
   selector: 'app-small-navbar',
@@ -47,6 +48,15 @@ export class SmallNavbarComponent {
       width: '300px',
       disableClose: true,
     });
+  }
+
+  openHelpSupport() {
+    if (!this.disabled) {
+      this.dialog.open(HelpSupportPopupComponent, {
+        width: '500px',
+        disableClose: true,
+      });
+    }
   }
 
   redirectToHome(): void {

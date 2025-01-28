@@ -8,6 +8,17 @@
   </button>
   <button
     class="button-primary settings-button"
+    (click)="openHelpSupport()"
+    [ngClass]="[size]"
+  >
+    <img
+      src="assets/icons/help.svg"
+      alt="Help Icon"
+      class="settings-icon"
+    />
+  </button>
+  <button
+    class="button-primary settings-button"
     [ngClass]="[size]"
     (click)="openSettings()"
     [disabled]="disabled"
