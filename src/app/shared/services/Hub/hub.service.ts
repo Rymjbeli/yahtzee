@@ -60,6 +60,7 @@ export class HubService {
         this.hubConnection.on('RoomCreation', (message: string) => {
           if(message!="0"){
             this.IsInRoom= true;
+             console.log("Setting room code to", message)
             this.roomCode = message;
           }
           observer.next(message);
@@ -130,8 +131,10 @@ export class HubService {
   }
 
   quitRoom(roomCode: string){
+    if(this.IsInRoom) {
+      this.hubConnection.invoke("QuitRoom", String(roomCode));
+    }
     this.IsInRoom = false;
-    this.hubConnection.invoke("QuitRoom", String(roomCode));
   }
   onGameEnd(){
     return new Observable<any>((observer) => {

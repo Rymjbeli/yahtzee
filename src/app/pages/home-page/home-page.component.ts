@@ -100,12 +100,12 @@ export class HomePageComponent implements OnInit {
         if(res != "0"){
           this.roomCode = res;
           this.saveToLocalStorage('roomCode', this.roomCode);
+          console.log("Created a room with code, ", this.hubService.roomCode)
+          console.log("Created a room with code2, ", this.roomCode)
           this.hubService.onSecondPlayerJoined().subscribe((playerNames)=>{
             this.saveToLocalStorage("GlobalId", "0");
-            this.saveToLocalStorage('roomCode', this.roomCode);
             this.playerTwoName = playerNames.split(":")[1];
-            this.saveToLocalStorage('playerTwoName', this.playerTwoName);
-            this.router.navigate(["/game"]);
+            this.startOnlineGame();
           })
         }
       });
@@ -197,14 +197,16 @@ export class HomePageComponent implements OnInit {
         this.saveToLocalStorage('roomCode', this.roomCode);
         this.hubService.JoinRoom(this.roomCode, this.playerName).subscribe((playerNames)=>{
           this.playerTwoName = playerNames.split(":")[0];
-          this.saveToLocalStorage('playerTwoName', this.playerTwoName);
           this.saveToLocalStorage("GlobalId", "1");
-          this.router.navigate(["/game"]);
+          this.startOnlineGame()
         });
       }
     });
   }
-
+  startOnlineGame(){
+    this.saveToLocalStorage('playerTwoName', this.playerTwoName);
+    this.router.navigate(["/game"]);
+  }
   playSound(): void {
     this.soundService.playSound();
   }

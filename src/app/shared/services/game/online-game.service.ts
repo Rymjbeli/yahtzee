@@ -28,7 +28,7 @@ export class OnlineGameService extends BaseGameService{
   public innitCallbacks(){
     this.hubService.onGameEnd().subscribe(()=>{
       if(!this.notifiedEnding) {
-        alert("will end")
+        console.log("Game Ended");
         this.gameEnded.next(1);
       }
       this.notifiedEnding = true;
@@ -36,13 +36,13 @@ export class OnlineGameService extends BaseGameService{
     this.hubService.onRoomClosed().subscribe(()=>{
       this.canPlayAgain.set(false);
       if(!this.notifiedEnding) {
-        alert("will end")
+        console.log("room closed");
         this.gameEnded.next(1);
       }
       this.notifiedEnding = true;
     });
     this.hubService.onGameReset().subscribe(()=>{
-      alert("reset")
+      console.log("Game Reset");
       this.notifiedEnding = false;
       super.resetGame();
       this.rollCounter = -1;
@@ -180,6 +180,11 @@ export class OnlineGameService extends BaseGameService{
     })
   }
   public override initGame(){
+    super.resetGame();
+    this.updatePlayerName(0, this.localStorageService.getData('playerName', this.platformId) ||
+      'Player 1');
+    this.updatePlayerName(1, this.localStorageService.getData('playerTwoName', this.platformId) ||
+      'Player 2');
     this.notifiedEnding = false;
     this.canPlayAgain.set(true);
     if(!this.hubService.IsInRoom){
