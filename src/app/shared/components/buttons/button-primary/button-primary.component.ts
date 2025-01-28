@@ -13,6 +13,7 @@ export class ButtonPrimaryComponent {
   @Input() text: string = '';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() type: 'normal' | 'disabled' = 'normal';
+  @Input() buttonType: 'button' | 'submit' = 'button';
   @Input() showRightIcon: boolean = false;
   @Input() showLeftIcon: boolean = false;
 }

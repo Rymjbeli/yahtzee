@@ -2,6 +2,7 @@
   class="button-primary"
   [ngClass]="[type, size]"
   [disabled]="type === 'disabled'"
+  [type]="buttonType"
 >
   <div *ngIf="showLeftIcon" class="icon flex justify-center items-center">
     <ng-content select="[left]"></ng-content>
