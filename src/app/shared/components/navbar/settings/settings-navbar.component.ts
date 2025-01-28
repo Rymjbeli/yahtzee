@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SettingsPopupComponent } from '../../popups/settings-popup/settings-popup.component';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../../services/shared/local-storage.service';
+import {HelpSupportPopupComponent} from "../../popups/help-support-page/help-support-popup.component";
 
 @Component({
   selector: 'app-settings-nav-bar',
@@ -34,6 +35,16 @@ export class SettingsNavBarComponent {
       });
     }
   }
+
+  openHelpSupport() {
+    if (!this.disabled) {
+      this.dialog.open(HelpSupportPopupComponent, {
+        width: '500px',
+        disableClose: true,
+      });
+    }
+  }
+
   redirectToHome() {
     this.localStorageService.removeData('step', this.platformId);
     this.localStorageService.removeData('gameMode', this.platformId);

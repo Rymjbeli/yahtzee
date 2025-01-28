@@ -14,6 +14,8 @@ export class InputComponent {
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() type: 'normal' | 'disabled' = 'normal';
   @Input() placeholder: string = '';
+  @Input() required: boolean = false;
+  @Input() email: boolean = false;
   @Output() textChange = new EventEmitter<string>();
 
   onTextChange(event: Event): void {
