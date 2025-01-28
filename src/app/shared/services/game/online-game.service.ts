@@ -180,6 +180,11 @@ export class OnlineGameService extends BaseGameService{
     })
   }
   public override initGame(){
+
+    this.updatePlayerName(0, this.localStorageService.getData('playerName', this.platformId) ||
+      'Player 1');
+    this.updatePlayerName(1, this.localStorageService.getData('playerTwoName', this.platformId) ||
+      'Player 2');
     this.notifiedEnding = false;
     this.canPlayAgain.set(true);
     if(!this.hubService.IsInRoom){
