@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {environment} from "../../../app.environment";
 import {defer, first, Observable} from "rxjs";
-import {HttpTransportType, HubConnection, HubConnectionBuilder, ILogger, LogLevel} from "@microsoft/signalr";
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {MyLogger} from "../../helpers/BlankLogger";
 
 @Injectable({

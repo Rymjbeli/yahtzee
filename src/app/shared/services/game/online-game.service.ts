@@ -28,7 +28,6 @@ export class OnlineGameService extends BaseGameService{
   public innitCallbacks(){
     this.hubService.onGameEnd().subscribe((scrs)=>{
       const scores = String(scrs).split(":");
-      console.log(scrs);
       if(this.globalPlayerId==0){
         this.total1.set(Number(scores[0]));
         this.total2.set(Number(scores[1]));
@@ -37,7 +36,6 @@ export class OnlineGameService extends BaseGameService{
         this.total2.set(Number(scores[0]));
       }
       if(!this.notifiedEnding) {
-        console.log("Game Ended");
         this.gameEnded.next(1);
       }
       this.notifiedEnding = true;
@@ -45,13 +43,11 @@ export class OnlineGameService extends BaseGameService{
     this.hubService.onRoomClosed().subscribe(()=>{
       this.canPlayAgain.set(false);
       if(!this.notifiedEnding) {
-        console.log("room closed");
         this.gameEnded.next(1);
       }
       this.notifiedEnding = true;
     });
     this.hubService.onGameReset().subscribe(()=>{
-      console.log("Game Reset");
       this.notifiedEnding = false;
       super.resetGame();
       this.rollCounter = -1;
@@ -68,7 +64,6 @@ export class OnlineGameService extends BaseGameService{
     );
     this.hubService.onSetDice().subscribe(
       (res)=>{
-        console.log(res);
         const gameState = this.getGameStateValue();
         const diceVals = String(res.split(':')[1]).split(',').map(e=>Number(e));
         const dice = gameState.dice;
@@ -131,7 +126,6 @@ export class OnlineGameService extends BaseGameService{
       }
     )
     this.hubService.onHideDice().subscribe((res)=>{
-      console.log(res)
       const gameState = this.getGameStateValue();
       const diceHeldVals = res.split(',');
       for(let i = 0; i < 5;i++){
@@ -140,7 +134,6 @@ export class OnlineGameService extends BaseGameService{
       this.gameStateSubject.next(gameState);
     });
     this.hubService.onScoreChosen().subscribe((res)=>{
-      console.log(res);
       const score = res.split(':')[1];
       const gameState = this.getGameStateValue();
       const index = gameState.currentPlayerIndex;
@@ -189,7 +182,6 @@ export class OnlineGameService extends BaseGameService{
     })
   }
   public override initGame(){
-    console.log('inniting game with code, ', this.hubService.roomCode)
     super.resetGame();
     this.updatePlayerName(0, this.localStorageService.getData('playerName', this.platformId) ||
       'Player 1');
@@ -216,16 +208,13 @@ export class OnlineGameService extends BaseGameService{
 
   toggleHoldDice(diceIndex: number) {
     if (this.getGameStateValue().rollsLeft === 3 || this.getGameStateValue().currentPlayerIndex==1) return;
-    console.log("Will hide dice")
     const gameState = this.gameStateSubject.getValue();
     gameState.dice[diceIndex].isHeld = !gameState.dice[diceIndex].isHeld;
     this.gameStateSubject.next(gameState);
     let dice = ""
     for(let i = 0; i < 5 ; i++){
       dice += gameState.dice[i].isHeld ? "1" : "0"
-      console.log(i, gameState.dice[i].isHeld)
     }
-    console.log(dice);
     this.hubService.hideDice(this.hubService.roomCode, dice);
   }
 
@@ -234,7 +223,6 @@ export class OnlineGameService extends BaseGameService{
     let currentPlayer = game.currentPlayerIndex;
     if (this.rollCounter <2) {
       this.hubService.StartingPlayerRoll(this.hubService.roomCode);
-      console.log(this.hubService.roomCode);
       this.beforeGame.set(true)
     } else {
       this.rollDiceInsideGame();
@@ -262,7 +250,6 @@ export class OnlineGameService extends BaseGameService{
 
 
   scoreChosen(score: string): void {
-    console.log(score);
     this.hubService.chooseScore(this.hubService.roomCode, score);
   }
 

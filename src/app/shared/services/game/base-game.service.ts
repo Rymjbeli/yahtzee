@@ -212,7 +212,6 @@ export abstract class BaseGameService {
    * Resets the game state to the initial state.
    */
   public resetGame(): void{
-    console.log("Will Reset game")
     const currentGameState = this.getGameStateValue();
     const playerNames = currentGameState.players.map(player => player.name);
     const dicePositions = generateRandomDicePositions();
