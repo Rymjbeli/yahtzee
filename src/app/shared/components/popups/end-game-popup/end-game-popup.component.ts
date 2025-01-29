@@ -5,7 +5,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {GameManagerService} from "../../../services/game/game-manager.service";
 import {LocalStorageService} from "../../../services/shared/local-storage.service";
 import {Router} from "@angular/router";
-import {sign} from "node:crypto";
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({

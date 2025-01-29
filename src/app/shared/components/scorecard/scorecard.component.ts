@@ -5,7 +5,6 @@ import { Player } from '../../models/player';
 import {RulesService} from "../../services/game/rules.service";
 import {Section} from "../../interfaces/section.interface";
 import {GameManagerService} from "../../services/game/game-manager.service";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
