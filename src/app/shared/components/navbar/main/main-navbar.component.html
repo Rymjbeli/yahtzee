@@ -4,14 +4,16 @@
       [ngStyle]="{ visibility: gameMode === CONSTANTS.GAME_MODE.ONLINE ? 'hidden' : 'visible' }"
       (click)="resetGame()"
       [size]="'md'"
-      text="New Game">
+      [text]="'navbar.new_game' | translate">
+    >
     </app-button-secondary>
   }
   @if (isGameRulesPage()) {
     <app-button-secondary
       (click)="goBack()"
       [size]="'md'"
-      text="Return">
+      [text]="'navbar.back' | translate"
+    >
     </app-button-secondary>
   }
   <div class="yahtzee-logo-navbar">

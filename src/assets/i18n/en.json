@@ -4,7 +4,7 @@
     "choose_game_mode": "Choose how you want to play!",
     "play_locally": "Play Locally",
     "play_online": "Play Online",
-    "Yahtzee_player": "Yahtzee Player",
+    "yahtzee_player": "Yahtzee Player",
     "back": "Back",
     "next": "Next",
     "waitingForPlayer": "Waiting for the other player to join you ",
@@ -17,7 +17,30 @@
     "typeYourName": "Type your name",
     "createNewRoom": "Create a new room",
     "joinExistingRoom": "Join an existing room",
-    "room_message" : "Room does not exist."
+    "room_message": "Room does not exist.",
+    "loading": "LOADING",
+    "waiting": "Please wait..."
+  },
+  "navbar": {
+    "new_game": "New Game",
+    "back": "Return"
+  },
+  "game_board": {
+    "roll_dice": "Roll Dice",
+    "reroll_dice": "Reroll Dice",
+    "roll_dice_to_start": "Roll the dice once to determine who will begin",
+    "start_first": "will roll first",
+    "starting": "will start",
+    "player_turn": "'s turn",
+    "quit_game_alert": "You may lose unsaved changes. Do you want to quit the game?",
+    "player_quit": "The other player left the game :(",
+    "win_game": "wins the game!",
+    "tie_game": "It's a tie!",
+    "player1": "Player 1",
+    "player2": "Player 2",
+    "play_again": "Play Again",
+    "home": "Home",
+    "scores": "Your scores"
   },
   "rules": {
     "page1": {
@@ -86,5 +109,48 @@
         "description": "1. **First Roll**:  \n   - Dice result: **2, 3, 4, 5, and a random die**.  \n   - Possible options: **Fours**, **3 of a Kind**, or **Large Straight**.  \n   - Since the Small Straight is already scored, you go for the Large Straight, keeping **2/3/4/5** and rerolling one die.  \n\n2. **Second Roll**:  \n   - You roll a **Two**.  \n     - Reroll for the **Large Straight**, or  \n     - Keep the **2 Twos** and aim for **Twos** or **3 of a Kind**.  \n   - You keep the Twos and reroll the remaining three dice.  \n\n3. **Third Roll**:  \n   - Dice result: **1 Two and 2 Threes**.  \n     - **6 points for Twos**,  \n     - **12 points for 3 of a Kind**, or  \n     - **25 points for Full House**.  \n   - You pick **Full House** because:  \n     - It’s harder to roll later.  \n     - You’re ahead in the Upper Section and might not need 3 Twos for the bonus.  \n     - A higher-scoring **3 of a Kind** is possible later.  "
       }
     }
+  },
+  "help_support": {
+    "help_title": "Help & Support",
+    "help_description": "Let us know how we can assist you by filling out the form below.",
+    "thank_you": "Thank you",
+    "response_received": "We have received your response and it's under review by our support Team.",
+    "respond_time": "We will get back to you as soon as possible.",
+    "email": "Email",
+    "email_placeholder": "Enter your email",
+    "email_error": "Please enter a valid email address",
+    "problem": "Problem",
+    "problem_placeholder": "Describe your problem",
+    "problem_error": "Please describe your problem",
+    "submit": "Submit"
+  },
+  "settings": {
+    "settings": "Settings",
+    "sound": "Sound",
+    "timer": "Timer",
+    "yahtzee_rules": "Yahtzee Rules",
+    "language": {
+      "english": "English",
+      "spanish": "Spanish",
+      "arabic": "Arabic",
+      "french": "French"
+    }
+  },
+  "scorecard": {
+    "aces": "Aces",
+    "twos": "Twos",
+    "threes": "Threes",
+    "fours": "Fours",
+    "fives": "Fives",
+    "sixes": "Sixes",
+    "bonus": "Bonus",
+    "three_of_a_kind": "Three of a Kind",
+    "four_of_a_kind": "Four of a Kind",
+    "full_house": "Full House",
+    "small_straight": "Small Straight",
+    "large_straight": "Large Straight",
+    "chance": "Chance",
+    "yahtzee": "YAHTZEE",
+    "total": "Total"
   }
 }

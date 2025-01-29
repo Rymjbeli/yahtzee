@@ -6,11 +6,12 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {CONSTANTS} from "../../../../../config/const.config";
 import {Location, NgStyle} from "@angular/common";
 import {Router, NavigationEnd} from '@angular/router';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-main-navbar',
   standalone: true,
-  imports: [SmallNavbarComponent, ButtonSecondaryComponent, NgStyle],
+  imports: [SmallNavbarComponent, ButtonSecondaryComponent, NgStyle, TranslatePipe],
   templateUrl: './main-navbar.component.html',
   styleUrl: './main-navbar.component.scss',
 })
@@ -22,14 +23,13 @@ export class MainNavbarComponent implements OnInit {
   router = inject(Router);
 
   gameMode = this.gameManagerService.gameMode;
-  isGameRulesPage = signal(false); // Tracks if we are on the GameRules page
+  isGameRulesPage = signal(false);
 
   constructor() {
-    // Track route changes to determine if the GameRulesComponent is active
     this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isGameRulesPage.update(() =>
-          event.urlAfterRedirects.includes('rules') // Adjust based on your route
+          event.urlAfterRedirects.includes('rules')
         );
       }
     });

@@ -10,16 +10,18 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {SoundService} from "../../shared/services/settings/sound.service";
 import {GameManagerService} from "../../shared/services/game/game-manager.service";
 import {CONSTANTS} from "../../../config/const.config";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-game-board',
   standalone: true,
-  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgClass, NgStyle],
+  imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgClass, NgStyle, TranslatePipe],
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss',
 })
 export class GameBoardComponent implements OnInit, OnDestroy {
   gameManagerService = inject(GameManagerService);
+  translateService = inject(TranslateService);
   gameService = this.gameManagerService.currentGameService;
   soundService = inject(SoundService);
   dialog = inject(MatDialog);
@@ -33,6 +35,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   gameEnded = this.gameService?.gameEnded;
   yahtzee = 'yahtzee';
   startMessage: string = '';
+  quitGameAlert: string = '';
 
   constructor() {
     this.gameEnded.pipe(takeUntilDestroyed()).pipe(filter(x=>x==1)).subscribe(()=>{
@@ -50,6 +53,12 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.gameService?.initGame();
+    this.translateService.stream('game_board.startMessage').subscribe((res: string) => {
+      this.startMessage = res;
+    });
+    this.translateService.stream('game_board.quit_game_alert').subscribe((res: string) => {
+      this.quitGameAlert = res;
+    });
   }
 
   toggleHold(index: number): void {
@@ -95,10 +104,9 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     return rollsLeft === 0 || (yahtzeeScore > 0 && rollsLeft < 3 && nbrOfYahtzee < 4);
   }
 
-  get rollButtonText(): "Roll Dice" | "Reroll Dice" {
-    return this.gameService?.getGameStateValue()?.rollsLeft === 3 ? 'Roll Dice' : 'Reroll Dice';
+  get rollButtonText() {
+    return this.gameService?.getGameStateValue()?.rollsLeft === 3 ? 'game_board.roll_dice' : 'game_board.reroll_dice';
   }
-
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any): void {
@@ -108,10 +116,12 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any): void {
     if (isPlatformBrowser(this.platformId)) {
-      const confirmNavigation = confirm('You may lose unsaved changes. Do you want to quit the game?');
+      const confirmNavigation = confirm(this.quitGameAlert);
       if (!confirmNavigation) {
         // Push the state back to prevent navigation
         window.history.pushState(null, '', window.location.href);
+      } else {
+        this.gameService.resetGame();
       }
     }
   }

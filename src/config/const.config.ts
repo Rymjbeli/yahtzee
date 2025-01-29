@@ -6,10 +6,10 @@ export const CONSTANTS = {
     ES: 'es',
     AR: 'ar',
 
-    ENGLISH: 'English',
-    FRENCH: 'French',
-    SPANISH: 'Spanish',
-    ARABIC: 'Arabic',
+    ENGLISH: 'settings.language.english',
+    FRENCH: 'settings.language.french',
+    SPANISH: 'settings.language.spanish',
+    ARABIC: 'settings.language.arabic',
   },
 
   IS_MUSIC_PLAYING: 'isMusicPlaying',

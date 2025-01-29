@@ -9,6 +9,7 @@ import {LanguageService} from "../../../services/settings/language.service";
 import {LanguageInterface} from "../../../interfaces/language.interface";
 import {GameManagerService} from "../../../services/game/game-manager.service";
 import {Router} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-settings-popup',
@@ -17,7 +18,8 @@ import {Router} from "@angular/router";
     NgOptimizedImage,
     ButtonPrimaryComponent,
     FormsModule,
-    NgClass
+    NgClass,
+    TranslatePipe
   ],
   templateUrl: './settings-popup.component.html',
   styleUrl: './settings-popup.component.scss'

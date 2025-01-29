@@ -4,7 +4,7 @@
     "choose_game_mode": "¡Elige cómo quieres jugar!",
     "play_locally": "Jugar Localmente",
     "play_online": "Jugar en Línea",
-    "Yahtzee_player": "Jugador de Yahtzee",
+    "yahtzee_player": "Jugador de Yahtzee",
     "back": "Atrás",
     "next": "Siguiente",
     "waitingForPlayer": "Esperando a que el otro jugador se una a ti ",
@@ -16,7 +16,31 @@
     "typeSecondPlayerName": "Escribe el nombre del segundo jugador",
     "typeYourName": "Escribe tu nombre",
     "createNewRoom": "Crear una nueva sala",
-    "joinExistingRoom": "Unirse a una sala existente"
+    "joinExistingRoom": "Unirse a una sala existente",
+    "room_message": "La sala no existe.",
+    "loading": "CARGANDO",
+    "waiting": "Por favor, espera..."
+  },
+  "navbar": {
+    "new_game": "Nueva Partida",
+    "back": "Volver"
+  },
+  "game_board": {
+    "roll_dice": "Lanzar Dados",
+    "reroll_dice": "Volver a Lanzar",
+    "roll_dice_to_start": "Lanza los dados una vez para determinar quién comenzará",
+    "start_first": "comenzará primero",
+    "starting": "comienza",
+    "player_turn": "turno",
+    "quit_game_alert": "Puedes perder los cambios no guardados. ¿Quieres salir del juego?",
+    "player_quit": "El otro jugador ha salido del juego :(",
+    "win_game": "¡gana la partida!",
+    "tie_game": "¡Es un empate!",
+    "player1": "Jugador 1",
+    "player2": "Jugador 2",
+    "play_again": "Jugar de Nuevo",
+    "home": "Inicio",
+    "scores": "Tus puntuaciones"
   },
   "rules": {
     "page1": {
@@ -85,5 +109,48 @@
         "description": "1. **Primer Lanzamiento**:  \n   - Resultado de los dados: **2, 3, 4, 5 y un dado aleatorio**.  \n   - Opciones posibles: **Cuatros**, **Tercia** o **Escalera Grande**.  \n   - Dado que la Escalera Pequeña ya está puntuada, eliges la Escalera Grande, manteniendo **2/3/4/5** y relanzando un dado.  \n\n2. **Segundo Lanzamiento**:  \n   - Sacas un **Dos**.  \n     - Relanzar para la **Escalera Grande**, o  \n     - Mantener los **2 Doses** y apuntar a **Doses** o **Tercia**.  \n   - Decides mantener los Doses y relanzar los tres dados restantes.  \n\n3. **Tercer Lanzamiento**:  \n   - Resultado de los dados: **1 Dos y 2 Treses**.  \n     - **6 puntos en Doses**,  \n     - **12 puntos en Tercia**, o  \n     - **25 puntos en Full**.  \n   - Escoges **Full** porque:  \n     - Es más difícil de sacar más tarde.  \n     - Estás adelante en la Sección Superior y tal vez no necesites 3 Doses para el bono.  \n     - Es posible obtener una Tercia con mayor puntuación después.  "
       }
     }
+  },
+  "help_support": {
+    "help_title": "Ayuda y Soporte",
+    "help_description": "Cuéntanos cómo podemos ayudarte rellenando el siguiente formulario.",
+    "thank_you": "Gracias",
+    "response_received": "Hemos recibido tu solicitud y nuestro equipo de soporte la está revisando.",
+    "respond_time": "Te responderemos lo antes posible.",
+    "email": "Correo electrónico",
+    "email_placeholder": "Introduce tu correo electrónico",
+    "email_error": "Por favor, introduce una dirección de correo válida",
+    "problem": "Problema",
+    "problem_placeholder": "Describe tu problema",
+    "problem_error": "Por favor, describe tu problema",
+    "submit": "Enviar"
+  },
+  "settings": {
+    "settings": "Configuración",
+    "sound": "Sonido",
+    "timer": "Tempo",
+    "yahtzee_rules": "Reglas de Yahtzee",
+    "language": {
+      "english": "Inglés",
+      "spanish": "Español",
+      "arabic": "Árabe",
+      "french": "Francés"
+    }
+  },
+  "scorecard": {
+    "aces": "Ases",
+    "twos": "Doses",
+    "threes": "Treses",
+    "fours": "Cuatros",
+    "fives": "Cincos",
+    "sixes": "Seises",
+    "bonus": "Bono",
+    "three_of_a_kind": "Trío",
+    "four_of_a_kind": "Póker",
+    "full_house": "Full",
+    "small_straight": "Escalera Pequeña",
+    "large_straight": "Escalera Grande",
+    "chance": "Oportunidad",
+    "yahtzee": "YAHTZEE",
+    "total": "Total"
   }
 }

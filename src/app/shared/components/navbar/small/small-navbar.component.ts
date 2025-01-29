@@ -37,7 +37,7 @@ export class SmallNavbarComponent {
 
   openSettings() {
     this.dialog.open(SettingsPopupComponent, {
-      width: '300px',
+      width: '350px',
       disableClose: true,
     });
   }

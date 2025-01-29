@@ -4,7 +4,7 @@
     "choose_game_mode": "Choisissez comment vous voulez jouer!",
     "play_locally": "Jouer en local",
     "play_online": "Jouer en ligne",
-    "Yahtzee_player": "Joueur de Yahtzee",
+    "yahtzee_player": "Joueur de Yahtzee",
     "back": "Retour",
     "next": "Suivant",
     "waitingForPlayer": "En attente de l'autre joueur pour vous rejoindre ",
@@ -17,7 +17,30 @@
     "typeYourName": "Tapez votre nom",
     "createNewRoom": "Créer une nouvelle salle",
     "joinExistingRoom": "Rejoindre une salle existante",
-    "room_message" : "La salle n'existe pas."
+    "room_message": "La salle n'existe pas.",
+    "loading": "Chargement",
+    "waiting": "En attente..."
+  },
+  "navbar": {
+    "new_game": "Nouvelle partie",
+    "back": "Retour"
+  },
+  "game_board": {
+    "roll_dice": "Lancer les dés",
+    "reroll_dice": "Relancer les dés",
+    "roll_dice_to_start": "Lancez les dés une fois pour déterminer qui commencera",
+    "start_first": "commencera",
+    "starting": "commence",
+    "player_turn": "tour",
+    "quit_game_alert": "Vous risquez de perdre des modifications non enregistrées. Voulez-vous quitter le jeu?",
+    "player_quit": "L'autre joueur a quitté la partie :(",
+    "win_game": "remporte la partie !",
+    "tie_game": "C'est une égalité !",
+    "player1": "Joueur 1",
+    "player2": "Joueur 2",
+    "play_again": "Rejouer",
+    "home": "Accueil",
+    "scores": "Vos scores"
   },
   "rules": {
     "page1": {
@@ -86,5 +109,48 @@
         "description": "1. **Premier lancer** :  \n   - Résultat des dés : **2, 3, 4, 5 et un dé aléatoire**.  \n   - Options possibles : **Quatre**, **Brelan** ou **Grande Suite**.  \n   - La Petite Suite étant déjà marquée, vous tentez la Grande Suite, en gardant **2/3/4/5** et en relançant un dé.  \n\n2. **Deuxième lancer** :  \n   - Vous obtenez un **Deux**.  \n     - Relancez pour la **Grande Suite**, ou  \n     - Gardez les **2 Deux** et visez **Deux** ou **Brelan**.  \n   - Vous gardez les Deux et relancez les trois dés restants.  \n\n3. **Troisième lancer** :  \n   - Résultat des dés : **1 Deux et 2 Trois**.  \n     - **6 points pour les Deux**,  \n     - **12 points pour le Brelan**, ou  \n     - **25 points pour le Full House**.  \n   - Vous choisissez **Full House** car :  \n     - Il est difficile à obtenir plus tard.  \n     - Vous êtes en avance dans la Section Supérieure et n’avez peut-être pas besoin du bonus.  \n   - Vous marquez **25 points** dans la case Full House."
       }
     }
+  },
+  "help_support": {
+    "help_title": "Aide & Support",
+    "help_description": "Faites-nous savoir comment nous pouvons vous aider en remplissant le formulaire ci-dessous.",
+    "thank_you": "Merci",
+    "response_received": "Nous avons bien reçu votre demande et notre équipe de support est en train de l'examiner.",
+    "respond_time": "Nous vous répondrons dès que possible.",
+    "email": "E-mail",
+    "email_placeholder": "Entrez votre e-mail",
+    "email_error": "Veuillez entrer une adresse e-mail valide",
+    "problem": "Problème",
+    "problem_placeholder": "Décrivez votre problème",
+    "problem_error": "Veuillez décrire votre problème",
+    "submit": "Envoyer"
+  },
+  "settings": {
+    "settings": "Paramètres",
+    "sound": "Son",
+    "timer": "Minuteur",
+    "yahtzee_rules": "Règles du Yahtzee",
+    "language": {
+      "english": "Anglais",
+      "spanish": "Espagnol",
+      "arabic": "Arabe",
+      "french": "Français"
+    }
+  },
+  "scorecard": {
+    "aces": "As",
+    "twos": "Deux",
+    "threes": "Trois",
+    "fours": "Quatre",
+    "fives": "Cinq",
+    "sixes": "Six",
+    "bonus": "Bonus",
+    "three_of_a_kind": "Brelan",
+    "four_of_a_kind": "Carré",
+    "full_house": "Full House",
+    "small_straight": "Petite Suite",
+    "large_straight": "Grande Suite",
+    "chance": "Chance",
+    "yahtzee": "YAHTZEE",
+    "total": "Total"
   }
 }

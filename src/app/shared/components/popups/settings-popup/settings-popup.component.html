@@ -9,14 +9,14 @@
   </div>
   <div class="flex flex-col gap-10 items-center">
     <div class="font-extrabold text-3xl xs:text-4xl">
-      Settings
+      {{ 'settings.settings' | translate }}
     </div>
     <div class="flex flex-col gap-5">
       <div class="flex justify-center xs:justify-between items-center gap-10 flex-wrap">
         <div class="flex gap-4 items-center">
           <img class="w-9 h-8 xs:w-10 xs:h-9" src="../../../../../assets/icons/sound.svg" alt="sound">
           <div class="font-bold text-xl xs:text-2xl ">
-            Sound
+            {{ 'settings.sound' | translate }}
           </div>
         </div>
 
@@ -30,7 +30,7 @@
         <div class="flex gap-3 items-center">
           <img class="w-10 h-9 xs:w-11 xs:h-10" src="../../../../../assets/icons/timer.svg" alt="timer">
           <div class="font-bold text-xl xs:text-2xl">
-            Timer
+            {{ 'settings.timer' | translate }}
           </div>
         </div>
 
@@ -44,7 +44,7 @@
           <img class="w-11 h-10 xs:w-12 xs:h-11" ngSrc="../../../../../assets/icons/language.svg" alt="timer" width="45" height="45">
           <div class="relative flex-1">
             <div class="flex gap-3 justify-between items-center bg-base-gray border-black border-2 py-2 px-4 rounded-xl cursor-pointer shadow-custom-light" (click)="toggleDropdown()">
-              <span>{{ selectedLanguage.name }}</span>
+              <span>{{ selectedLanguage.name | translate }}</span>
               @if (dropdownOpen) {
                 <img ngSrc="../../../../../assets/icons/arrow-up.svg" alt="arrow-up" width="20" height="20">
               } @else  {
@@ -60,7 +60,7 @@
                     [ngClass]="{ 'bg-main-sub': language.name === selectedLanguage.name }"
                     (click)="selectLanguage(language)"
                   >
-                    <span>{{ language.name }}</span>
+                    <span>{{ language.name | translate }}</span>
                   </li>
                 }
               </ul>
@@ -68,11 +68,11 @@
           </div>
       </div>
     </div>
-    <app-button-primary (click)="openRules()" class="hidden xs:flex" text="YAHTZEE Rules" size="md" [showLeftIcon]="true">
+    <app-button-primary (click)="openRules()" class="hidden xs:flex" [text]="'settings.yahtzee_rules' | translate" size="md" [showLeftIcon]="true">
       <img left src="../../../../../assets/icons/rules.svg" alt="rules">
     </app-button-primary>
 
-    <app-button-primary (click)="openRules()" class="xs:hidden" text="YAHTZEE Rules" size="sm" [showLeftIcon]="true">
+    <app-button-primary (click)="openRules()" class="xs:hidden" [text]="'settings.yahtzee_rules' | translate" size="sm" [showLeftIcon]="true">
       <img left src="../../../../../assets/icons/rules.svg" alt="rules">
     </app-button-primary>
 </div>
