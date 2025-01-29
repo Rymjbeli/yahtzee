@@ -34,7 +34,6 @@ import {NgOptimizedImage} from "@angular/common";
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent implements OnInit {
   [x: string]: any;
@@ -101,8 +100,6 @@ export class HomePageComponent implements OnInit {
         if(res != "0"){
           this.roomCode = res;
           this.saveToLocalStorage('roomCode', this.roomCode);
-          console.log("Created a room with code, ", this.hubService.roomCode)
-          console.log("Created a room with code2, ", this.roomCode)
           this.hubService.onAllPlayersJoined().subscribe((playerNames)=>{
             this.saveToLocalStorage("GlobalId", "0");
             this.playerTwoName = playerNames.split(":")[1];

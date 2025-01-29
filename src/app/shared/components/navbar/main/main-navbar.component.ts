@@ -15,6 +15,7 @@ import {Router, NavigationEnd} from '@angular/router';
   styleUrl: './main-navbar.component.scss',
 })
 export class MainNavbarComponent implements OnInit {
+  protected readonly CONSTANTS = CONSTANTS;
   gameManagerService = inject(GameManagerService);
   gameService = this.gameManagerService.currentGameService;
   location = inject(Location);
@@ -44,6 +45,4 @@ export class MainNavbarComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-
-  protected readonly CONSTANTS = CONSTANTS;
 }
