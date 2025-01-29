@@ -50,8 +50,8 @@ export class HomePageComponent implements OnInit {
   step: number = 1;
   gameMode: 'online' | 'local' | null = null;
   onlineOption: 'create' | 'join' | null = null;
-  playerName = 'Player 1';
-  playerTwoName = 'Player 2';
+  playerName = 'game_board.player1';
+  playerTwoName = 'game_board.player2';
   roomCode = '';
   // online options
   options: Option[] = [
@@ -83,12 +83,11 @@ export class HomePageComponent implements OnInit {
     this.onlineOption =
       (this.retrieveFromLocalStorage('onlineOption') as 'create' | 'join') ||
       null;
-    this.playerName = this.retrieveFromLocalStorage('playerName') || 'Player 1';
+    this.playerName = this.retrieveFromLocalStorage('playerName') || 'game_board.player1';
     this.playerTwoName =
-      this.retrieveFromLocalStorage('playerTwoName') || 'Player 2';
+      this.retrieveFromLocalStorage('playerTwoName') || 'game_board.player2';
     this.roomCode =
-      this.retrieveFromLocalStorage('roomCode') ||
-      "PLEASE WAIT";
+      this.retrieveFromLocalStorage('roomCode') || 'home.waiting';
   }
 
   nextStep() {

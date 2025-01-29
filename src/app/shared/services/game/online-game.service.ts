@@ -3,20 +3,26 @@ import {generateRandomDicePositions} from "../../helpers/generate-random-dice-po
 import {HubService} from "../Hub/hub.service";
 import {Router} from "@angular/router";
 import {BaseGameService} from "./base-game.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OnlineGameService extends BaseGameService{
   private hubService = inject(HubService);
+  private translate = inject(TranslateService);
   private router = inject(Router);
   private notifiedEnding = false;
   private globalPlayerId: number = -1;
+  private playerStartingMessage : string = "";
 
   constructor() {
     super();
     this.innitCallbacks();
     this.gameEnded.next(0);
+    this.translate.stream('game_board.starting').subscribe((res) => {
+      this.playerStartingMessage = res;
+    });
   }
 
 
@@ -103,7 +109,7 @@ export class OnlineGameService extends BaseGameService{
         let currentPlayer = game.currentPlayerIndex;
 
         const playerName = game.players[Number(res) ^ this.globalPlayerId].name;
-        this.startMessage = `${playerName} will start`;
+        this.startMessage = `${playerName} ${this.playerStartingMessage}`;
 
         setTimeout(() => {
           currentPlayer = Number(res) ^ this.globalPlayerId;
@@ -182,9 +188,9 @@ export class OnlineGameService extends BaseGameService{
   public override initGame(){
     super.resetGame();
     this.updatePlayerName(0, this.localStorageService.getData('playerName', this.platformId) ||
-      'Player 1');
+      'game_board.player1');
     this.updatePlayerName(1, this.localStorageService.getData('playerTwoName', this.platformId) ||
-      'Player 2');
+      'game_board.player2');
     this.notifiedEnding = false;
     this.canPlayAgain.set(true);
     if(!this.hubService.IsInRoom){

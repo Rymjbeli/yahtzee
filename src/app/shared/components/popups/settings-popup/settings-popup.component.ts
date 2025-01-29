@@ -11,6 +11,7 @@ import {BaseGameService} from "../../../services/game/base-game.service";
 import {GameManagerService} from "../../../services/game/game-manager.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {Router} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-settings-popup',
@@ -19,7 +20,8 @@ import {Router} from "@angular/router";
     NgOptimizedImage,
     ButtonPrimaryComponent,
     FormsModule,
-    NgClass
+    NgClass,
+    TranslatePipe
   ],
   templateUrl: './settings-popup.component.html',
   styleUrl: './settings-popup.component.scss'

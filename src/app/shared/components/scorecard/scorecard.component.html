@@ -5,7 +5,7 @@
     @for (item of upperSection; track item.name) {
     <div class="row">
       <div class="label">
-        <img class="icon" [src]="item.icon"> {{ item.name }}
+        <img class="icon" [src]="item.icon"> {{ item.name | translate }}
       </div>
       <input class="disabled-input" [value]="player?.scoreCard?.[item.variable]?.value ?? ' '"
         [ngClass]="{'score-box': !checkScore(item)}" readonly [disabled]="item.disabled"
@@ -23,7 +23,7 @@
     @for (item of lowerSection; track item.name) {
     <div class="row">
       <div class="flex gap-1">
-        <div class="label">{{ item.name }}</div>
+        <div class="label">{{ item.name | translate }}</div>
         @if (item.name == 'YAHTZEE' && this.player?.scoreCard?.[nbrOfYahtzee] > 1) {
           @for (check of [].constructor(this.player?.scoreCard?.[nbrOfYahtzee] - 1); track $index) {
             <img ngSrc="assets/icons/check-mark.png" class="mb-2" width="24" height="24"  alt="check"/>

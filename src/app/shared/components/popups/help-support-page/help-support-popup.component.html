@@ -14,18 +14,18 @@
   <div class="flex flex-col gap-4 items-center">
 
     <div class="font-extrabold text-center text-xl xs:text-2xl">
-      Help & Support
+      {{ 'help_support.help_title' | translate }}
     </div>
-    <div class="text-gray-text text-sm">Let us know how we can assist you by filling out the form below.</div>
+    <div class="text-gray-text text-sm">{{ 'help_support.help_description' | translate }}</div>
     <form class="w-11/12" #helpSupportForm="ngForm" (ngSubmit)="onSubmitForm(helpSupportForm)">
       <div class="flex flex-col gap-5 ">
         <div class="flex flex-col gap-2">
-          <label class="font-bold text-lg">Email *</label>
+          <label class="font-bold text-lg">{{ 'help_support.email' | translate }} *</label>
           <input
             class="bg-main-sub shadow-inner shadow-gray-500/80 h-12 rounded-xl p-2"
             type="email"
             name="email"
-            placeholder="Enter your email"
+            [placeholder]= "'help_support.email_placeholder' | translate"
             #emailField="ngModel"
             [(ngModel)]="email"
             [ngModelOptions]="{updateOn: 'blur'}"
@@ -33,29 +33,29 @@
             email
           >
           @if (emailField.invalid && (emailField.dirty || helpSupportForm.submitted)) {
-            <div class="text-light-red">Please enter a valid email</div>
+            <div class="text-light-red"> {{ 'help_support.email_error' | translate }} </div>
           }
         </div>
         <div class="flex flex-col gap-2">
-          <label class="font-bold text-lg">Problem *</label>
+          <label class="font-bold text-lg">{{ 'help_support.problem' | translate }} *</label>
           <textarea
             class="bg-main-sub shadow-inner shadow-gray-500/80 h-32 rounded-xl p-2"
             type="text"
             name="message"
-            placeholder="Please describe your problem here"
+            [placeholder]= "'help_support.problem_placeholder' | translate"
             #messageField="ngModel"
             [(ngModel)]="message"
             [ngModelOptions]="{updateOn: 'blur'}"
             required
           ></textarea>
           @if (messageField.invalid && (messageField.dirty || helpSupportForm.submitted)) {
-            <div class="text-light-red">Please describe your problem</div>
+            <div class="text-light-red"> {{ 'help_support.problem_error' | translate }} </div>
           }
         </div>
         <app-button-primary
           class="flex flex-col items-center"
           buttonType="submit"
-          [text]="'Submit'"
+          [text]=" 'help_support.submit' | translate"
           [type]="'normal'"
           size="md"
         ></app-button-primary>

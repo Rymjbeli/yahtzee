@@ -12,22 +12,22 @@
       <img ngSrc="../../../../../assets/images/stars-right.svg" alt="right-stars" height="80" width="80">
     </div>
 
-      <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
-        @if(!canPlayAgain()){
-          The other player left the game :(
+    <div class="font-extrabold text-3xl xs:text-4xl text-center mt-11 xs:mt-0">
+      @if (!canPlayAgain()) {
+        {{ 'game_board.player_quit' | translate }}
+      } @else {
+        @if (!isTie) {
+          {{ winnerName | translate }} {{ 'game_board.win_game' | translate }}
         } @else {
-          @if (!isTie) {
-          {{winnerName}} wins the game!
-          } @else {
-            It’s a tie!
-          }
+          {{ 'game_board.tie_game' | translate }}
         }
-      </div>
+      }
+    </div>
 
     <div class="flex justify-between items-center w-full">
       <hr class="w-20 xs:w-40 border-black">
       <div class="text-2xl xs:text-3xl font-bold text-center">
-        Your scores
+        {{ 'game_board.scores' | translate }}
       </div>
       <hr class="w-20 xs:w-40 border-black">
     </div>
@@ -35,42 +35,45 @@
     <div class="flex border-black rounded-xl border-3 bg-main-base w-full sm:w-100 xs:p-1">
       <div class="flex flex-col flex-1 items-center">
         <div class="text-xl xs:text-2xl font-semibold p-2">
-          {{player1Name}}
+          {{ player1Name | translate }}
         </div>
         <div class="text-xl xs:text-2xl font-semibold p-2">
-          {{player1Score}}
+          {{ player1Score }}
         </div>
       </div>
       <div class="flex flex-col flex-1 items-center">
         <div class="text-xl xs:text-2xl font-semibold p-2">
-          {{player2Name}}
+          {{ player2Name | translate }}
         </div>
         <div class="text-xl xs:text-2xl font-semibold p-2">
-          {{player2Score}}
+          {{ player2Score }}
         </div>
       </div>
     </div>
 
     <div class="flex gap-6 flex-wrap justify-center">
-      <app-button-primary [type]="!canPlayAgain()? 'disabled': 'normal'" (click)="playAgain()" class="hidden xs:flex" text="Play again" size="md" [showLeftIcon]="true">
-        @if(canPlayAgain()){
+      <app-button-primary [type]="!canPlayAgain()? 'disabled': 'normal'" (click)="playAgain()" class="hidden xs:flex"
+                          [text]="'game_board.play_again' | translate" size="md" [showLeftIcon]="true">
+        @if (canPlayAgain()) {
           <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
         } @else {
           <img left ngSrc="../../../../../assets/icons/replay-grey.svg" alt="replay" width="33" height="33">
         }
       </app-button-primary>
-      <app-button-primary (click)="redirectToHome()" class="hidden xs:flex" text="Home" size="md" [showLeftIcon]="true">
+      <app-button-primary (click)="redirectToHome()" class="hidden xs:flex" [text]="'game_board.home' | translate" size="md" [showLeftIcon]="true">
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
       </app-button-primary>
 
-      <app-button-primary [type]="!canPlayAgain()? 'disabled': 'normal'" (click)="playAgain()" class="xs:hidden" text="Play again" size="sm" [showLeftIcon]="true">
-        @if(canPlayAgain()){
+      <app-button-primary [type]="!canPlayAgain()? 'disabled': 'normal'" (click)="playAgain()" class="xs:hidden"
+                          [text]="'game_board.play_again' | translate"
+                          size="sm" [showLeftIcon]="true">
+        @if (canPlayAgain()) {
           <img left ngSrc="../../../../../assets/icons/replay.svg" alt="replay" width="33" height="33">
         } @else {
           <img left ngSrc="../../../../../assets/icons/replay-grey.svg" alt="replay" width="33" height="33">
         }
       </app-button-primary>
-      <app-button-primary (click)="redirectToHome()" class="xs:hidden" text="Home" size="sm" [showLeftIcon]="true">
+      <app-button-primary (click)="redirectToHome()" class="xs:hidden" [text]="'game_board.home' | translate " size="sm" [showLeftIcon]="true">
         <img left ngSrc="../../../../../assets/icons/home.svg" alt="home" width="24" height="24">
       </app-button-primary>
     </div>

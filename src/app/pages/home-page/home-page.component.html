@@ -33,7 +33,7 @@
     @if(step==3 && gameMode == 'local') {
     <app-input-player-name
       [message]="'home.typeFirstPlayerName' | translate"
-      [playerName]="playerName"
+      [playerName]="playerName | translate"
       (submitEvent)="saveName($event, 1)"
       (previousEvent)="previousStep()"
     ></app-input-player-name>
@@ -43,7 +43,7 @@
     @if(step==4 && gameMode == 'local') {
     <app-input-player-name
       [message]="'home.typeSecondPlayerName' | translate"
-      [playerName]="playerTwoName"
+      [playerName]="playerTwoName | translate"
       (submitEvent)="saveName($event, 2)"
       (previousEvent)="previousStep()"
     ></app-input-player-name>
@@ -55,7 +55,7 @@
       [message]="'home.typeYourName' | translate"
       (submitEvent)="saveName($event, 1)"
       (previousEvent)="previousStep()"
-      [playerName]="playerName"
+      [playerName]="playerName | translate"
     ></app-input-player-name>
     }
 
@@ -65,17 +65,17 @@
     <!-- step 4 online create -->
     @if (onlineOption =='create') {
     <app-online-create
-      [playerName]="playerName"
-      [roomCode]="roomCode"
+      [playerName]="playerName | translate"
+      [roomCode]="roomCode | translate"
     ></app-online-create>
     }
 
     <!-- step4 online join -->
     @if(onlineOption == 'join') {
     <app-online-join
-      [roomCode]="roomCode"
+      [roomCode]="roomCode | translate"
       (joinRoom)="joinRoom($event)"
-      [roomMessage]="roomMessage"
+      [roomMessage]="roomMessage | translate"
     ></app-online-join>
     }}
   </div>

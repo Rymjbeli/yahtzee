@@ -15,7 +15,7 @@ export interface Option {
 })
 export class DropdownComponent {
   @Input() options: Option[] = []; // List of options
-  @Input() placeholder: string = 'Select an option'; // Placeholder text
+  @Input() placeholder: string = "";
   @Input() disabled: boolean = false; // Disable dropdown
   @Input() leftIcon: boolean = false;
   @Input() rightIcon: boolean = false;

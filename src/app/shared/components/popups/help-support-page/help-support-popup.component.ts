@@ -7,6 +7,7 @@ import {NgOptimizedImage} from "@angular/common";
 import emailJS from '@emailjs/browser';
 import {HelpEmailConfirmationPopupComponent} from "../email-confirmation-popup/help-email-confirmation-popup.component";
 import {environment} from "../../../../app.environment";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-help-support-popup',
@@ -17,6 +18,7 @@ import {environment} from "../../../../app.environment";
     ButtonPrimaryComponent,
     NgOptimizedImage,
     FormsModule,
+    TranslatePipe,
   ],
   templateUrl: './help-support-popup.component.html',
   styleUrls: ['./help-support-popup.component.scss'],
@@ -27,8 +29,7 @@ export class HelpSupportPopupComponent implements OnInit {
   email: string = '';
   message: string = '';
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   closeDialog(): void {
     this.dialogRef.close();

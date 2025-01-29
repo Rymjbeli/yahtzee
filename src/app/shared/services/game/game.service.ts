@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { generateRandomDicePositions } from "../../helpers/generate-random-dice-positions";
 import { isPlatformBrowser } from '@angular/common';
 import { CONSTANTS } from '../../../../config/const.config';
 import {BaseGameService} from "./base-game.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService extends BaseGameService {
+  private translate = inject(TranslateService);
+  private playerStartingMessage : string = "";
   constructor() {
     super();
 
@@ -16,6 +19,10 @@ export class GameService extends BaseGameService {
     });
 
     this.rollCounter = 0;
+
+    this.translate.stream('game_board.starting').subscribe((res) => {
+      this.playerStartingMessage = res;
+    });
   }
 
   toggleHoldDice(diceIndex: number) {
@@ -39,7 +46,7 @@ export class GameService extends BaseGameService {
       this.updateTotal2(game.currentPlayerIndex);
       currentPlayer = this.total1() > this.total2() ? 0 : 1;
       const playerName = game.players[currentPlayer].name;
-      this.startMessage = `${ playerName } will start`;
+      this.startMessage = `${ playerName } ${ this.playerStartingMessage }`;
 
       this.beforeGame.set(true)
 

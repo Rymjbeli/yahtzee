@@ -3,6 +3,7 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgOptimizedImage} from "@angular/common";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-email-confirmation-popup',
@@ -11,7 +12,8 @@ import {NgOptimizedImage} from "@angular/common";
     ButtonPrimaryComponent,
     FormsModule,
     NgOptimizedImage,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './help-email-confirmation-popup.component.html',
   styleUrl: './help-email-confirmation-popup.component.scss'

@@ -8,21 +8,23 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {LocalStorageService} from "../../../services/shared/local-storage.service";
 import {Router} from "@angular/router";
 import {sign} from "node:crypto";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-end-game-popup',
   standalone: true,
   imports: [
     NgOptimizedImage,
-    ButtonPrimaryComponent
+    ButtonPrimaryComponent,
+    TranslatePipe
   ],
   templateUrl: './end-game-popup.component.html',
   styleUrl: './end-game-popup.component.scss'
 })
 export class EndGamePopupComponent {
-  winnerName: string = "Player 1";
-  player1Name: string = "Player 1";
-  player2Name: string = "Player 2";
+  winnerName: string = "'game_board.player1'";
+  player1Name: string = "'game_board.player1'";
+  player2Name: string = "'game_board.player2'";
   player1Score: number = 0;
   player2Score: number = 0;
   isTie = false;

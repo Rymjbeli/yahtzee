@@ -32,7 +32,7 @@ export class SettingsNavBarComponent {
   openSettings() {
     if (!this.disabled) {
       this.dialog.open(SettingsPopupComponent, {
-        width: '300px',
+        width: '350px',
         disableClose: true,
       });
     }
