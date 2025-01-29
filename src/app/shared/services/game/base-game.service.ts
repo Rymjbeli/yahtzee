@@ -288,6 +288,11 @@ export abstract class BaseGameService {
         return p;
       })
     });
+    if(playerIndex==0){
+      this.total1.set(total);
+    }else {
+      this.total2.set(total);
+    }
   }
 
   /**
