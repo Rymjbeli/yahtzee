@@ -1,7 +1,6 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {SmallNavbarComponent} from '../small/small-navbar.component';
 import {ButtonSecondaryComponent} from '../../buttons/button-secondary/button-secondary.component';
-import {BaseGameService} from "../../../services/game/base-game.service";
 import {GameManagerService} from "../../../services/game/game-manager.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {CONSTANTS} from "../../../../../config/const.config";
@@ -17,6 +16,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   styleUrl: './main-navbar.component.scss',
 })
 export class MainNavbarComponent implements OnInit {
+  protected readonly CONSTANTS = CONSTANTS;
   gameManagerService = inject(GameManagerService);
   gameService = this.gameManagerService.currentGameService;
   location = inject(Location);
@@ -45,6 +45,4 @@ export class MainNavbarComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-
-  protected readonly CONSTANTS = CONSTANTS;
 }

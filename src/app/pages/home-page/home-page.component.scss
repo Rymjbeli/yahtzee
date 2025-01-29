@@ -9,7 +9,6 @@
     background-color: $background-home;
     background-image: url("../../../assets/images/dices-background.svg");
     // background to not cover the whole screen
-    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     // background size to be smaller
@@ -28,7 +27,7 @@
         }
         .subtitle{
             font-size: 1rem;
-            
+
         }
 }
 

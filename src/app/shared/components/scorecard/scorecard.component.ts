@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Player } from '../../models/player';
 import {RulesService} from "../../services/game/rules.service";
 import {Section} from "../../interfaces/section.interface";
-import {BaseGameService} from "../../services/game/base-game.service";
 import {GameManagerService} from "../../services/game/game-manager.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {TranslatePipe} from "@ngx-translate/core";
@@ -14,7 +13,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   standalone: true,
   imports: [FormsModule, CommonModule, NgOptimizedImage, TranslatePipe],
   templateUrl: './scorecard.component.html',
-  styleUrl: './scorecard.component.scss'
+  styleUrl: './scorecard.component.scss',
 })
 export class ScorecardComponent {
   @Input() player: Player | undefined;

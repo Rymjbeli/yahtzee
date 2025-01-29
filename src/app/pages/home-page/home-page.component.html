@@ -1,7 +1,7 @@
 <div class="page">
   <app-settings-nav-bar class="settings"></app-settings-nav-bar>
   <div class="image-container">
-    <img src="assets/images/yahtzee-big-logo.svg" alt="" />
+    <img ngSrc="assets/images/yahtzee-big-logo.svg" alt="" height="466" width="779"/>
   </div>
   <div class="flex justify-center items-center space-x-4 mt-8 w-full h-5">
     <!-- step 1 -->
@@ -13,7 +13,7 @@
       size="lg"
       (click)="nextStep(); playSound()"
     >
-      <img right src="assets/icons/play-now.svg" alt="play now" />
+      <img right ngSrc="assets/icons/play-now.svg" alt="play now" height="50" width="50"/>
     </app-button-primary>
     } @loading (minimum 5s){
     <app-large-loader></app-large-loader>
@@ -25,6 +25,7 @@
       [options]="options"
       (playLocllyEvent)="playLocally()"
       (playOnlineEvent)="playOnline($event)"
+      [disabledOnline]="!this.hubService.IsConnected"
     ></app-choose-game-mode>
 
     }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import confetti from "canvas-confetti";
-import {GameService} from "../game/game.service";
 
 @Injectable({
   providedIn: 'root'
