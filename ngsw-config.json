@@ -34,7 +34,7 @@
         "http://localhost:5122/**"
       ],
       "cacheConfig": {
-        "strategy": "freshness",
+        "strategy": "performance",
         "maxAge": "0s",
         "maxSize": 0
       }
