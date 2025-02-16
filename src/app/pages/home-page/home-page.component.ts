@@ -1,9 +1,13 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { ButtonPrimaryComponent } from '../../shared/components/buttons/button-primary/button-primary.component';
 import { LargeLoaderComponent } from '../../shared/components/loaders/large-loader/large-loader.component';
-import {
-  Option,
-} from '../../shared/components/dropdown/dropdown.component';
+import { Option } from '../../shared/components/dropdown/dropdown.component';
 import { SettingsNavBarComponent } from '../../shared/components/navbar/settings/settings-navbar.component';
 import { GameService } from '../../shared/services/game/game.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,10 +17,15 @@ import { OnlineCreateComponent } from './components/online-create/online-create.
 import { InputPlayerNameComponent } from './components/input-player-name/input-player-name.component';
 import { ChooseGameModeComponent } from './components/choose-game-mode/choose-game-mode.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import {HubService} from "../../shared/services/Hub/hub.service";
-import {SoundService} from "../../shared/services/settings/sound.service";
-import {GameManagerService} from "../../shared/services/game/game-manager.service";
-import {NgOptimizedImage} from "@angular/common";
+import { HubService } from '../../shared/services/Hub/hub.service';
+import { SoundService } from '../../shared/services/settings/sound.service';
+import { GameManagerService } from '../../shared/services/game/game-manager.service';
+import { NgOptimizedImage } from '@angular/common';
+import { CONSTANTS } from '../../../config/const.config';
+import {
+  GAME_MODE_ENUM,
+  ONLINE_OPTION_ENUM,
+} from '../../shared/enums/game-mode.enum';
 
 @Component({
   selector: 'app-home-page',
@@ -48,15 +57,16 @@ export class HomePageComponent implements OnInit {
   localStorageService = inject(LocalStorageService);
   roomMessage = '';
   step: number = 1;
-  gameMode: 'online' | 'local' | null = null;
-  onlineOption: 'create' | 'join' | null = null;
+  gameMode: GAME_MODE_ENUM | null = null;
+  onlineOption: ONLINE_OPTION_ENUM | null = null;
   playerName = 'game_board.player1';
   playerTwoName = 'game_board.player2';
   roomCode = '';
+  LOCAL_STORAGE = CONSTANTS.LOCALE_STORAGE;
   // online options
   options: Option[] = [
-    { value: 'create', label: 'home.createNewRoom' },
-    { value: 'join', label: 'home.joinExistingRoom' },
+    { value: CONSTANTS.ONLINE_OPTION.CREATE, label: 'home.createNewRoom' },
+    { value: CONSTANTS.ONLINE_OPTION.JOIN, label: 'home.joinExistingRoom' },
   ];
   selectedOption: Option | null = null;
 
@@ -73,64 +83,66 @@ export class HomePageComponent implements OnInit {
   }
 
   reloadLocalStorageData() {
-    this.step = parseInt(this.retrieveFromLocalStorage('step') || '1', 10);
-    if(this.step==4){this.step=1;}
+    this.step = parseInt(this.retrieveFromLocalStorage(CONSTANTS.LOCALE_STORAGE.STEP) || '1', 10);
+    if (this.step == 4) {
+      this.step = 1;
+    }
     this.gameMode =
-      (this.retrieveFromLocalStorage('gameMode') as
-        | 'online'
-        | 'local'
-        | null) || null;
-    this.onlineOption =
-      (this.retrieveFromLocalStorage('onlineOption') as 'create' | 'join') ||
+      (this.retrieveFromLocalStorage(CONSTANTS.LOCALE_STORAGE.GAME_MODE) as GAME_MODE_ENUM | null) ||
       null;
-    this.playerName = this.retrieveFromLocalStorage('playerName') || 'game_board.player1';
+    this.onlineOption =
+      (this.retrieveFromLocalStorage(CONSTANTS.LOCALE_STORAGE.ONLINE_OPTION) as ONLINE_OPTION_ENUM) ||
+      null;
+    this.playerName =
+      this.retrieveFromLocalStorage(CONSTANTS.LOCALE_STORAGE.PLAYER_NAME) || 'game_board.player1';
     this.playerTwoName =
-      this.retrieveFromLocalStorage('playerTwoName') || 'game_board.player2';
-    this.roomCode =
-      this.retrieveFromLocalStorage('roomCode') || 'home.waiting';
+      this.retrieveFromLocalStorage(CONSTANTS.LOCALE_STORAGE.PLAYER_TWO_NAME) || 'game_board.player2';
+    this.roomCode = this.retrieveFromLocalStorage(CONSTANTS.LOCALE_STORAGE.ROOM_CODE) || 'home.waiting';
   }
 
   nextStep() {
-    if (this.step === 3 && this.onlineOption === 'join') {
+    if (this.step === 3 && this.onlineOption === CONSTANTS.ONLINE_OPTION.JOIN) {
       this.roomCode = '';
     }
-    if (this.step === 3 && this.onlineOption === 'create') {
-      this.hubService.createRoom(this.playerName).subscribe((res)=>{
-        if(res != "0"){
+    if (this.step === 3 && this.onlineOption === CONSTANTS.ONLINE_OPTION.CREATE) {
+      this.hubService.createRoom(this.playerName).subscribe((res) => {
+        if (res != '0') {
           this.roomCode = res;
-          this.saveToLocalStorage('roomCode', this.roomCode);
-          this.hubService.onAllPlayersJoined().subscribe((playerNames)=>{
-            this.saveToLocalStorage("GlobalId", "0");
-            this.playerTwoName = playerNames.split(":")[1];
+          this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.ROOM_CODE, this.roomCode);
+          this.hubService.onAllPlayersJoined().subscribe((playerNames) => {
+            this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.GLOBAL_ID, '0');
+            this.playerTwoName = playerNames.split(':')[1];
             this.startOnlineGame();
-          })
+          });
         }
       });
     }
     if (this.step === 3) {
-      this.saveToLocalStorage('playerName', this.playerName);
+      this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.PLAYER_NAME, this.playerName);
     }
-    if (this.step === 4 && this.gameMode === 'online') {
-      this.saveToLocalStorage('playerTwoName', this.playerTwoName);
+    if (this.step === 4 && this.gameMode === CONSTANTS.GAME_MODE.ONLINE) {
+      this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.PLAYER_TWO_NAME, this.playerTwoName);
     }
     this.step++;
-    this.saveToLocalStorage('step', this.step.toString());
+    this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.STEP, this.step.toString());
   }
 
   previousStep() {
     this.step--;
-    this.saveToLocalStorage('step', this.step.toString());
+    this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.STEP, this.step.toString());
   }
 
   playOnline($event: Option) {
-    if(!this.hubService.IsConnected){
-      alert("Couldn't establish a connection with the server, please check your internet.");
+    if (!this.hubService.IsConnected) {
+      alert(
+        "Couldn't establish a connection with the server, please check your internet."
+      );
       return;
     }
-    this.gameMode = 'online';
-    this.saveToLocalStorage('gameMode', this.gameMode);
-    this.onlineOption = $event.value as 'create' | 'join';
-    this.saveToLocalStorage('onlineOption', this.onlineOption);
+    this.gameMode = GAME_MODE_ENUM.LOCAL;
+    this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.GAME_MODE, this.gameMode);
+    this.onlineOption = $event.value as ONLINE_OPTION_ENUM;
+    this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.ONLINE_OPTION, this.onlineOption);
     this.roomMessage = '';
     this.nextStep();
     this.gameManagerService.switchService();
@@ -138,8 +150,8 @@ export class HomePageComponent implements OnInit {
 
   // decide to play locally
   playLocally() {
-    this.gameMode = 'local';
-    this.saveToLocalStorage('gameMode', this.gameMode);
+    this.gameMode = GAME_MODE_ENUM.LOCAL;
+    this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.GAME_MODE, this.gameMode);
     this.nextStep();
     this.gameManagerService.switchService();
   }
@@ -154,11 +166,11 @@ export class HomePageComponent implements OnInit {
   saveName(event: string, playerNumber: number) {
     if (playerNumber === 1) {
       this.playerName = event;
-      this.saveToLocalStorage('playerName', this.playerName);
+      this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.PLAYER_NAME, this.playerName);
       this.nextStep();
     } else {
       this.playerTwoName = event;
-      this.saveToLocalStorage('playerTwoName', this.playerTwoName);
+      this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.PLAYER_TWO_NAME, this.playerTwoName);
       this.startLocalGame();
     }
   }
@@ -173,26 +185,28 @@ export class HomePageComponent implements OnInit {
 
   joinRoom($event: { roomCode: string }) {
     this.roomCode = $event.roomCode;
-    this.hubService.checkRoom(this.roomCode).subscribe((res)=>{
-      if(res.split(':')[1] == "False") {
+    this.hubService.checkRoom(this.roomCode).subscribe((res) => {
+      if (res.split(':')[1] == 'False') {
         this.translateService.stream('home.room_message').subscribe((res) => {
           this.roomMessage = res;
         });
         // alert("Room does not exist.");
       } else {
         this.roomMessage = '';
-        this.saveToLocalStorage('roomCode', this.roomCode);
-        this.hubService.JoinRoom(this.roomCode, this.playerName).subscribe((playerNames)=>{
-          this.playerTwoName = playerNames.split(":")[0];
-          this.saveToLocalStorage("GlobalId", "1");
-          this.startOnlineGame()
-        });
+        this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.ROOM_CODE, this.roomCode);
+        this.hubService
+          .JoinRoom(this.roomCode, this.playerName)
+          .subscribe((playerNames) => {
+            this.playerTwoName = playerNames.split(':')[0];
+            this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.GLOBAL_ID, '1');
+            this.startOnlineGame();
+          });
       }
     });
   }
-  startOnlineGame(){
-    this.saveToLocalStorage('playerTwoName', this.playerTwoName);
-    this.router.navigate(["/game"]);
+  startOnlineGame() {
+    this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.PLAYER_TWO_NAME, this.playerTwoName);
+    this.router.navigate(['/game']);
   }
   playSound(): void {
     this.soundService.playSound();
