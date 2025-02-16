@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import { ButtonPrimaryComponent } from '../../shared/components/buttons/button-primary/button-primary.component';
 import { LargeLoaderComponent } from '../../shared/components/loaders/large-loader/large-loader.component';
 import {
@@ -35,6 +35,7 @@ import {of, Subject, switchMap, takeUntil, tap} from "rxjs";
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePageComponent implements OnInit {
   [x: string]: any;
@@ -46,6 +47,7 @@ export class HomePageComponent implements OnInit {
   hubService = inject(HubService);
   platformId = inject(PLATFORM_ID);
   route = inject(ActivatedRoute);
+  cdr = inject(ChangeDetectorRef);
   localStorageService = inject(LocalStorageService);
   roomMessage = '';
   step: number = 1;
@@ -97,6 +99,7 @@ export class HomePageComponent implements OnInit {
     }
     if (this.step === 3 && this.onlineOption === 'create') {
       this.hubService.createRoom(this.playerName).subscribe((res)=>{
+        console.log(res);
         if(res != "0"){
           this.roomCode = res;
           this.saveToLocalStorage('roomCode', this.roomCode);
@@ -104,7 +107,8 @@ export class HomePageComponent implements OnInit {
             this.saveToLocalStorage("GlobalId", "0");
             this.playerTwoName = playerNames.split(":")[1];
             this.startOnlineGame();
-          })
+          });
+          this.cdr.markForCheck();
         }
       });
     }
@@ -178,8 +182,8 @@ export class HomePageComponent implements OnInit {
 
     this.hubService.checkRoom(this.roomCode).pipe(
       switchMap((res) => {
+        console.log(res);
         const roomExists = res.split(':')[1] !== "False";
-
         if (!roomExists) {
           return this.translateService.stream('home.room_message').pipe(
             tap((translatedMessage) => {
