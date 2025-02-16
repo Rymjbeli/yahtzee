@@ -1,33 +1,23 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-  PLATFORM_ID,
-  ChangeDetectorRef
-} from '@angular/core';
-import { ButtonPrimaryComponent } from '../../shared/components/buttons/button-primary/button-primary.component';
-import { LargeLoaderComponent } from '../../shared/components/loaders/large-loader/large-loader.component';
-import { Option } from '../../shared/components/dropdown/dropdown.component';
-import { SettingsNavBarComponent } from '../../shared/components/navbar/settings/settings-navbar.component';
-import { GameService } from '../../shared/services/game/game.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { LocalStorageService } from '../../shared/services/shared/local-storage.service';
-import { OnlineJoinComponent } from './components/online-join/online-join.component';
-import { OnlineCreateComponent } from './components/online-create/online-create.component';
-import { InputPlayerNameComponent } from './components/input-player-name/input-player-name.component';
-import { ChooseGameModeComponent } from './components/choose-game-mode/choose-game-mode.component';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { HubService } from '../../shared/services/Hub/hub.service';
-import { SoundService } from '../../shared/services/settings/sound.service';
-import { GameManagerService } from '../../shared/services/game/game-manager.service';
-import { NgOptimizedImage } from '@angular/common';
-import { CONSTANTS } from '../../../config/const.config';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {ButtonPrimaryComponent} from '../../shared/components/buttons/button-primary/button-primary.component';
+import {LargeLoaderComponent} from '../../shared/components/loaders/large-loader/large-loader.component';
+import {Option,} from '../../shared/components/dropdown/dropdown.component';
+import {SettingsNavBarComponent} from '../../shared/components/navbar/settings/settings-navbar.component';
+import {GameService} from '../../shared/services/game/game.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {LocalStorageService} from '../../shared/services/shared/local-storage.service';
+import {OnlineJoinComponent} from './components/online-join/online-join.component';
+import {OnlineCreateComponent} from './components/online-create/online-create.component';
+import {InputPlayerNameComponent} from './components/input-player-name/input-player-name.component';
+import {ChooseGameModeComponent} from './components/choose-game-mode/choose-game-mode.component';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {HubService} from "../../shared/services/Hub/hub.service";
+import {SoundService} from "../../shared/services/settings/sound.service";
+import {GameManagerService} from "../../shared/services/game/game-manager.service";
+import {NgOptimizedImage} from "@angular/common";
 import {of, Subject, switchMap, takeUntil, tap} from "rxjs";
-import {
-  GAME_MODE_ENUM,
-  ONLINE_OPTION_ENUM,
-} from '../../shared/enums/game-mode.enum';
+import {GAME_MODE_ENUM, ONLINE_OPTION_ENUM} from "../../shared/enums/game-mode.enum";
+import {CONSTANTS} from "../../../config/const.config";
 
 @Component({
   selector: 'app-home-page',
@@ -88,8 +78,8 @@ export class HomePageComponent implements OnInit {
 
   reloadLocalStorageData() {
     this.step = parseInt(this.retrieveFromLocalStorage(CONSTANTS.LOCALE_STORAGE.STEP) || '1', 10);
-    if (this.step == 4) {
-      this.step = 1;
+    if(this.step == 4) {
+      this.step=1;
     }
     this.gameMode =
       (this.retrieveFromLocalStorage(CONSTANTS.LOCALE_STORAGE.GAME_MODE) as GAME_MODE_ENUM | null) ||
@@ -144,7 +134,7 @@ export class HomePageComponent implements OnInit {
       );
       return;
     }
-    this.gameMode = GAME_MODE_ENUM.LOCAL;
+    this.gameMode =GAME_MODE_ENUM.ONLINE;
     this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.GAME_MODE, this.gameMode);
     this.onlineOption = $event.value as ONLINE_OPTION_ENUM;
     this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.ONLINE_OPTION, this.onlineOption);
@@ -194,7 +184,7 @@ export class HomePageComponent implements OnInit {
 
     this.hubService.checkRoom(this.roomCode).pipe(
       switchMap((res) => {
-        const roomExists = res.split(':')[1] !== "False";
+        const roomExists = res.split(':')[1] !== 'False';
         if (!roomExists) {
           return this.translateService.stream('home.room_message').pipe(
             tap((translatedMessage) => {
@@ -205,12 +195,12 @@ export class HomePageComponent implements OnInit {
         }
 
         this.roomMessage = '';
-        this.saveToLocalStorage('roomCode', this.roomCode);
+        this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.ROOM_CODE, this.roomCode);
 
         return this.hubService.JoinRoom(this.roomCode, this.playerName).pipe(
           tap((playerNames) => {
             this.playerTwoName = playerNames.split(':')[0];
-            this.saveToLocalStorage("GlobalId", "1");
+            this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.GLOBAL_ID, '1');
             this.startOnlineGame();
           })
         );
@@ -223,6 +213,7 @@ export class HomePageComponent implements OnInit {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
   startOnlineGame() {
     this.saveToLocalStorage(CONSTANTS.LOCALE_STORAGE.PLAYER_TWO_NAME, this.playerTwoName);
     this.router.navigate(['/game']);

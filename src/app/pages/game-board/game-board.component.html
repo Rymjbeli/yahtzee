@@ -1,4 +1,4 @@
-@if((gameService?.gameState$ | async); as gameState) {
+@if((gameService.gameState$ | async); as gameState) {
 <div class="game-board">
   <div class="scorecard-container">
     @if(gameState?.currentPlayerIndex === 0 && enableTimer && gameService.rollCounter > 1 && !gameService.startTimerNextTurn) {
