@@ -99,7 +99,6 @@ export class HomePageComponent implements OnInit {
     }
     if (this.step === 3 && this.onlineOption === 'create') {
       this.hubService.createRoom(this.playerName).subscribe((res)=>{
-        console.log(res);
         if(res != "0"){
           this.roomCode = res;
           this.saveToLocalStorage('roomCode', this.roomCode);
@@ -182,7 +181,6 @@ export class HomePageComponent implements OnInit {
 
     this.hubService.checkRoom(this.roomCode).pipe(
       switchMap((res) => {
-        console.log(res);
         const roomExists = res.split(':')[1] !== "False";
         if (!roomExists) {
           return this.translateService.stream('home.room_message').pipe(
