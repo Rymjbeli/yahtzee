@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { ButtonPrimaryComponent } from '../../../../shared/components/buttons/button-primary/button-primary.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -9,6 +9,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [InputComponent, ButtonPrimaryComponent, TranslatePipe],
   templateUrl: './input-player-name.component.html',
   styleUrl: './input-player-name.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputPlayerNameComponent {
   @Input() playerName: string = '';

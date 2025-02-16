@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 export interface Option {
@@ -12,6 +12,7 @@ export interface Option {
   imports: [CommonModule, TranslatePipe],
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DropdownComponent {
   @Input() options: Option[] = []; // List of options

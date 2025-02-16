@@ -1,4 +1,4 @@
-import {Component, HostListener, inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostListener, inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
 import { ScorecardComponent } from "../../shared/components/scorecard/scorecard.component";
 import { ButtonRollComponent } from "../../shared/components/buttons/button-roll/button-roll.component";
 import { filter} from "rxjs";
@@ -11,6 +11,7 @@ import {SoundService} from "../../shared/services/settings/sound.service";
 import {GameManagerService} from "../../shared/services/game/game-manager.service";
 import {CONSTANTS} from "../../../config/const.config";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
+import {DiceService} from "../../shared/services/game/dice.service";
 
 @Component({
   selector: 'app-game-board',
@@ -18,15 +19,16 @@ import {TranslatePipe, TranslateService} from "@ngx-translate/core";
   imports: [ScorecardComponent, ButtonRollComponent, AsyncPipe, NgOptimizedImage, NgClass, NgStyle, TranslatePipe],
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GameBoardComponent implements OnInit, OnDestroy {
   gameManagerService = inject(GameManagerService);
   translateService = inject(TranslateService);
   gameService = this.gameManagerService.currentGameService;
+  diceService = inject(DiceService);
   soundService = inject(SoundService);
   dialog = inject(MatDialog);
   platformId = inject(PLATFORM_ID);
-  gameState$ = this.gameService?.gameState$;
   beforeGame = this.gameService?.beforeGame;
   gameMode = this.gameManagerService.gameMode;
 
@@ -73,7 +75,8 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   getDicePosition(index: number): Position {
-    return this.gameService?.getDicePositions(index);
+    const gameState = this.gameService?.getGameStateValue();
+    return this.diceService.getDicePositions(index, gameState);
   }
 
   rollDice(): void {

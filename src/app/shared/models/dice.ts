@@ -1,17 +1,16 @@
 export class Dice {
   value: number;
   isHeld: boolean;
-  images: string[];
+  private static images: string[] = [
+    "die-1.svg",
+    "die-2.svg",
+    "die-3.svg",
+    "die-4.svg",
+    "die-5.svg",
+    "die-6.svg",
+  ];
 
   constructor() {
-    this.images = [
-      "die-1.svg",
-      "die-2.svg",
-      "die-3.svg",
-      "die-4.svg",
-      "die-5.svg",
-      "die-6.svg",
-    ];
     this.value = this.roll();
     this.isHeld = true;
   }
@@ -21,6 +20,6 @@ export class Dice {
   }
 
   getImage(): string {
-    return this.images[this.value - 1];
+    return Dice.images[this.value - 1];
   }
 }

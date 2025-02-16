@@ -1,4 +1,4 @@
-@if((gameState$ | async); as gameState) {
+@if((gameService?.gameState$ | async); as gameState) {
 <div class="game-board">
   <div class="scorecard-container">
     @if(gameState?.currentPlayerIndex === 0 && enableTimer && gameService.rollCounter > 1 && !gameService.startTimerNextTurn) {
@@ -54,7 +54,7 @@
       }
     </div>
     <div class="dices flex justify-center items-center w-full h-full relative">
-      @for (dice of gameState?.dice; let i = $index; track dice.value){
+      @for (dice of gameState?.dice; let i = $index; track i){
       @if (!dice?.isHeld) {
       <div (click)="toggleHold(i)" class="dice absolute transition-all duration-200 ease-in-out"
         [ngStyle]="getDicePosition(i)">
@@ -66,7 +66,7 @@
     </div>
     <div class="actions">
       <div class="keep-dice flex gap-1.5 items-center justify-center py-1.5 flex-nowrap overflow-x-auto">
-        @for (dice of gameState?.dice; let i = $index; track dice.value){
+        @for (dice of gameState?.dice; let i = $index; track i){
         @if (dice?.isHeld) {
         <img class="cursor-pointer transform transition duration-200 ease-in-out hover:scale-110"
           (click)="toggleHold(i)" [ngSrc]="'assets/images/dices/' + dice.getImage()" alt="Die {{ i + 1 }}" width="70"
@@ -74,7 +74,7 @@
         }
         }
       </div>
-      <app-button-roll (click)="rollDice()" size="md" [type]="isRollButtonDisabled || beforeGame() ? 'disabled' : 'normal'"
+      <app-button-roll (click)="rollDice()" size="md" [type]="isRollButtonDisabled || !(beforeGame) || beforeGame() ? 'disabled' : 'normal'"
         [text]="rollButtonText">
       </app-button-roll>
     </div>

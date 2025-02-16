@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
 import {ReactiveFormsModule, FormsModule, NgForm} from '@angular/forms';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {InputComponent} from "../../input/input.component";
@@ -22,6 +22,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   ],
   templateUrl: './help-support-popup.component.html',
   styleUrls: ['./help-support-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HelpSupportPopupComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<HelpSupportPopupComponent>);

@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-button-primary',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './button-primary.component.html',
-  styleUrl: './button-primary.component.scss'
+  styleUrl: './button-primary.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonPrimaryComponent {
 
