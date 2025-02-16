@@ -1,7 +1,8 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
 import { RuleContainerComponent } from "../../shared/components/rule-container/rule-container.component";
 import { TranslateService, TranslatePipe } from "@ngx-translate/core";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 export interface Rule {
   title: string;
@@ -26,9 +27,10 @@ export interface RulesData {
     NgOptimizedImage
   ],
   templateUrl: './game-rules.component.html',
-  styleUrls: ['./game-rules.component.scss']
+  styleUrls: ['./game-rules.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GameRulesComponent implements OnInit {
+export class GameRulesComponent {
   private translate = inject(TranslateService);
   rules = signal<RulesData>({});
   currentPageIndex = signal<number>(0);
@@ -39,11 +41,13 @@ export class GameRulesComponent implements OnInit {
     return Object.values(currentPage);
   });
 
-  ngOnInit(): void {
-    // Stream : fire again whenever the translation changes
-    this.translate.stream('rules').subscribe((rules: RulesData) => {
-      this.rules.update(() => rules);
-    });
+  constructor() {
+    this.translate
+      .stream('rules')
+      .pipe(takeUntilDestroyed())
+      .subscribe((rules: RulesData) => {
+        this.rules.update(() => rules);
+      });
   }
 
   nextPage(): void {

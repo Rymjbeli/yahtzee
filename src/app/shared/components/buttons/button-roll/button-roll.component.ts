@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
@@ -7,7 +7,8 @@ import {TranslatePipe} from "@ngx-translate/core";
   standalone: true,
   imports: [CommonModule, TranslatePipe],
   templateUrl: './button-roll.component.html',
-  styleUrl: './button-roll.component.scss'
+  styleUrl: './button-roll.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonRollComponent {
   @Input() text: string = '';

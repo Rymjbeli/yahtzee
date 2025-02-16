@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
@@ -8,7 +8,8 @@ import {TranslatePipe} from "@ngx-translate/core";
     TranslatePipe
   ],
   templateUrl: './large-loader.component.html',
-  styleUrl: './large-loader.component.scss'
+  styleUrl: './large-loader.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LargeLoaderComponent {
 

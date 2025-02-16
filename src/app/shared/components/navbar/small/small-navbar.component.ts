@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   inject,
@@ -20,6 +21,7 @@ import {HelpSupportPopupComponent} from "../../popups/help-support-page/help-sup
   imports: [CommonModule],
   templateUrl: './small-navbar.component.html',
   styleUrl: './small-navbar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SmallNavbarComponent {
   @Input() size: 'md' | 'lg' | 'sm' = 'md';

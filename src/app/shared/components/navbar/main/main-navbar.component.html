@@ -1,6 +1,7 @@
 <div class="main-navbar">
   @if (!isGameRulesPage()) {
     <app-button-secondary
+      class="new-game"
       [ngStyle]="{ visibility: gameMode === CONSTANTS.GAME_MODE.ONLINE ? 'hidden' : 'visible' }"
       (click)="resetGame()"
       [size]="'md'"
@@ -19,5 +20,5 @@
   <div class="yahtzee-logo-navbar">
     <img src="assets/images/yahtzee-logo-navbar.svg" alt=""/>
   </div>
-  <app-small-navbar [size]="'md'"></app-small-navbar>
+  <app-small-navbar class="menu-button" [size]="'md'"></app-small-navbar>
 </div>

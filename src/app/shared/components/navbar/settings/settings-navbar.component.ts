@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   inject,
   Input,
@@ -17,6 +18,7 @@ import {HelpSupportPopupComponent} from "../../popups/help-support-page/help-sup
   imports: [CommonModule],
   templateUrl: './settings-navbar.component.html',
   styleUrl: './settings-navbar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsNavBarComponent {
   @Input() size: 'md' | 'lg' | 'sm' = 'md';
