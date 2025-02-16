@@ -17,6 +17,7 @@ import {HubService} from "../../shared/services/Hub/hub.service";
 import {SoundService} from "../../shared/services/settings/sound.service";
 import {GameManagerService} from "../../shared/services/game/game-manager.service";
 import {NgOptimizedImage} from "@angular/common";
+import {of, Subject, switchMap, takeUntil, tap} from "rxjs";
 
 @Component({
   selector: 'app-home-page',
@@ -170,26 +171,44 @@ export class HomePageComponent implements OnInit {
   retrieveFromLocalStorage(key: string): string {
     return this.localStorageService.getData(key, this.platformId);
   }
+  private destroy$ = new Subject<void>();
 
-  joinRoom($event: { roomCode: string }) {
+  joinRoom($event: { roomCode: string }): void {
     this.roomCode = $event.roomCode;
-    this.hubService.checkRoom(this.roomCode).subscribe((res)=>{
-      if(res.split(':')[1] == "False") {
-        this.translateService.stream('home.room_message').subscribe((res) => {
-          this.roomMessage = res;
-        });
-        // alert("Room does not exist.");
-      } else {
+
+    this.hubService.checkRoom(this.roomCode).pipe(
+      switchMap((res) => {
+        const roomExists = res.split(':')[1] !== "False";
+
+        if (!roomExists) {
+          return this.translateService.stream('home.room_message').pipe(
+            tap((translatedMessage) => {
+              this.roomMessage = translatedMessage;
+            }),
+            switchMap(() => of(null))
+          );
+        }
+
         this.roomMessage = '';
         this.saveToLocalStorage('roomCode', this.roomCode);
-        this.hubService.JoinRoom(this.roomCode, this.playerName).subscribe((playerNames)=>{
-          this.playerTwoName = playerNames.split(":")[0];
-          this.saveToLocalStorage("GlobalId", "1");
-          this.startOnlineGame()
-        });
-      }
-    });
+
+        return this.hubService.JoinRoom(this.roomCode, this.playerName).pipe(
+          tap((playerNames) => {
+            this.playerTwoName = playerNames.split(':')[0];
+            this.saveToLocalStorage("GlobalId", "1");
+            this.startOnlineGame();
+          })
+        );
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   startOnlineGame(){
     this.saveToLocalStorage('playerTwoName', this.playerTwoName);
     this.router.navigate(["/game"]);

@@ -104,6 +104,12 @@ export abstract class BaseGameService {
    * @param newState
    */
   updateGameState(newState: Partial<GameState>) {
+    if (newState.players) {
+      newState.players = newState.players.map(player => ({
+        ...player // Create a new reference for each player
+      }));
+    }
+
     this.gameStateSubject.next({
       ...this.getGameStateValue(),
       ...newState,
