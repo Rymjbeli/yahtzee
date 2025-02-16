@@ -50,7 +50,7 @@ export class GameService extends BaseGameService {
 
       this.beforeGame.set(true)
 
-      setTimeout(() => {
+      this.rollTimeoutId = setTimeout(() => {
         this.rollCounter++;
         this.beforeGame.set(false);
 
@@ -59,6 +59,8 @@ export class GameService extends BaseGameService {
           die.isHeld = true;
           return die;
         });
+
+        this.rollTimeoutId = null;
       }, 3000);
 
       this.updateGameState({ currentPlayerIndex: currentPlayer });

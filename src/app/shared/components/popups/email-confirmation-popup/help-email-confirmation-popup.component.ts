@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -16,7 +16,9 @@ import {TranslatePipe} from "@ngx-translate/core";
     TranslatePipe
   ],
   templateUrl: './help-email-confirmation-popup.component.html',
-  styleUrl: './help-email-confirmation-popup.component.scss'
+  styleUrl: './help-email-confirmation-popup.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class HelpEmailConfirmationPopupComponent {
   private dialogRef = inject(MatDialogRef<HelpEmailConfirmationPopupComponent>);

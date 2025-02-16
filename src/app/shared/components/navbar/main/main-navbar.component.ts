@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {SmallNavbarComponent} from '../small/small-navbar.component';
 import {ButtonSecondaryComponent} from '../../buttons/button-secondary/button-secondary.component';
 import {GameManagerService} from "../../../services/game/game-manager.service";
@@ -14,6 +14,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   imports: [SmallNavbarComponent, ButtonSecondaryComponent, NgStyle, TranslatePipe],
   templateUrl: './main-navbar.component.html',
   styleUrl: './main-navbar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainNavbarComponent implements OnInit {
   protected readonly CONSTANTS = CONSTANTS;

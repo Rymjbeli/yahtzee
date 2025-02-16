@@ -1,4 +1,4 @@
-import {Component, inject, Inject, PLATFORM_ID, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, Inject, PLATFORM_ID, signal} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
@@ -16,7 +16,8 @@ import {TranslatePipe} from "@ngx-translate/core";
     TranslatePipe
   ],
   templateUrl: './end-game-popup.component.html',
-  styleUrl: './end-game-popup.component.scss'
+  styleUrl: './end-game-popup.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EndGamePopupComponent {
   winnerName: string = "'game_board.player1'";

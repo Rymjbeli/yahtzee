@@ -20,4 +20,19 @@ export const CONSTANTS = {
     LOCAL: 'local',
     ONLINE: 'online',
   },
-}
+
+  ONLINE_OPTION: {
+    CREATE: 'create',
+    JOIN: 'join',
+  },
+
+  LOCALE_STORAGE: {
+    PLAYER_NAME: 'playerName',
+    PLAYER_TWO_NAME: 'playerTwoName',
+    ROOM_CODE: 'roomCode',
+    STEP: 'step',
+    GAME_MODE: 'gameMode',
+    ONLINE_OPTION: 'onlineOption',
+    GLOBAL_ID: 'GlobalId',
+  },
+};

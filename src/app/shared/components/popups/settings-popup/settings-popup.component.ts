@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {isPlatformBrowser, NgClass, NgOptimizedImage} from "@angular/common";
 import {ButtonPrimaryComponent} from "../../buttons/button-primary/button-primary.component";
@@ -22,7 +22,8 @@ import {TranslatePipe} from "@ngx-translate/core";
     TranslatePipe
   ],
   templateUrl: './settings-popup.component.html',
-  styleUrl: './settings-popup.component.scss'
+  styleUrl: './settings-popup.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsPopupComponent implements OnInit{
   private dialogRef = inject(MatDialogRef<SettingsPopupComponent>);

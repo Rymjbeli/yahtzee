@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Dice} from "../../models/dice";
+import {Position} from "../../interfaces/position";
+import {GameState} from "../../interfaces/game-state";
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +40,16 @@ export class DiceService {
 
   calculateTotal(dice: Dice[]): number {
     return dice.reduce((total, die) => total + die.value, 0);
+  }
+
+  /**
+   * Get the positions of the dice.
+   */
+  getDicePositions(index: number, gameState: GameState): Position {
+    const positions = gameState.dicePositions;
+    if (positions && positions[index]) {
+      return positions[index];
+    }
+    return { top: '50%', left: '50%', transform: 'rotate(0deg)' };
   }
 }
